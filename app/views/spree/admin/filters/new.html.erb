@@ -1,0 +1,51 @@
+<%= form_tag admin_filters_path, data: { remote: true } do %>
+  <div class="row">
+    <div class="col-md-3">
+      User
+    </div>
+
+    <div class="col-md-3">
+      EMAIL
+      <%= hidden_field_tag :metric, 'user_email' %>
+    </div>
+
+    <div class="col-md-3">
+      <%= select_tag :operator, options_for_select(USER[:email][:operators].map { |x| [ x, x.parameterize(separator: '_')] }) %>
+    </div>
+
+    <div class="col-md-3">
+      <%= text_field_tag :value, nil, required: true %>
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <%= submit_tag :search %>
+    </div>
+  </div>
+
+  <hr />
+
+  <div data-hook="users_list">
+    <table border="1">
+      <tr>
+        <td> Name </td>
+        <td> Email Id </td>
+        <td> Address </td>
+        <td> Contact Number </td>
+      </tr>
+
+    <% if @results.present? %>
+      <% @results.each do |result| %>
+        <tr>
+          <td> <%= result.name %> </td>
+          <td> <%= result.email %> </td>
+          <td> <%= result.address %> </td>
+          <td> <%= result.phone %> </td>
+        </tr>
+      <% end %>
+    <% end %>
+    </table>
+  </div>
+
+<% end %>

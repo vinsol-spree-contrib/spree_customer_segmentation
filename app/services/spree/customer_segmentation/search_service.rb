@@ -7,9 +7,7 @@ module Spree
       # Format values inside controller, call service
       def initialize(args = {})
         @collection = ::Spree::User.all
-        # @options = [ { term: 'user_email__includes', value: ['abc@mail.com', 'xyz@mail.com'] } ]  #args[:options]
-        # @options = [ { term: 'user_email__does_not_includes', value: ['xyz@mail.com'] } ]  #args[:options]
-        @options = [ { term: 'user_email__includes', value: ['abc@mail.com', 'xyz@mail.com'] }, { term: 'user_email__does_not_includes', value: ['xyz@mail.com'] } ]  #args[:options]
+        @options = [{ term: args[:term], value: args[:values] }]
       end
 
       def perform

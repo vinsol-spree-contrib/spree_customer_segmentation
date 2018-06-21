@@ -1,0 +1,2 @@
+$('[data-hook="users_list"]').empty();
+$('[data-hook="users_list"]').append("<%= j render(partial: 'users', results: @results) %>");

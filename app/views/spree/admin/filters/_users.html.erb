@@ -1,0 +1,20 @@
+<table border="1">
+  <tr>
+    <td> Name </td>
+    <td> Email Id </td>
+    <td> Address </td>
+    <td> Contact Number </td>
+  </tr>
+
+<% if @results.present? %>
+  <% @results.each do |result| %>
+    <tr>
+      <td> <%= result.name %> </td>
+      <td> <%= result.email %> </td>
+      <td> <%= result.address %> </td>
+      <td> <%= result.phone %> </td>
+    </tr>
+  <% end %>
+<% end %>
+
+</table>
