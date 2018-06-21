@@ -6,7 +6,11 @@ module Spree
     end
 
     def create
-      @results = CustomerSegmentation::SearchService.new(process_params).perform
+      @query = CustomerSegmentation::SearchService.new(process_params).perform
+      apply_sorting
+      @results = @query.result.page(params[:page]).per(3)
+
+      # render :new
 
       respond_to do |format|
         format.js
@@ -27,6 +31,12 @@ module Spree
       def create_values
         # SERVICE ??
         params[:operator] =~ /include/ ? params[:value].split : params[:value]
+      end
+
+      def apply_sorting
+        if params[:q] && params[:q][:s]
+          @query.sorts = params[:q][:s]
+        end
       end
 
   end

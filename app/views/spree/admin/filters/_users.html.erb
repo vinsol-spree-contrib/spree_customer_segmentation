@@ -1,20 +1,24 @@
-<table border="1">
-  <tr>
-    <td> Name </td>
-    <td> Email Id </td>
-    <td> Address </td>
-    <td> Contact Number </td>
-  </tr>
+<%# paginate results %>
+<%= paginate results, remote: true, method: :post %>
 
-<% if @results.present? %>
-  <% @results.each do |result| %>
-    <tr>
-      <td> <%= result.name %> </td>
-      <td> <%= result.email %> </td>
-      <td> <%= result.address %> </td>
-      <td> <%= result.phone %> </td>
-    </tr>
-  <% end %>
+<% if results.present? %>
+  <table class="table" id="listing_filtered_users" data-hook>
+    <thead>
+      <tr data-hook="admin_filterd_users_headers">
+        <!-- <th> <%# sort_link(@query, :email, 'Email') %> </th> -->
+        <th> <%= sort_link(@query, :email, 'Email', {}, { remote: true, method: 'post' }) %> </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% results.each do |result| %>
+      <tr data-hook="admin_filtered_users_rows">
+        <td> <%= result.email %> </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info no-objects-found">
+    <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::User)) %>
+  </div>
 <% end %>
-
-</table>
