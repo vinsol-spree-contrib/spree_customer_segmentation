@@ -1,5 +1,5 @@
 Spree::Core::Engine.add_routes do
   namespace :admin do
-    resource :filters, only: [:new, :create]
+    resources :customer_segmentation, only: [:index]
   end
 end

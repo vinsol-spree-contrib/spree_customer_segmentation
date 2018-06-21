@@ -1,18 +1,22 @@
-<%# paginate results %>
-<%= paginate results, remote: true, method: :post %>
+<%= paginate results %>
 
 <% if results.present? %>
   <table class="table" id="listing_filtered_users" data-hook>
     <thead>
       <tr data-hook="admin_filterd_users_headers">
-        <!-- <th> <%# sort_link(@query, :email, 'Email') %> </th> -->
-        <th> <%= sort_link(@query, :email, 'Email', {}, { remote: true, method: 'post' }) %> </th>
+        <th> Name </th>
+        <th> <%= sort_link(@query, :email, 'Email') %> </th>
+        <th> Address </th>
+        <th> Phone </th>
       </tr>
     </thead>
     <tbody>
     <% results.each do |result| %>
       <tr data-hook="admin_filtered_users_rows">
+        <td> <%= result.name %> </td>
         <td> <%= result.email %> </td>
+        <td> <%= result.address %> </td>
+        <td> <%= result.phone %> </td>
       </tr>
     <% end %>
     </tbody>

@@ -10,6 +10,15 @@ module Spree
         @options = [{ term: args[:term], value: args[:values] }]
       end
 
+      def generate_segment
+        # when no filter is applied, return all users
+        if options[0][:term] == "__"
+          Spree::User.ransack
+        else
+          perform
+        end
+      end
+
       def perform
         options.each do |option|
           service_name_key = get_search_key_name(option[:term])

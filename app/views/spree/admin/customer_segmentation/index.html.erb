@@ -1,4 +1,4 @@
-<%= form_tag admin_filters_path, data: { remote: true } do %>
+<%= form_tag admin_customer_segmentation_index_path, method: :get do %>
   <div class="row">
     <div class="col-md-3">
       User
@@ -10,11 +10,11 @@
     </div>
 
     <div class="col-md-3">
-      <%= select_tag :operator, options_for_select(USER[:email][:operators].map { |x| [ x, x.parameterize(separator: '_')] }) %>
+      <%= select_tag :operator, options_for_select(USER[:email][:operators].map { |x| [ x, x.parameterize(separator: '_')] }, params[:operator]) %>
     </div>
 
     <div class="col-md-3">
-      <%= text_field_tag :value, nil, required: true %>
+      <%= text_field_tag :value, params[:value], required: true %>
     </div>
   </div>
 
@@ -29,7 +29,7 @@
   <div data-hook="users_list"></div>
 
   <% if @results.present? %>
-    <%# render partial: 'users', locals: { results: @results } %>
+    <%= render partial: 'users', locals: { results: @results } %>
   <% end %>
 
 <% end %>
