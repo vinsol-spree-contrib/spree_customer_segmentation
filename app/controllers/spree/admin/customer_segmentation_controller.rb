@@ -20,7 +20,7 @@ module Spree
       # SERVICE ??
       def create_values
         if params[:operator] && params[:operator] =~ /include/
-          params[:value].split # convert to array
+          params[:value].split(',') # convert to array
         else
           params[:value]
         end
