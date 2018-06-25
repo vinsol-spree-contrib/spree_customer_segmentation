@@ -16,11 +16,11 @@ module Spree
       end
 
       def can_be_ransacked?
-        self.class.const_get(:SEARCH_LOGIC)[operator][:method] == 'ransack'
+        self.class.const_get(:SEARCH_LOGIC)[operator.to_sym][:method] == 'ransack'
       end
 
       def search_query
-        self.class.const_get(:SEARCH_LOGIC)[operator][:logic]
+        self.class.const_get(:SEARCH_LOGIC)[operator.to_sym][:logic]
       end
 
     end

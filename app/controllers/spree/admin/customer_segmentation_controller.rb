@@ -11,13 +11,10 @@ module Spree
 
       def search_params
         {
-          term: create_term,
+          metric: params[:metric],
+          operator: params[:operator],
           values: CustomerSegmentation::ProcessParamsService.new(params[:operator], params[:value]).process
         }
-      end
-
-      def create_term
-        "#{params[:metric]}__#{params[:operator]}"
       end
 
       def apply_sorting

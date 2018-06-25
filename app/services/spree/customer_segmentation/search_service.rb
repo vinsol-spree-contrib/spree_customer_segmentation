@@ -7,12 +7,12 @@ module Spree
       # Format values inside controller, call service
       def initialize(args = {})
         @collection = ::Spree::User.all
-        @options = [{ term: args[:term], value: args[:values] }]
+        @options = [{ metric: args[:metric], operator: args[:operator], value: args[:values] }]
       end
 
       def generate_segment
         # when no filter is applied, return all users
-        if options[0][:term] == "__"
+        if options[0][:metric].nil?
           Spree::User.ransack
         else
           perform
@@ -21,24 +21,12 @@ module Spree
 
       def perform
         options.each do |option|
-          service_name_key = get_search_key_name(option[:term])
-          operator = get_operator(option[:term])
-
-          @ransack_query = SEARCH_SERVICE_MAPPER[service_name_key].new(collection, operator, option[:value]).filter_data
+          metric = option[:metric].to_sym
+          @ransack_query = SEARCH_SERVICE_MAPPER[metric].new(collection, option[:operator], option[:value]).filter_data
           self.collection = @ransack_query.result
         end
 
         @ransack_query
-      end
-
-      # user_email__includes => user_email
-      def get_search_key_name(term)
-        term.split('__').first.to_sym
-      end
-
-      # user_email__includes => includes
-      def get_operator(term)
-        term.split('__').last.to_sym
       end
 
     end
