@@ -1,5 +1,9 @@
 Spree::User.class_eval do
 
+  # scope :orders_revenue, -> { joins(:orders).merge(Spree::Order.revenue) }
+  #
+  # self.whitelisted_ransackable_scopes = %w(orders_revenue)
+
   def name
     if bill_address.present?
       "#{bill_address.first_name} #{bill_address.last_name}"
@@ -17,5 +21,7 @@ Spree::User.class_eval do
       bill_address.phone
     end
   end
+
+  self.whitelisted_ransackable_associations += %w(orders)
 
 end

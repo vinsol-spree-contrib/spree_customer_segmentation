@@ -20,10 +20,6 @@ module Spree
         perform
       end
 
-      # def email_not_in
-      #   collection.ransack(email_not_in: values).result
-      # end
-
     end
   end
 end

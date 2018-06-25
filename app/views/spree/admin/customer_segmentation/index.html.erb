@@ -1,21 +1,15 @@
+<div>
+  FOR TEST PURPOSES
+  <br />
+  <%= link_to 'Name', '#', data: { category: 'user', value: 'name', name: 'filter', metric: 'user_name', text: 'Name' } %>
+  <%= link_to 'Email', '#', data: { category: 'user', value: 'email', name: 'filter', metric: 'user_email', text: 'Email' } %>
+  <%= link_to 'Contact Number', '#', data: { category: 'user', value: 'contact_number', name: 'filter', metric: 'user_contact_number', text: 'Contact Number' } %>
+</div>
+<hr />
+<hr />
+
 <%= form_tag admin_customer_segmentation_index_path, method: :get do %>
-  <div class="row">
-    <div class="col-md-3">
-      User
-    </div>
-
-    <div class="col-md-3">
-      EMAIL
-      <%= hidden_field_tag :metric, 'user_email' %>
-    </div>
-
-    <div class="col-md-3">
-      <%= select_tag :operator, options_for_select(USER[:email][:operators].map { |x| [ x, x.parameterize(separator: '_')] }, params[:operator]) %>
-    </div>
-
-    <div class="col-md-3">
-      <%= text_field_tag :value, params[:value], required: true, data: { role: 'tagsinput' } %>
-    </div>
+  <div class="row" data-hook="filters">
   </div>
 
   <div>
@@ -31,5 +25,27 @@
   <% if @results.present? %>
     <%= render partial: 'users', locals: { results: @results } %>
   <% end %>
+
+  <!-- pass all options as a hash -->
+  <span data-name="filter_operator_list" data-value="<%= FILTERS.to_json %>"> </span>
+
+  <div class="hidden">
+
+    <div data-name="filter-row">
+      <div class="col-md-3" data-hook="metric">
+        <%# hidden_field_tag :metric_clone, nil, data: { name: 'metric' } %>
+        <span data-name="metric-value"></span>
+      </div>
+
+      <div class="col-md-3" data-hook="operator">
+        <%# select_tag :operator_clone, nil, data: { name: 'operator' } %>
+      </div>
+
+      <div class="col-md-3" data-hook="value">
+        <%# text_field_tag :value_clone, nil, data: { name: 'value' } %>
+      </div>
+    </div>
+
+  </div>
 
 <% end %>
