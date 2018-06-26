@@ -16,7 +16,9 @@ FILTERS= {
   order: {
     revenue: { metric_type: 'numeric', operators: NUMERIC_OPERATORS },
     days_from_first_order: { metric_type: 'numeric', operators: NUMERIC_OPERATORS_WITH_BLANK },
-    days_from_last_order: { metric_type: 'numeric', operators: NUMERIC_OPERATORS_WITH_BLANK }
+    days_from_last_order: { metric_type: 'numeric', operators: NUMERIC_OPERATORS_WITH_BLANK },
+    quantity_total: { metric_type: 'numeric', operators: NUMERIC_OPERATORS },
+    total_number_of_order: { metric_type: 'numeric', operators: NUMERIC_OPERATORS },
   },
 
   session: {

@@ -24,10 +24,10 @@ module Spree
         perform
       end
 
-      def query(operator)
+      def query
         @required_date = Date.today - values.to_i
 
-        Spree::User.with_complete_orders.
+        collection.with_complete_orders.
                     select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as last_order_date").
                     group('spree_orders.user_id')
       end
@@ -65,7 +65,7 @@ module Spree
 
       def days_from_last_order_blank
         choice = ActiveModel::Type::Boolean.new.cast(values) # convert string to boolean, move to process params!!
-        choice ? Spree::User.without_complete_orders : Spree::User.with_complete_orders
+        choice ? collection.without_complete_orders : collection.with_complete_orders
       end
 
     end

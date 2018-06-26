@@ -23,8 +23,8 @@ module Spree
         perform
       end
 
-      def query(operator)
-        Spree::User.with_complete_orders.
+      def query
+        collection.with_complete_orders.
                     select('spree_users.*, SUM(spree_orders.total) as revenue').
                     group('spree_orders.user_id')
       end
