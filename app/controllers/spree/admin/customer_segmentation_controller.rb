@@ -2,9 +2,12 @@ module Spree
   class Admin::CustomerSegmentationController < Admin::BaseController
 
     def index
-      @query = CustomerSegmentation::SearchService.new(search_params).generate_segment
-      apply_sorting
-      @results = @query.result.page(params[:page])
+      # @query = CustomerSegmentation::SearchService.new(search_params).generate_segment
+      # apply_sorting
+      # @results = @query.result.page(params[:page])
+
+      @results = CustomerSegmentation::SearchService.new(search_params).generate_segment.page(params[:page])
+
     end
 
     private

@@ -23,17 +23,14 @@ CustomerSegmentation.prototype.buildFilter = function() {
     _this.createMetric($this);
     _this.createOperator($this);
     _this.createValue();
-    
+
     $('[data-hook="filters"]').append(_this.$row);
   }
 }
 
 CustomerSegmentation.prototype.createMetric = function($filter) {
-  var $metric = $('<input>', { type: 'hidden', name: 'metric' });
+  var $metric = $('<input>', { type: 'hidden', name: 'metric' }).val($filter.data('metric'));
 
-  $metric.attr('name', 'metric');
-
-  $metric.val($filter.data('metric'));
   this.$row.find('[data-name="metric-value"]').text($filter.data('text'));
   this.$row.find('[data-hook="metric"]').append($metric);
 }
@@ -46,10 +43,8 @@ CustomerSegmentation.prototype.createOperator = function($filter) {
 
   $operator.attr('name', 'operator');
 
-  $.each(availableOperators, function(index, operator) {
-    $option = $('<option>');
-    $option.attr('value', operator.replace(/ /g, "_"));
-    $option.text(operator);
+  $.each(availableOperators, function(key, value) {
+    $option = $('<option>', { value: key }).text(value);
     documentFragment.append($option[0]);
   });
 
@@ -60,7 +55,6 @@ CustomerSegmentation.prototype.createOperator = function($filter) {
 CustomerSegmentation.prototype.createValue = function() {
   var $value = $('<input>', { type: 'text', name: 'value' });
 
-  $value.attr('name', 'value');
   this.$row.find('[data-hook="value"]').append($value);
 }
 

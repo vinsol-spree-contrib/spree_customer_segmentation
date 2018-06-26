@@ -13,7 +13,7 @@ module Spree
       def generate_segment
         # when no filter is applied, return all users
         if options[0][:metric].nil?
-          Spree::User.ransack
+          Spree::User.all
         else
           perform
         end
@@ -22,11 +22,11 @@ module Spree
       def perform
         options.each do |option|
           metric = option[:metric].to_sym
-          @ransack_query = SEARCH_SERVICE_MAPPER[metric].new(collection, option[:operator], option[:value]).filter_data
-          self.collection = @ransack_query.result
+          self.collection = SEARCH_SERVICE_MAPPER[metric].new(collection, option[:operator], option[:value]).filter_data
+
         end
 
-        @ransack_query
+        collection
       end
 
     end
