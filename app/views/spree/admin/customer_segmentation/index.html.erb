@@ -6,6 +6,9 @@
   <%= link_to 'Contact Number', '#', data: { category: 'user', value: 'contact_number', name: 'filter', metric: 'user_contact_number', text: 'Contact Number' } %>
 
   <%= link_to 'Revenue', '#', data: { category: 'order', value: 'revenue', name: 'filter', metric: 'order_revenue', text: 'Revenue' } %>
+  <%= link_to 'Days From First Order', '#', data: { category: 'order', value: 'days_from_first_order', name: 'filter', metric: 'order_days_from_first_order', text: 'Days From First Order' } %>
+  <%= link_to 'Days From Last Order', '#', data: { category: 'order', value: 'days_from_last_order', name: 'filter', metric: 'order_days_from_last_order', text: 'Days From Last Order' } %>
+
 </div>
 <hr />
 <hr />
@@ -35,16 +38,13 @@
 
     <div data-name="filter-row">
       <div class="col-md-3" data-hook="metric">
-        <%# hidden_field_tag :metric_clone, nil, data: { name: 'metric' } %>
         <span data-name="metric-value"></span>
       </div>
 
       <div class="col-md-3" data-hook="operator">
-        <%# select_tag :operator_clone, nil, data: { name: 'operator' } %>
       </div>
 
       <div class="col-md-3" data-hook="value">
-        <%# text_field_tag :value_clone, nil, data: { name: 'value' } %>
       </div>
     </div>
 

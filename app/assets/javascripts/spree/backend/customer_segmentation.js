@@ -11,6 +11,7 @@ CustomerSegmentation.prototype.initialize = function() {
 
 CustomerSegmentation.prototype.bindEvents = function() {
   this.$filters.on('click', this.buildFilter());
+  $('[data-hook="filters"]').on('change', '[data-name="operator"]', this.changeValueInput());
 }
 
 CustomerSegmentation.prototype.buildFilter = function() {
@@ -28,6 +29,41 @@ CustomerSegmentation.prototype.buildFilter = function() {
   }
 }
 
+CustomerSegmentation.prototype.changeValueInput = function() {
+  var _this = this;
+
+  return function() {
+    var $this = $(this),
+        selectedValue = $this.val(),
+        $value1,
+        $value2;
+
+
+
+    if($this.val() == "between") {
+      var documentFragment = document.createDocumentFragment();
+
+      $value1 = $('<input>', { type: 'text', name: 'value[]' });
+      $value2 = $('<input>', { type: 'text', name: 'value[]' });
+
+      documentFragment.append($value1[0], $value2[0]);
+
+      $this.closest('[data-name="filter-row"]').find('[data-hook="value"]').empty().append(documentFragment);
+    } else if ($this.data('value') == "between") {
+
+      // value changed from between
+      var documentFragment = document.createDocumentFragment();
+
+      $value = $('<input>', { type: 'text', name: 'value' });
+      documentFragment.append($value[0]);
+
+      $this.closest('[data-name="filter-row"]').find('[data-hook="value"]').empty().append(documentFragment);
+    }
+
+    $this.data('value', selectedValue);
+  }
+}
+
 CustomerSegmentation.prototype.createMetric = function($filter) {
   var $metric = $('<input>', { type: 'hidden', name: 'metric' }).val($filter.data('metric'));
 
@@ -36,7 +72,7 @@ CustomerSegmentation.prototype.createMetric = function($filter) {
 }
 
 CustomerSegmentation.prototype.createOperator = function($filter) {
-  var $operator = $('<select>', { name: 'operator' }),
+  var $operator = $('<select>', { name: 'operator', 'data-name': 'operator' }),
       availableOperators = this.filterOperatorList[$filter.data('category')][$filter.data('value')]['operators'],
       documentFragment = document.createDocumentFragment(),
       $option;
@@ -49,6 +85,10 @@ CustomerSegmentation.prototype.createOperator = function($filter) {
   });
 
   $operator.append(documentFragment);
+
+  var operatorValue = $operator.val();
+  $operator.data('value', operatorValue);  // save current value of operator to use in change event
+
   this.$row.find('[data-hook="operator"]').append($operator);
 }
 
@@ -61,7 +101,7 @@ CustomerSegmentation.prototype.createValue = function() {
 $(function() {
   var options = {
       $filterRow: $('[data-name="filter-row"]'),
-      $filters: $('[data-name="filter"]'),
+      $filters: $('[data-name="filter"]')
     },
     customer_segmentation = new CustomerSegmentation(options);
 

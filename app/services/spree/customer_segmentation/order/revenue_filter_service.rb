@@ -24,41 +24,37 @@ module Spree
       end
 
       def query(operator)
-        Spree::User.joins(:orders).select('spree_users.*, SUM(spree_orders.total) as revenue').
-                    group('spree_orders.user_id').
-                    where(spree_orders: { state: 'complete'}).
-                    where("spree_orders.total #{operator} ?", values)
+        Spree::User.with_complete_orders.
+                    select('spree_users.*, SUM(spree_orders.total) as revenue').
+                    group('spree_orders.user_id')
       end
 
       def revenue_gteq
-        query('>=')
+        query.having("revenue >= ?", values)
       end
 
       def revenue_gt
-        query('>')
+        query.having("revenue > ?", values)
       end
 
       def revenue_lt
-        query('<')
+        query.having("revenue < ?", values)
       end
 
       def revenue_lteq
-        query('<=')
+        query.having("revenue <= ?", values)
       end
 
       def revenue_eq
-        query('=')
+        query.having("revenue = ?", values)
       end
 
       def revenue_not_eq
-        query('>=')
+        query.having("revenue != ?", values)
       end
 
       def revenue_between
-        Spree::User.joins(:orders).select('spree_users.*, SUM(spree_orders.total) as revenue').
-                    group('spree_orders.user_id').
-                    where(spree_orders: { state: 'complete'}).
-                    where("spree_orders.total >= ? AND spree_orders.total <= ?", values[0], values[1])
+        query.having("revenue >= ? AND revenue <= ?", values[0], values[1])
       end
 
     end
