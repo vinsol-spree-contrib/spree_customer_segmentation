@@ -22,6 +22,9 @@
   <%= link_to 'Used a coupon?', '#', data: { name: 'filter', metric: 'purchase_coupon_applied', text: 'Used a coupon?' }, class: 'btn btn-sm btn-primary' %>
   <%= link_to 'Coupon Last Used', '#', data: { name: 'filter', metric: 'purchase_coupon_last_used', text: 'Coupon Not Used Since?' }, class: 'btn btn-sm btn-primary' %>
 
+  <%= link_to 'Used a coupon?', '#', data: { category: 'purchase', value: 'used_a_coupon', name: 'filter', metric: 'purchase_used_a_coupon', text: 'Used a coupon?' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Coupon Not Used Since', '#', data: { category: 'purchase', value: 'coupon_not_used_since', name: 'filter', metric: 'purchase_coupon_not_used_since', text: 'Coupon Not Used Since?' }, class: 'btn btn-sm btn-primary' %>
+
 </div>
 <hr />
 <hr />
