@@ -16,6 +16,6 @@ SEARCH_SERVICE_MAPPER = {
   cart_days_from_cart_modified: Spree::CustomerSegmentation::Cart::DaysFromCartModifiedFilterService,
 
   purchase_used_a_coupon: Spree::CustomerSegmentation::Purchase::UsedACouponFilterService,
-  purchase_coupon_not_used_since: Spree::CustomerSegmentation::Purchase::CouponNotUsedSinceFilterService 
+  purchase_coupon_not_used_since: Spree::CustomerSegmentation::Purchase::CouponNotUsedSinceFilterService
 
 }
