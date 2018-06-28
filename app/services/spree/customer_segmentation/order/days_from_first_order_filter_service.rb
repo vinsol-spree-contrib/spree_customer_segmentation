@@ -25,40 +25,38 @@ module Spree
       end
 
       def query
-        @required_date = Date.today - values.to_i
-
         user_collection.with_complete_orders.
                     select("spree_users.*, DATE(MIN(spree_orders.completed_at)) as first_order_date").
                     group('spree_orders.user_id')
       end
 
       def days_from_first_order_gteq
-        query.having("first_order_date <= ?", @required_date)
+        query.having("first_order_date <= ?", required_date)
       end
 
       def days_from_first_order_gt
-        query.having("first_order_date < ?", @required_date)
+        query.having("first_order_date < ?", required_date)
       end
 
       def days_from_first_order_lt
-        query.having("first_order_date > ?", @required_date)
+        query.having("first_order_date > ?", required_date)
       end
 
       def days_from_first_order_lteq
-        query.having("first_order_date >= ?", @required_date)
+        query.having("first_order_date >= ?", required_date)
       end
 
       def days_from_first_order_eq
-        query.having("first_order_date = ?", @required_date)
+        query.having("first_order_date = ?", required_date)
       end
 
       def days_from_first_order_not_eq
-        query.having("first_order_date != ?", @required_date)
+        query.having("first_order_date != ?", required_date)
       end
 
       def days_from_first_order_between
-        first_date = Date.today - values[0].to_i
-        second_date = Date.today - values[1].to_i
+        first_date  = (Time.current.utc - values[0].to_i.days).to_date
+        second_date = (Time.current.utc - values[1].to_i.days).to_date
 
         query.having("first_order_date >= ? AND first_order_date <= ?", second_date, first_date)
       end
@@ -66,6 +64,10 @@ module Spree
       def days_from_first_order_blank
         choice = ActiveModel::Type::Boolean.new.cast(values) # convert string to boolean, move to process params!!
         choice ? user_collection.without_complete_orders : user_collection.with_complete_orders
+      end
+
+      def required_date
+        required_date = (Time.current.utc - values.to_i.days).to_date
       end
 
     end
