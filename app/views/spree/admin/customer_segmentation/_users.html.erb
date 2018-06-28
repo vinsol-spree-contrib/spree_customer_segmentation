@@ -1,30 +1,26 @@
 <%= paginate results %>
 
-<% if results.present? %>
-  <table class="table" id="listing_filtered_users" data-hook>
-    <thead>
-      <tr data-hook="admin_filterd_users_headers">
-        <th> Name <%# sort_link(@query, :bill_address_full_name, 'Name') %>  </th>
-        <th> Email <%# sort_link(@query, :email, 'Email') %> </th>
-        <th> Address </th>
-        <th> Contact Number<%# sort_link(@query, :bill_address_phone, 'Contact Number') %> </th>
-      </tr>
-    </thead>
-    <tbody>
-    <% results.each do |result| %>
-      <tr data-hook="admin_filtered_users_rows">
-        <td> <%= result.full_name %> </td>
-        <td> <%= result.email %> </td>
-        <td> <%= result.address %> </td>
-        <td> <%= result.phone %> </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <div class="alert alert-info no-objects-found">
-    <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::User)) %>
-  </div>
-<% end %>
+<table class="table" id="listing_filtered_users" data-hook>
+  <thead>
+    <tr data-hook="admin_filterd_users_headers">
+      <th> First Name </th>
+      <th> Last Name </th>
+      <th> Email </th>
+      <th> Address </th>
+      <th> Contact Number </th>
+    </tr>
+  </thead>
+  <tbody>
+  <% results.each do |result| %>
+    <tr data-hook="admin_filtered_users_rows">
+      <td> <%= result.firstname %> </td>
+      <td> <%= result.lastname %> </td>
+      <td> <%= result.email %> </td>
+      <td> <%= result.address %> </td>
+      <td> <%= result.phone %> </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
 
 <%= paginate results %>

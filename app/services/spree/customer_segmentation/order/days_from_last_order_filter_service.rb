@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Order::DaysFromLastOrderFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -14,10 +14,10 @@ module Spree
         blank: { method: 'custom', logic: 'days_from_last_order_blank' }
       }
 
-      def initialize(collection, operator, values)
+      def initialize(user_collection, operator, values)
         @operator = operator
         @values = values
-        super(collection)
+        super(user_collection)
       end
 
       def filter_data
@@ -27,7 +27,7 @@ module Spree
       def query
         @required_date = Date.today - values.to_i
 
-        collection.with_complete_orders.
+        user_collection.with_complete_orders.
                     select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as last_order_date").
                     group('spree_orders.user_id')
       end
@@ -65,7 +65,7 @@ module Spree
 
       def days_from_last_order_blank
         choice = ActiveModel::Type::Boolean.new.cast(values) # convert string to boolean, move to process params!!
-        choice ? collection.without_complete_orders : collection.with_complete_orders
+        choice ? user_collection.without_complete_orders : user_collection.with_complete_orders
       end
 
     end

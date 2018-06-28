@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Order::RevenueFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -13,10 +13,10 @@ module Spree
         lt: { method: 'custom', logic: 'revenue_lt' }
       }
 
-      def initialize(collection, operator, values)
+      def initialize(user_collection, operator, values)
         @operator = operator
         @values = values
-        super(collection)
+        super(user_collection)
       end
 
       def filter_data
@@ -24,7 +24,7 @@ module Spree
       end
 
       def query
-        collection.with_complete_orders.
+        user_collection.with_complete_orders.
                     select('spree_users.*, SUM(spree_orders.total) as revenue').
                     group('spree_orders.user_id')
       end
@@ -46,7 +46,11 @@ module Spree
       end
 
       def revenue_eq
-        query.having("revenue = ?", values)
+        if values.to_i == 0
+          user_collection.without_complete_orders
+        else
+          query.having("revenue = ?", values)
+        end
       end
 
       def revenue_not_eq

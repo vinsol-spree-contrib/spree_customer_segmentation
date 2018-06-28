@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class User::EmailFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -10,10 +10,10 @@ module Spree
         does_not_contains: { method: 'ransack', logic: 'email_not_cont' }
       }
 
-      def initialize(collection, operator, values)
+      def initialize(user_collection, operator, values)
         @operator = operator
         @values = values
-        super(collection)
+        super(user_collection)
       end
 
       def filter_data

@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Order::QuantityAverageFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -13,10 +13,10 @@ module Spree
         lt: { method: 'custom', logic: 'total_quantity_lt' }
       }
 
-      def initialize(collection, operator, values)
+      def initialize(user_collection, operator, values)
         @operator = operator
         @values = values
-        super(collection)
+        super(user_collection)
       end
 
       def filter_data
@@ -24,7 +24,7 @@ module Spree
       end
 
       def query
-        collection.joins(orders: :line_items).
+        user_collection.joins(orders: :line_items).
                    merge(Spree::Order.complete).
                    select('spree_users.*, (SUM(spree_line_items.quantity)/COUNT(spree_orders.user_id)) as average_quantity').
                    group('spree_orders.user_id')
@@ -47,7 +47,11 @@ module Spree
       end
 
       def total_quantity_eq
-        query.having("total_quantity = ?", values)
+        if values.to_i == 0
+          user_collection.without_complete_orders
+        else
+          query.having("total_quantity = ?", values)
+        end
       end
 
       def total_quantity_not_eq

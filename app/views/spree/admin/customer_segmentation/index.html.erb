@@ -1,16 +1,17 @@
 <div>
   FOR TEST PURPOSES
   <br />
-  <%= link_to 'Name', '#', data: { category: 'user', value: 'name', name: 'filter', metric: 'user_name', text: 'Name' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Email', '#', data: { category: 'user', value: 'email', name: 'filter', metric: 'user_email', text: 'Email' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Contact Number', '#', data: { category: 'user', value: 'contact_number', name: 'filter', metric: 'user_contact_number', text: 'Contact Number' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'First Name', '#', data: { name: 'filter', metric: 'user_firstname', text: 'First Name' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Last Name', '#', data: { name: 'filter', metric: 'user_lastname', text: 'Last Name' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Email', '#', data: { name: 'filter', metric: 'user_email', text: 'Email' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Contact Number', '#', data: { name: 'filter', metric: 'user_contact_number', text: 'Contact Number' }, class: 'btn btn-sm btn-primary' %>
 
-  <%= link_to 'Revenue', '#', data: { category: 'order', value: 'revenue', name: 'filter', metric: 'order_revenue', text: 'Revenue' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Days From First Order', '#', data: { category: 'order', value: 'days_from_first_order', name: 'filter', metric: 'order_days_from_first_order', text: 'Days From First Order' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Days From Last Order', '#', data: { category: 'order', value: 'days_from_last_order', name: 'filter', metric: 'order_days_from_last_order', text: 'Days From Last Order' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Total Quantity', '#', data: { category: 'order', value: 'quantity_total', name: 'filter', metric: 'order_quantity_total', text: 'Order Total Quantity' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Total Number Of Orders', '#', data: { category: 'order', value: 'total_number_of_order', name: 'filter', metric: 'order_total_number_of_order', text: 'Total Number Of Orders' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Quantity Average', '#', data: { category: 'order', value: 'quantity_average', name: 'filter', metric: 'order_quantity_average', text: 'Order Total Average' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Revenue', '#', data: { name: 'filter', metric: 'order_revenue', text: 'Revenue' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Days From First Order', '#', data: { name: 'filter', metric: 'days_from_first_order', text: 'Days From First Order' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Days From Last Order', '#', data: { name: 'filter', metric: 'days_from_last_order', text: 'Days From Last Order' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Total Quantity', '#', data: { name: 'filter', metric: 'order_quantity_total', text: 'Order Total Quantity' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Total Number Of Orders', '#', data: { name: 'filter', metric: 'total_number_of_order', text: 'Total Number Of Orders' }, class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Quantity Average', '#', data: { name: 'filter', metric: 'order_quantity_average', text: 'Order Total Average' }, class: 'btn btn-sm btn-primary' %>
 </div>
 <hr />
 <hr />
@@ -31,10 +32,14 @@
 
   <% if @results.present? %>
     <%= render partial: 'users', locals: { results: @results } %>
+  <% else %>
+    <div class="alert alert-info no-objects-found">
+      <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::User)) %>
+    </div>
   <% end %>
 
   <!-- pass all options as a hash -->
-  <span data-name="filter_operator_list" data-value="<%= FILTERS.to_json %>"> </span>
+  <span data-name="filter_operator_list" data-value="<%= Spree::CustomerSegmentation::FILTERS.to_json %>"> </span>
 
   <div class="hidden">
 

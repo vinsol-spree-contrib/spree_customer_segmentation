@@ -1,15 +1,15 @@
 module Spree
   module CustomerSegmentation
     class BaseService
-      attr_accessor :collection
+      attr_accessor :user_collection
 
-      def initialize(collection)
-        @collection = collection
+      def initialize(user_collection)
+        @user_collection = user_collection
       end
 
       def perform
         if can_be_ransacked?
-          collection.ransack({ search_query => values }).result # Look into this to reduce queries.
+          user_collection.ransack({ search_query => values }).result # Look into this to reduce queries.
         else
           self.send "#{search_query}"
         end

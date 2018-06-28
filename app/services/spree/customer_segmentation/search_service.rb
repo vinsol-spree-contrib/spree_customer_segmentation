@@ -1,12 +1,12 @@
 module Spree
   module CustomerSegmentation
     class SearchService
-      attr_accessor :collection, :options
+      attr_accessor :user_collection, :options
 
       # Assuming that args will give us formatted values
       # Format values inside controller, call service
       def initialize(args = {})
-        @collection = ::Spree::User.all
+        @user_collection = ::Spree::User.all
         @options = [{ metric: args[:metric], operator: args[:operator], value: args[:values] }]
       end
 
@@ -22,11 +22,11 @@ module Spree
       def perform
         options.each do |option|
           metric = option[:metric].to_sym
-          self.collection = SEARCH_SERVICE_MAPPER[metric].new(collection, option[:operator], option[:value]).filter_data
-
+          service = FILTERS[metric][:service]
+          self.user_collection = service.new(user_collection, option[:operator], option[:value]).filter_data
         end
 
-        collection
+        user_collection
       end
 
     end

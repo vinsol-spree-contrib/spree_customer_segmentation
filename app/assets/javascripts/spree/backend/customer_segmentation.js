@@ -38,8 +38,6 @@ CustomerSegmentation.prototype.changeValueInput = function() {
         $value1,
         $value2;
 
-
-
     if($this.val() == "between") {
       var documentFragment = document.createDocumentFragment();
 
@@ -73,7 +71,7 @@ CustomerSegmentation.prototype.createMetric = function($filter) {
 
 CustomerSegmentation.prototype.createOperator = function($filter) {
   var $operator = $('<select>', { name: 'operator', 'data-name': 'operator' }),
-      availableOperators = this.filterOperatorList[$filter.data('category')][$filter.data('value')]['operators'],
+      availableOperators = this.filterOperatorList[$filter.data('metric')]['operators'],
       documentFragment = document.createDocumentFragment(),
       $option;
 
