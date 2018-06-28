@@ -4,13 +4,13 @@ module Spree
       attr_accessor :operator, :values
 
       SEARCH_LOGIC = {
-        gt_eq: { method: 'custom', logic: 'revenue_gteq' },
-        gt: { method: 'custom', logic: 'revenue_eq' },
+        gt_eq:   { method: 'custom', logic: 'revenue_gteq' },
+        gt:      { method: 'custom', logic: 'revenue_eq' },
         between: { method: 'custom', logic: 'revenue_between' },
-        eq: { method: 'custom', logic: 'revenue_eq' },
-        not_eq: { method: 'custom', logic: 'revenue_not_eq' },
-        lt_eq: { method: 'custom', logic: 'revenue_lteq' },
-        lt: { method: 'custom', logic: 'revenue_lt' }
+        eq:      { method: 'custom', logic: 'revenue_eq' },
+        not_eq:  { method: 'custom', logic: 'revenue_not_eq' },
+        lt_eq:   { method: 'custom', logic: 'revenue_lteq' },
+        lt:      { method: 'custom', logic: 'revenue_lt' }
       }
 
       def initialize(user_collection, operator, values)

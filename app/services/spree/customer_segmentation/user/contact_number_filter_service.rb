@@ -4,7 +4,7 @@ module Spree
       attr_accessor :operator, :values
 
       SEARCH_LOGIC = {
-        contains: { method: 'ransack', logic: 'bill_address_phone_cont' },
+        contains:          { method: 'ransack', logic: 'bill_address_phone_cont' },
         does_not_contains: { method: 'ransack', logic: 'bill_address_phone_not_cont' }
       }
 

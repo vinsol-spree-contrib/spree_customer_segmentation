@@ -4,14 +4,14 @@ module Spree
       attr_accessor :operator, :values
 
       SEARCH_LOGIC = {
-        gt_eq: { method: 'custom', logic: 'days_from_first_order_gteq' },
-        gt: { method: 'custom', logic: 'days_from_first_order_eq' },
+        gt_eq:   { method: 'custom', logic: 'days_from_first_order_gteq' },
+        gt:      { method: 'custom', logic: 'days_from_first_order_eq' },
         between: { method: 'custom', logic: 'days_from_first_order_between' },
-        eq: { method: 'custom', logic: 'days_from_first_order_eq' },
-        not_eq: { method: 'custom', logic: 'days_from_first_order_not_eq' },
-        lt_eq: { method: 'custom', logic: 'days_from_first_order_lteq' },
-        lt: { method: 'custom', logic: 'days_from_first_order_lt' },
-        blank: { method: 'custom', logic: 'days_from_first_order_blank' }
+        eq:      { method: 'custom', logic: 'days_from_first_order_eq' },
+        not_eq:  { method: 'custom', logic: 'days_from_first_order_not_eq' },
+        lt_eq:   { method: 'custom', logic: 'days_from_first_order_lteq' },
+        lt:      { method: 'custom', logic: 'days_from_first_order_lt' },
+        blank:   { method: 'custom', logic: 'days_from_first_order_blank' }
       }
 
       def initialize(user_collection, operator, values)

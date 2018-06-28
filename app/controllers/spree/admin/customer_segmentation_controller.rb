@@ -11,8 +11,12 @@ module Spree
         {
           metric: params[:metric],
           operator: params[:operator],
-          values: CustomerSegmentation::ProcessParamsService.new(params[:operator], params[:value]).process
+          values: process_params
         }
+      end
+
+      def process_params
+        CustomerSegmentation::ProcessParamsService.new(params[:operator], params[:value]).process
       end
 
   end
