@@ -25,10 +25,6 @@ FILTERS= {
     frequency: { metric_type: 'numeric', operators: NUMERIC_OPERATORS }
   },
 
-  session: {
-    count: { metric_type: 'numberic', operators: NUMERIC_OPERATORS }
-  },
-
   cart: {
     number_of_items: { metric_type: 'numberic', operators: NUMERIC_OPERATORS },
     days_from_cart_created: { metric_type: 'numeric', operators: NUMERIC_OPERATORS_WITH_BLANK },
@@ -37,6 +33,11 @@ FILTERS= {
 
   purchase: {
     used_a_coupon: { metric_type: 'logical', operators: LOGICAL_OPERATORS },
-    coupon_not_used_since: { metric_type: 'numeric', operators: DATE_OPERATORS }
+    coupon_not_used_since: { metric_type: 'date', operators: DATE_OPERATORS }
+  },
+
+  session: {
+    number_of_session: { metric_type: 'numeric', operators: NUMERIC_OPERATORS },
+    last_active_session: { metric_type: 'date', operators: DATE_OPERATORS }
   }
 }
