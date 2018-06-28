@@ -24,8 +24,10 @@ module Spree
       end
 
       def query
+        current_date = Time.current.utc.to_date
+
         user_collection.with_complete_orders.
-                    select("(COUNT(spree_orders.user_id)*30)/(DATEDIFF('#{Date.current}', spree_users.created_at)) as order_frequency")
+                    select("spree_users.*, (COUNT(spree_orders.user_id)*30)/(DATEDIFF('#{current_date}', spree_users.created_at) + 1) as order_frequency").
                     group('spree_orders.user_id')
       end
 
