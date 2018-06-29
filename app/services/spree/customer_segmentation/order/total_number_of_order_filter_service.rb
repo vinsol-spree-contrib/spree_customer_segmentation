@@ -26,7 +26,7 @@ module Spree
       def query
         user_collection.with_complete_orders.
                     select('spree_users.*, COUNT(spree_orders.user_id) as order_count').
-                    group('spree_orders.user_id')
+                    group('spree_orders.user_id').distinct
       end
 
       def total_number_of_order_gteq

@@ -28,7 +28,7 @@ module Spree
 
         user_collection.with_complete_orders.
                     select("spree_users.*, (COUNT(spree_orders.user_id)*30)/(DATEDIFF('#{current_date}', spree_users.created_at) + 1) as order_frequency").
-                    group('spree_orders.user_id')
+                    group('spree_orders.user_id').distinct
       end
 
       def order_frequency_gteq

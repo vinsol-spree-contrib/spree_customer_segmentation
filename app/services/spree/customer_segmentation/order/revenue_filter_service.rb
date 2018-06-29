@@ -26,7 +26,7 @@ module Spree
       def query
         user_collection.with_complete_orders.
                     select('spree_users.*, SUM(spree_orders.total) as revenue').
-                    group('spree_orders.user_id')
+                    group('spree_orders.user_id').distinct
       end
 
       def revenue_gteq

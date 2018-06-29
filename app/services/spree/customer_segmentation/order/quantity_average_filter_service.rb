@@ -27,7 +27,7 @@ module Spree
         user_collection.joins(orders: :line_items).
                    merge(Spree::Order.complete).
                    select('spree_users.*, (SUM(spree_line_items.quantity)/COUNT(spree_orders.user_id)) as average_quantity').
-                   group('spree_orders.user_id')
+                   group('spree_orders.user_id').distinct
       end
 
       def total_quantity_gteq

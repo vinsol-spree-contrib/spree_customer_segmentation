@@ -27,7 +27,7 @@ module Spree
       def query
         user_collection.with_complete_orders.
                     select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as last_order_date").
-                    group('spree_orders.user_id')
+                    group('spree_orders.user_id').distinct
       end
 
       def days_from_last_order_gteq
