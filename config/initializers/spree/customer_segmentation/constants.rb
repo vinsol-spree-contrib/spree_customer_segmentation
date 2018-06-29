@@ -14,6 +14,8 @@ module Spree
 
     ADDRESS_OPERATORS =               { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
 
+    ADDRESS_OPERATORS =               { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
+
     FILTERS = {
       user_email:                  { metric_type: 'alphanumeric', operators: WORD_OPERATORS, service: User::EmailFilterService },
       user_firstname:              { metric_type: 'alphanumeric', operators: WORD_OPERATORS_WITH_STARTS_WITH, service: User::FirstNameFilterService },
