@@ -21,7 +21,11 @@ module Spree
       order_quantity_total:   { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Order::QuantityTotalFilterService },
       total_number_of_order:  { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Order::TotalNumberOfOrderFilterService },
       order_quantity_average: { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Order::QuantityAverageFilterService },
-      order_frequency:        { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Order::FrequencyFilterService }
+      order_frequency:        { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Order::FrequencyFilterService },
+
+      cart_number_of_items:    { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Cart::NumberOfItemsFilterService },
+      days_from_cart_created:  { metric_type: 'numeric', operators: RELATIONAL_OPERATORS_WITH_BLANK, service: Cart::DaysFromCartCreatedFilterService },
+      days_from_cart_modified: { metric_type: 'numeric', operators: RELATIONAL_OPERATORS_WITH_BLANK, service: Cart::DaysFromCartModifiedFilterService }
     }
 
   end
