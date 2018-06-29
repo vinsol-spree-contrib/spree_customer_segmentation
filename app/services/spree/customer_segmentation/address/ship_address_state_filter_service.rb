@@ -32,11 +32,11 @@ module Spree
       def select_query
         # MySQL support
         if ActiveRecord::Base.connection.adapter_name.downcase.starts_with? 'mysql'
-          "spree_users.*, GROUP_CONCAT(DISTINCT(spree_states.name)) as address_states"
+          "spree_users.*, GROUP_CONCAT(DISTINCT(spree_states.name) ORDER BY spree_states.name) as address_states"
 
         # Postgresql support
         else
-          "spree_users.*, string_agg(DISTINCT(spree_states.name), ',') as address_states"
+          "spree_users.*, string_agg(DISTINCT(spree_states.name), ',' ORDER BY spree_states.name) as address_states"
         end
       end
 
