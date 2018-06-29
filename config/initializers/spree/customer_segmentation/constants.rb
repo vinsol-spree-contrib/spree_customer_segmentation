@@ -8,6 +8,9 @@ module Spree
     RELATIONAL_OPERATORS =            { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=' }
     RELATIONAL_OPERATORS_WITH_BLANK = { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=', blank: 'blank' }
 
+    LOGICAL_OPERATORS =               { eq: 'equals' }
+    DATE_OPERATORS =                  { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
+
     FILTERS = {
       user_email:                  { metric_type: 'alphanumeric', operators: WORD_OPERATORS, service: User::EmailFilterService },
       user_firstname:              { metric_type: 'alphanumeric', operators: WORD_OPERATORS_WITH_STARTS_WITH, service: User::FirstNameFilterService },
@@ -25,7 +28,10 @@ module Spree
 
       cart_number_of_items:    { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Cart::NumberOfItemsFilterService },
       days_from_cart_created:  { metric_type: 'numeric', operators: RELATIONAL_OPERATORS_WITH_BLANK, service: Cart::DaysFromCartCreatedFilterService },
-      days_from_cart_modified: { metric_type: 'numeric', operators: RELATIONAL_OPERATORS_WITH_BLANK, service: Cart::DaysFromCartModifiedFilterService }
+      days_from_cart_modified: { metric_type: 'numeric', operators: RELATIONAL_OPERATORS_WITH_BLANK, service: Cart::DaysFromCartModifiedFilterService },
+
+      purchase_used_a_coupon:         { metric_type: 'logical', operators: LOGICAL_OPERATORS, service: Purchase::UsedACouponFilterService },
+      purchase_coupon_not_used_since: { metric_type: 'numeric', operators: DATE_OPERATORS, service: Purchase::CouponNotUsedSinceFilterService }
     }
 
   end

@@ -19,7 +19,7 @@ module Spree
 
       def used_a_coupon_eq
         choice = ActiveModel::Type::Boolean.new.cast(values) # convert string to boolean, move to process params!!
-        choice ? collection.used_a_coupon : collection.not_used_a_coupon
+        choice ? user_collection.used_a_coupon : user_collection.not_used_a_coupon
       end
 
     end
