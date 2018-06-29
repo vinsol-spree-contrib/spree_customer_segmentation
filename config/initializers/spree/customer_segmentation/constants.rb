@@ -32,6 +32,9 @@ module Spree
 
       purchase_coupon_applied:   { metric_type: 'logical', operators: LOGICAL_OPERATORS, service: Purchase::CouponAppliedFilterService },
       purchase_coupon_last_used: { metric_type: 'numeric', operators: DATE_OPERATORS, service: Purchase::CouponLastUsedFilterService }
+
+      number_of_session:   { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Session::NumberOfSessionFilterService },
+      last_active_session: { metric_type: 'date', operators: DATE_OPERATORS, service: Session::LastActiveSessionFilterService }
     }
 
   end

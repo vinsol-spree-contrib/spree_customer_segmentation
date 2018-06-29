@@ -22,7 +22,7 @@ module Spree
       end
 
       def last_active_session_between
-        collection.ransack(last_active_session_gteq: values[0], last_active_session_lteq: values[1]).result
+        user_collection.ransack(last_active_session_gteq: values[0], last_active_session_lteq: values[1]).result
       end
 
     end

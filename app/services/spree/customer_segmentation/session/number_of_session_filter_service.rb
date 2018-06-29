@@ -24,7 +24,7 @@ module Spree
       end
 
       def sign_in_count_between
-        collection.ransack(sign_in_count_gteq: values[0], sign_in_count_lteq: values[1]).result
+        user_collection.ransack(sign_in_count_gteq: values[0], sign_in_count_lteq: values[1]).result
       end
 
     end
