@@ -49,14 +49,14 @@ module Spree
       end
 
       def days_from_registration_between
-        first_date  = (Time.current.utc - values[0].to_i).to_date
-        second_date = (Time.current.utc - values[1].to_i).to_date
+        first_date  = (Time.current.utc - values[0].to_i.days).to_date
+        second_date = (Time.current.utc - values[1].to_i.days).to_date
 
-        user_collection.where("created_at >= ? AND created_at <= ?", last_date, second_date)
+        user_collection.where("created_at >= ? AND created_at <= ?", second_date, first_date)
       end
 
       def required_date
-        (Time.current.utc - values.to_i).to_date
+        (Time.current.utc - values.to_i.days).to_date
       end
 
     end
