@@ -55,8 +55,8 @@ module Spree
       end
 
       def days_from_cart_created_between
-        first_date = (Time.current.to_utc - values[0].to_i.days).to_date
-        second_date = (Time.current.to_utc - values[1].to_i.days).to_date
+        first_date = (Time.current.utc - values[0].to_i.days).to_date
+        second_date = (Time.current.utc - values[1].to_i.days).to_date
 
         query.having("cart_created_date >= ? AND cart_created_date <= ?", second_date, first_date)
       end
