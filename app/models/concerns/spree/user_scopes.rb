@@ -10,6 +10,11 @@ module Spree
       scope :with_ordered_items,      -> { joins(orders: :line_items).merge(Spree::Order.complete).distinct }
       scope :used_a_coupon,           -> { joins(orders: :order_promotions).merge(Spree::Order.complete).distinct }
       scope :not_used_a_coupon,       -> { where.not(id: used_a_coupon.pluck(:id)) }
+      scope :with_bill_address,       -> { where.not(bill_address_id: nil) }
+      scope :without_bill_address,    -> { where(bill_address_id: nil) }
+      scope :with_ship_address,       -> { where.not(ship_address_id: nil) }
+      scope :without_ship_address,    -> { where(ship_address_id: nil) }
+
     end
 
   end

@@ -11,7 +11,7 @@ module Spree
 
       def perform
         if can_be_ransacked?
-          user_collection.ransack({ search_query => values }).result # Look into this to reduce queries.
+          user_collection.ransack({ search_query => values }).result(distinct: true) # Look into this to reduce queries.
         else
           self.send "#{search_query}"
         end
