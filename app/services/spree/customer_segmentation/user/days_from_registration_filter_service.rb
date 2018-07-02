@@ -5,7 +5,7 @@ module Spree
 
       SEARCH_LOGIC = {
         gt_eq:   { method: 'custom', logic: 'days_from_registration_gteq' },
-        gt:      { method: 'custom', logic: 'days_from_registration_eq' },
+        gt:      { method: 'custom', logic: 'days_from_registration_gt' },
         between: { method: 'custom', logic: 'days_from_registration_between' },
         eq:      { method: 'custom', logic: 'days_from_registration_eq' },
         not_eq:  { method: 'custom', logic: 'days_from_registration_not_eq' },
@@ -52,7 +52,7 @@ module Spree
         first_date  = (Time.current.utc - values[0].to_i.days).to_date
         second_date = (Time.current.utc - values[1].to_i.days).to_date
 
-        user_collection.where("created_at >= ? AND created_at <= ?", second_date, first_date)
+        user_collection.where("DATE(created_at) >= ? AND DATE(created_at) <= ?", second_date, first_date)
       end
 
       def required_date

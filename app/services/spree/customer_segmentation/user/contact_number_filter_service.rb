@@ -5,7 +5,7 @@ module Spree
 
       SEARCH_LOGIC = {
         contains:          { method: 'ransack', logic: 'bill_address_phone_cont' },
-        does_not_contains: { method: 'ransack', logic: 'bill_address_phone_not_cont' }
+        does_not_contain: { method: 'ransack', logic: 'bill_address_phone_not_cont' }
       }
 
       def initialize(user_collection, operator, values)

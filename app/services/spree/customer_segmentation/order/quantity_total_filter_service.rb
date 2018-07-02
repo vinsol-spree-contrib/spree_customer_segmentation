@@ -5,7 +5,7 @@ module Spree
 
       SEARCH_LOGIC = {
         gt_eq:   { method: 'custom', logic: 'total_quantity_gteq' },
-        gt:      { method: 'custom', logic: 'total_quantity_eq' },
+        gt:      { method: 'custom', logic: 'total_quantity_gt' },
         between: { method: 'custom', logic: 'total_quantity_between' },
         eq:      { method: 'custom', logic: 'total_quantity_eq' },
         not_eq:  { method: 'custom', logic: 'total_quantity_not_eq' },

@@ -8,7 +8,7 @@ module Spree
         includes:     { method: 'ransack', logic: 'bill_address_firstname_matches_any' },
         not_includes: { method: 'ransack', logic: 'bill_address_firstname_does_not_match_all' },
         contains:     { method: 'ransack', logic: 'bill_address_firstname_cont' },
-        not_contains: { method: 'ransack', logic: 'bill_address_firstname_not_cont' }
+        does_not_contain: { method: 'ransack', logic: 'bill_address_firstname_not_cont' }
       }
 
       def initialize(user_user_collection, operator, values)
