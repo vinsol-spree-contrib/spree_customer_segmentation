@@ -1,0 +1,33 @@
+<div class="modal fade" id="filter_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-name="filter_modal">
+  <div class="modal-dialog filter-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"> Select Metric </h4>
+      </div>
+
+      <div class="filter-modal-subheader text-primary">
+        <span data-name="category_selected"> <!-- INSERT SELECTED METRIC  --> </span>
+      </div>
+
+      <div class="modal-body no-padding">
+        <div class="filter-modal-menu">
+          <ul>
+            <% Spree::CustomerSegmentation::AVAILABLE_FILTERS.each_key do |category| %>
+              <li data-name="category" data-category="<%= category %>" data-value="<%= category.capitalize %>"> <%= category.capitalize %>
+                <span class="glyphicon glyphicon-chevron-right menu-caret"></span>
+              </li>
+            <% end %>
+          </ul>
+          <ul>
+            <% Spree::CustomerSegmentation::AVAILABLE_FILTERS.each do |key, value| %>
+              <% value.each do |metric, metric_key| %>
+                <li class="hidden" data-name="filter" data-metric="<%= metric_key %>" data-category="<%= key %>"> <%= metric %> </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
