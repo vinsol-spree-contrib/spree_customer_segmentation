@@ -15,8 +15,9 @@ module Spree
       }
 
       def initialize(collection, operator, values)
-        @operator = operator
-        @values = values
+        @operator         = operator
+        @values           = values
+        @current_utc_time = Time.current.utc
         super(collection)
       end
 
@@ -55,8 +56,8 @@ module Spree
       end
 
       def days_from_cart_modified_between
-        first_date = (Time.current.utc - values[0].to_i.days).to_date
-        second_date = (Time.current.utc - values[1].to_i.days).to_date
+        first_date  = (@current_utc_time - values[0].to_i.days).to_date
+        second_date = (@current_utc_time - values[1].to_i.days).to_date
 
         query.having("cart_modified_date >= ? AND cart_modified_date <= ?", second_date, first_date)
       end
@@ -67,7 +68,7 @@ module Spree
       end
 
       def required_date
-        (Time.current.utc - values.to_i.days).to_date
+        (@current_utc_time - values.to_i.days).to_date
       end
 
     end
