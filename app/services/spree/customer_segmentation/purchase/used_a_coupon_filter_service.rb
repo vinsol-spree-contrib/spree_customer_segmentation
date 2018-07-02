@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Purchase::UsedACouponFilterService < BaseService
       attr_accessor :operator, :values
 

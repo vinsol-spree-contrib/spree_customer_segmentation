@@ -1,14 +1,14 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Purchase::CouponNotUsedSinceFilterService < BaseService
       attr_accessor :operator, :values
 
       SEARCH_LOGIC = {
-        before: { method: 'custom', logic: 'coupon_not_used_since_before' },
-        after: { method: 'custom', logic: 'coupon_not_used_since_after' },
+        before:  { method: 'custom', logic: 'coupon_not_used_since_before' },
+        after:   { method: 'custom', logic: 'coupon_not_used_since_after' },
         between: { method: 'custom', logic: 'coupon_not_used_since_between' },
-        eq: { method: 'custom', logic: 'coupon_not_used_since_eq' },
-        blank: { method: 'custom', logic: 'coupon_not_used_since_blank' }
+        eq:      { method: 'custom', logic: 'coupon_not_used_since_eq' },
+        blank:   { method: 'custom', logic: 'coupon_not_used_since_blank' }
       }
 
       def initialize(collection, operator, values)
