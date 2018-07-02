@@ -5,7 +5,7 @@ module Spree
 
       SEARCH_LOGIC = {
         gt_eq:   { method: 'custom', logic: 'days_from_cart_modified_gteq' },
-        gt:      { method: 'custom', logic: 'days_from_cart_modified_eq' },
+        gt:      { method: 'custom', logic: 'days_from_cart_modified_gt' },
         between: { method: 'custom', logic: 'days_from_cart_modified_between' },
         eq:      { method: 'custom', logic: 'days_from_cart_modified_eq' },
         not_eq:  { method: 'custom', logic: 'days_from_cart_modified_not_eq' },
