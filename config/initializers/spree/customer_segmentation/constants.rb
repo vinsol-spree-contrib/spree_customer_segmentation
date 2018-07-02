@@ -16,7 +16,8 @@ module Spree
 
     ADDRESS_OPERATORS =               { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
 
-    FILTERS = {
+    # Map services with operators available, and type of metric
+    FILTERS_MAPPER = {
       user_email:                  { metric_type: 'alphanumeric', operators: WORD_OPERATORS, service: User::EmailFilterService },
       user_firstname:              { metric_type: 'alphanumeric', operators: WORD_OPERATORS_WITH_STARTS_WITH, service: User::FirstNameFilterService },
       user_lastname:               { metric_type: 'alphanumeric', operators: WORD_OPERATORS_WITH_STARTS_WITH, service: User::LastNameFilterService },
@@ -50,7 +51,66 @@ module Spree
       ship_address_state:   { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressStateFilterService },
       ship_address_zipcode: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressZipcodeFilterService },
       ship_address:         { metric_type: 'alphanumeric', operators: MATCH_OPERATORS_WITH_BLANK, service: Address::ShipAddressFilterService }
+    }
 
+    # Maps filters with their services
+    AVAILABLE_FILTERS =     {
+      order:  [
+        ['Days From First Order Completed', :days_from_first_order],
+        ['Days From Last Order Completed', :days_from_last_order],
+        ['Order Quantity Total', :order_quantity_total],
+        ['Total Number Of Orders', :total_number_of_order],
+        ['Order Quantity Average', :order_quantity_total],
+        ['Order Frequency', :order_frequency],
+        ['Revenue', :order_revenue]
+      ],
+
+      cart: [
+        ['Number Of Items In Cart', :cart_number_of_items],
+        ['Days From Cart Created', :days_from_cart_created],
+        ['Days From Cart Modified', :days_from_cart_modified]
+      ],
+
+      purchase: [
+        ['Used A Coupon', :purchase_used_a_coupon],
+        ['Coupon Not Used Since', :purchase_coupon_not_used_since]
+      ],
+
+      sessions: [
+        ['Number Of Sessions', :number_of_session],
+        ['Last Active Session', :last_active_session]
+      ],
+
+      address: [
+        ['Billing Address', :bill_address],
+        ['Billing City', :bill_address_city],
+        ['Billing State', :bill_address_state],
+        ['Billing Zipcode', :bill_address_zipcode],
+        ['Shipping Address', :ship_address],
+        ['Shipping City', :ship_address_city],
+        ['Shipping State', :ship_address_state],
+        ['Shipping Zipcode', :ship_address_zipcode]
+      ],
+
+      'user info and demographics': [
+        ['First Name', :user_firstname],
+        ['Last Name', :user_lastname],
+        ['Email', :user_email],
+        ['Phone', :user_contact_number],
+        ['Days From Registration', :user_days_from_registration]
+      ],
+
+      products: [
+        ['Products Viewed', :to_be_added],
+        ['Products Added To Cart', :to_be_added],
+        ['Products Ordered', :to_be_added],
+        ['Products Recently Viewed', :to_be_added],
+        ['Products Recently Added To Cart', :to_be_added],
+        ['Products Recently Ordered', :to_be_added],
+        ['New Products Viewed', :to_be_added],
+        ['New Products Added To Cart', :to_be_added],
+        ['New Products Ordered', :to_be_added]
+      ]
     }
 
   end
