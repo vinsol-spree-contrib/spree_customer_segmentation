@@ -22,7 +22,7 @@ module Spree
       def perform
         options.each do |option|
           metric = option[:metric].to_sym
-          service = FILTERS[metric][:service]
+          service = FILTERS_MAPPER[metric][:service]
           self.user_collection = service.new(user_collection, option[:operator], option[:value]).filter_data
         end
 

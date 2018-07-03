@@ -15,6 +15,7 @@ function CustomerSegmentation(options) {
   this.$betweenValue     = options.$betweenValue;
   this.$textValue        = options.$textValue;
   this.$selectValue      = options.$selectValue;
+  this.selectedMetric    = options.selectedMetric;
 }
 
 CustomerSegmentation.prototype.initialize = function() {
@@ -26,7 +27,7 @@ CustomerSegmentation.prototype.bindEvents = function() {
   this.$categories.on('mouseenter', this.handleCategorySelection()); // RENAME
   this.$filters.on('click', this.addFilter());
   this.$filterArea.on('click', this.removeFilterButton, this.removeFilter());
-  this.$filterArea.on('selectmenuchange', this.operator, this.updateFilterValueInput()); // operator changed
+  this.$filterArea.on('selectmenuchange', this.operator, this.handleOperatorChange()); // operator changed
 }
 
 CustomerSegmentation.prototype.selectInitialCategory = function() {
@@ -78,7 +79,12 @@ CustomerSegmentation.prototype.addFilter = function() {
 }
 
 CustomerSegmentation.prototype.addFilterMetric = function($selectedFilter) {
+  this.updateNameParameter($selectedFilter);
   this.$newFilter.find(this.metric).text($selectedFilter.text());
+}
+
+CustomerSegmentation.prototype.updateNameParameter = function($selectedFilter) {
+  this.$newFilter.find(this.selectedMetric).val($selectedFilter.data('metric'));
 }
 
 CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
@@ -94,35 +100,38 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
 
   $operators.append(documentFragment);
 
-  $operators.selectmenu().selectmenu( "menuWidget" ).addClass("overflow");
+  $operators.selectmenu().selectmenu("menuWidget").addClass("overflow");
 }
 
 CustomerSegmentation.prototype.addFilterValues = function($selectedFilter) {
   var selectedOperator = this.$newFilter.find(this.operator).val(),
       metricType       = this.availableFilters[$selectedFilter.data('metric')]['metric_type'];
 
-  // CHANGE
-  // For now
-  if(selectedOperator == "between") {
-    this.$newFilter.find(this.values).append(this.$betweenValue.clone());
-  } else if(selectedOperator == "equals" || selectedOperator == "blank" ) {
-    var $selectValue = this.$selectValue.clone(),
-        $option1 = $('<option>', { value: true }),
-        $option2 = $('<option>', { value: false });
-
-    $selectValue.append($option1, $option2);
-    this.$newFilter.find(this.values).append(this.$selectValue.clone());
-
-  } else {
-    this.$newFilter.find(this.values).append(this.$textValue.clone());
-  }
+  this.updateFilterValueInput(selectedOperator);
 }
 
-CustomerSegmentation.prototype.updateFilterValueInput = function() {
+CustomerSegmentation.prototype.handleOperatorChange = function() {
   var _this = this;
 
   return function() {
-    _this.addFilterValues();
+    var $this = $(this);
+    _this.updateFilterValueInput($this.val());
+  }
+}
+
+CustomerSegmentation.prototype.updateFilterValueInput = function(operator) {
+  if(operator == "between") {
+    this.$newFilter.find(this.values).html(this.$betweenValue.clone());
+  } else if(operator == "eq" || operator == "blank" ) {
+    var $selectValue = this.$selectValue.clone(),
+        $option1 = $('<option>', { value: true, text: 'true' }),
+        $option2 = $('<option>', { value: false, text: 'false' });
+
+    $selectValue.append($option1, $option2);
+    this.$newFilter.find(this.values).html($selectValue);
+    $selectValue.selectmenu().selectmenu("menuWidget").addClass("overflow");
+  } else {
+    this.$newFilter.find(this.values).html(this.$textValue.clone());
   }
 }
 
@@ -170,7 +179,8 @@ $(function() {
     removeFilterButton: '[data-name="remove_filter"]',
     metric:            '[data-name="metric"]',
     operator:          '[data-name="operator"]',
-    values:            '[data-name="values"]'
+    values:            '[data-name="values"]',
+    selectedMetric:    '[data-name="metric_selected"]'
   },
     customer_segmentation = new CustomerSegmentation(options);
 
