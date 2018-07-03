@@ -9,8 +9,13 @@ module Spree
     RELATIONAL_OPERATORS =            { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=' }
     RELATIONAL_OPERATORS_WITH_BLANK = { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=', blank: 'blank' }
 
+<<<<<<< HEAD
     LOGICAL_OPERATORS = { equals: 'equals' }
     DATE_OPERATORS =    { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
+=======
+    LOGICAL_OPERATORS =               { equals: 'equals' }
+    DATE_OPERATORS =                  { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
+>>>>>>> add multiple filter functionality
 
     ADDRESS_OPERATORS = { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
 

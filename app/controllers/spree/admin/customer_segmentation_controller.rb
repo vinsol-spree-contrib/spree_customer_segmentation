@@ -12,9 +12,15 @@ module Spree
         return if params[:q].nil?
         filters = []
 
+<<<<<<< HEAD
         params[:q].each do |metric, operator_value|
           operator = operator_value.keys.first
           value    = operator_value[operator][:value]
+=======
+        params[:q].each do |metric, x|
+          operator = x.keys.first
+          value    = x[operator][:value]
+>>>>>>> add multiple filter functionality
           filters << { metric: metric, operator: operator, value: process_params(operator, value) }
         end
 

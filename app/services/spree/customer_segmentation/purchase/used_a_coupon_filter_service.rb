@@ -4,7 +4,7 @@ module Spree
       attr_accessor :operator, :values
 
       SEARCH_LOGIC = {
-        eq: { method: 'custom', logic: 'used_a_coupon_eq' }
+        equals: { method: 'custom', logic: 'used_a_coupon_eq' }
       }
 
       def initialize(collection, operator, values)
