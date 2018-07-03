@@ -1,20 +1,26 @@
 <!-- column 3 options -->
 
  <!-- 1 : SELECT -->
-  <select class="form-control custom_select" data-value="select" name="value"></select>
+  <select class="form-control custom_select" data-value="select" name="q[metric][operator][value]" data-name="input"></select>
 
   <!-- 2: BETWEEN (REMOVE filter_column3) -->
   <div class="filter_column_combine btn-shadow" data-value="between">
     <div>
-      <input name="value[]" type="text" class="form-control">
+      <input type="text" class="form-control" name="q[metric][operator][value][]" data-name="input" required="required">
     </div>
     <div>
       and
     </div>
     <div>
-      <input name="value[]" type="text" class="form-control">
+      <input type="text" class="form-control" name="q[metric][operator][value][]" data-name="input" required="required">
     </div>
   </div>
 
   <!-- 3: TEXT -->
-  <input name="value" type="text" class="form-control" data-value="text">
+  <input type="text" class="form-control" data-value="text" name="q[metric][operator][value]" data-name="input" required="required">
+
+  <!-- 4: LOGICAL  -->
+  <select class="form-control custom_select" data-value="select" name="q[metric][operator][value]" data-name="input">
+    <option value=true> true </option>
+    <option value=false> false </option>
+  </select>

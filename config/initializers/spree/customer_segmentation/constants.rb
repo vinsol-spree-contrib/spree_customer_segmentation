@@ -10,11 +10,9 @@ module Spree
     RELATIONAL_OPERATORS_WITH_BLANK = { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=', blank: 'blank' }
 
     LOGICAL_OPERATORS = { equals: 'equals' }
-    DATE_OPERATORS = { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
+    DATE_OPERATORS =    { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
 
-    ADDRESS_OPERATORS =               { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
-
-    ADDRESS_OPERATORS =               { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
+    ADDRESS_OPERATORS = { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
 
     # Map services with operators available, and type of metric
     FILTERS_MAPPER = {
@@ -60,7 +58,7 @@ module Spree
         ['Days From Last Order Completed', :days_from_last_order],
         ['Order Quantity Total', :order_quantity_total],
         ['Total Number Of Orders', :total_number_of_order],
-        ['Order Quantity Average', :order_quantity_total],
+        ['Order Quantity Average', :order_quantity_average],
         ['Order Frequency', :order_frequency],
         ['Revenue', :order_revenue]
       ],
