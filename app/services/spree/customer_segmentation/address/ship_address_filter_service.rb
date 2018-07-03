@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Address::ShipAddressFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -29,7 +29,7 @@ module Spree
       end
 
       def ship_address_does_not_contain
-        query.where.not("#{concatenated_address} LIKE ?", "%#{values}%" ).distinct
+        user_collection.where.not(id: ship_address_contain.pluck(:id))
       end
 
       def concatenated_address

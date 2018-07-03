@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Address::BillAddressFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -25,11 +25,11 @@ module Spree
       end
 
       def bill_address_contain
-        query.where("#{concatenated_address} LIKE ?", "%#{values}%" ).distinct
+        query.where("#{concatenated_address} LIKE ?", "%#{values}%").distinct
       end
 
       def bill_address_does_not_contain
-        query.where.not("#{concatenated_address} LIKE ?", "%#{values}%" ).distinct
+        user_collection.where.not(id: bill_address_contain.pluck(:id))
       end
 
       def concatenated_address

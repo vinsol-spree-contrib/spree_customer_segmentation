@@ -1,6 +1,6 @@
 Spree::Address.class_eval do
 
-  def address
+  def full_address
     "#{address1} #{address2} #{city} #{state.name} #{country.name} #{zipcode}"
   end
 

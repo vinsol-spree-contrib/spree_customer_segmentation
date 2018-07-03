@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Address::ShipAddressStateFilterService < BaseService
       attr_accessor :operator, :values
 
