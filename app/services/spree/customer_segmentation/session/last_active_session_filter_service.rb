@@ -1,19 +1,19 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Session::LastActiveSessionFilterService < BaseService
       attr_accessor :operator, :values
 
       SEARCH_LOGIC = {
-        before: { method: 'ransack', logic: 'last_active_session_lt' },
-        after: { method: 'ransack', logic: 'last_active_session_gt' },
+        before:  { method: 'ransack', logic: 'last_active_session_lt' },
+        after:   { method: 'ransack', logic: 'last_active_session_gt' },
         between: { method: 'custom', logic: 'last_active_session_between' },
-        eq: { method: 'ransack', logic: 'last_active_session_eq' },
-        blank: { method: 'ransack', logic: 'last_active_session_blank' }
+        eq:      { method: 'ransack', logic: 'last_active_session_eq' },
+        blank:   { method: 'ransack', logic: 'last_active_session_blank' }
       }
 
       def initialize(collection, operator, values)
         @operator = operator
-        @values = values
+        @values   = values
         super(collection)
       end
 
@@ -22,6 +22,8 @@ module Spree
       end
 
       def last_active_session_between
+        return ::Spree::User.none if (values[0].blank? || values[1].blank?)
+        
         user_collection.ransack(last_active_session_gteq: values[0], last_active_session_lteq: values[1]).result
       end
 
