@@ -40,6 +40,8 @@ module Spree
       end
 
       def coupon_not_used_since_between
+        return ::Spree::User.none if (values[0].blank? || values[1].blank?)
+        
         query.having("coupon_not_used_since >= ? AND coupon_not_used_since <= ?", values[1], values[0])
       end
 
