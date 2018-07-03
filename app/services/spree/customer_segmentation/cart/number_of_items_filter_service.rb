@@ -54,6 +54,8 @@ module Spree
       end
 
       def number_of_items_in_cart_between
+        return ::Spree::User.none if (values[0].blank? || values[1].blank?)
+        
         query.having("number_of_items_in_cart >= ? AND number_of_items_in_cart <= ?", values[0], values[1])
       end
 
