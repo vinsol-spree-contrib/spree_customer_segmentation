@@ -5,14 +5,14 @@ module Spree
 
       # Assuming that args will give us formatted values
       # Format values inside controller, call service
-      def initialize(args = {})
+      def initialize(params = {})
         @user_collection = ::Spree::User.all
-        @options = [{ metric: args[:metric], operator: args[:operator], value: args[:values] }]
+        @options = params
       end
 
       def generate_segment
         # when no filter is applied, return all users
-        if options[0][:metric].nil?
+        if options.nil?
           Spree::User.all
         else
           perform

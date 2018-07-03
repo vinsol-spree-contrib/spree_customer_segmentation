@@ -1,21 +1,21 @@
 function CustomerSegmentation(options) {
-  this.$categories       = options.$categories;
-  this.$modal            = options.$modal;
-  this.$modalTitle       = options.$modalTitle;
-  this.$filterButton     = options.$filterButton;
-  this.$filterButtonText = options.$filterButtonText;
-  this.$filters          = options.$filters;
-  this.$filterTemplate   = options.$filterTemplate;
-  this.metric            = options.metric;
-  this.operator          = options.operator;
-  this.values            = options.values;
-  this.$filterArea       = options.$filterArea;
+  this.$categories        = options.$categories;
+  this.$modal             = options.$modal;
+  this.$modalTitle        = options.$modalTitle;
+  this.$filterButton      = options.$filterButton;
+  this.$filterButtonText  = options.$filterButtonText;
+  this.$filters           = options.$filters;
+  this.$filterTemplate    = options.$filterTemplate;
+  this.metric             = options.metric;
+  this.operator           = options.operator;
+  this.values             = options.values;
+  this.$filterArea        = options.$filterArea;
   this.removeFilterButton = options.removeFilterButton;
-  this.availableFilters  = options.$availableFilters.data('value');
-  this.$betweenValue     = options.$betweenValue;
-  this.$textValue        = options.$textValue;
-  this.$selectValue      = options.$selectValue;
-  this.selectedMetric    = options.selectedMetric;
+  this.availableFilters   = options.$availableFilters.data('value');
+  this.$betweenValue      = options.$betweenValue;
+  this.$textValue         = options.$textValue;
+  this.$selectValue       = options.$selectValue;
+  this.selectedMetric     = options.selectedMetric;
 }
 
 CustomerSegmentation.prototype.initialize = function() {
@@ -24,7 +24,7 @@ CustomerSegmentation.prototype.initialize = function() {
 }
 
 CustomerSegmentation.prototype.bindEvents = function() {
-  this.$categories.on('mouseenter', this.handleCategorySelection()); // RENAME
+  this.$categories.on('mouseenter', this.handleCategorySelection());
   this.$filters.on('click', this.addFilter());
   this.$filterArea.on('click', this.removeFilterButton, this.removeFilter());
   this.$filterArea.on('selectmenuchange', this.operator, this.handleOperatorChange()); // operator changed
@@ -43,7 +43,7 @@ CustomerSegmentation.prototype.handleCategorySelection = function() {
     $this.addClass('active');
 
     _this.updateMetricOptions($this);
-    _this.updateModalTitle($this);
+    _this.$modalTitle.html($this.data('value'));
   }
 }
 
@@ -55,17 +55,13 @@ CustomerSegmentation.prototype.updateMetricOptions = function($category) {
   $selectedCategoryMetrics.removeClass('hidden');
 }
 
-CustomerSegmentation.prototype.updateModalTitle = function($category) {
-  this.$modalTitle.html($category.data('value'));
-}
-
 CustomerSegmentation.prototype.addFilter = function() {
   var _this = this;
 
   return function() {
-    var $selectedFilter = $(this);
-    _this.$newFilter    = _this.$filterTemplate.clone();
-
+    var $selectedFilter  = $(this);
+    _this.$newFilter     = _this.$filterTemplate.clone();
+    _this.$currentFilter = _this.$newFilter;
     _this.$modal.modal('hide');
 
     _this.addFilterMetric($selectedFilter);
@@ -78,13 +74,15 @@ CustomerSegmentation.prototype.addFilter = function() {
   }
 }
 
-CustomerSegmentation.prototype.addFilterMetric = function($selectedFilter) {
-  this.updateNameParameter($selectedFilter);
-  this.$newFilter.find(this.metric).text($selectedFilter.text());
+CustomerSegmentation.prototype.initializeNewFilterVariables = function($selectedFilter) {
+  this.selectedOperator       = this.$newFilter.find(this.operator).val(),
+  this.selectedMetricType     = $selectedFilter.data('metric');
+  this.selectedMetricDataType = this.availableFilters[this.selectedMetricType]['metric_type'];
 }
 
-CustomerSegmentation.prototype.updateNameParameter = function($selectedFilter) {
-  this.$newFilter.find(this.selectedMetric).val($selectedFilter.data('metric'));
+CustomerSegmentation.prototype.addFilterMetric = function($selectedFilter) {
+  // this.$newFilter.find(this.selectedMetric).val($selectedFilter.data('metric')); // add metric value to hidden input field
+  this.$newFilter.find(this.metric).text($selectedFilter.text());
 }
 
 CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
@@ -104,10 +102,9 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
 }
 
 CustomerSegmentation.prototype.addFilterValues = function($selectedFilter) {
-  var selectedOperator = this.$newFilter.find(this.operator).val(),
-      metricType       = this.availableFilters[$selectedFilter.data('metric')]['metric_type'];
+  this.initializeNewFilterVariables($selectedFilter);
 
-  this.updateFilterValueInput(selectedOperator);
+  this.updateFilterValueInput();
 }
 
 CustomerSegmentation.prototype.handleOperatorChange = function() {
@@ -115,24 +112,58 @@ CustomerSegmentation.prototype.handleOperatorChange = function() {
 
   return function() {
     var $this = $(this);
-    _this.updateFilterValueInput($this.val());
+    _this.$currentFilter = $this.closest('[data-name="filter_row"]');
+    _this.selectedOperator = $this.val();
+    _this.updateFilterValueInput();
   }
 }
 
-CustomerSegmentation.prototype.updateFilterValueInput = function(operator) {
-  if(operator == "between") {
-    this.$newFilter.find(this.values).html(this.$betweenValue.clone());
-  } else if(operator == "eq" || operator == "blank" ) {
-    var $selectValue = this.$selectValue.clone(),
-        $option1 = $('<option>', { value: true, text: 'true' }),
-        $option2 = $('<option>', { value: false, text: 'false' });
+CustomerSegmentation.prototype.updateFilterValueInput = function() {
+  var operator = this.selectedOperator;
 
-    $selectValue.append($option1, $option2);
-    this.$newFilter.find(this.values).html($selectValue);
-    $selectValue.selectmenu().selectmenu("menuWidget").addClass("overflow");
+  if(operator == "between") {
+    this.$currentFilter.find(this.values).html(this.$betweenValue.clone());
+  } else if(operator == "equals" || operator == "blank" ) {
+     this.createLogicalOperators();
+  } else if(operator == "includes" || operator == "not_includes" || operator == "includes_all") {
+    this.enableTagInputs();
   } else {
-    this.$newFilter.find(this.values).html(this.$textValue.clone());
+    this.$currentFilter.find(this.values).html(this.$textValue.clone());
   }
+
+  this.addNameToValueInput();
+}
+
+CustomerSegmentation.prototype.addNameToValueInput = function() {
+  // OPTIMIZE
+  $values = this.$currentFilter.find('[data-name="input"]');
+
+  $values.attr('name', $values.attr('name').replace('metric', this.selectedMetricType));
+  $values.attr('name', $values.attr('name').replace('operator', this.selectedOperator));
+}
+
+CustomerSegmentation.prototype.createLogicalOperators = function() {
+  var $selectValue = this.$selectValue.clone(),
+      $option1 = $('<option>', { value: true, text: 'true' }),
+      $option2 = $('<option>', { value: false, text: 'false' });
+
+  $selectValue.append($option1, $option2);
+  this.$currentFilter.find(this.values).html($selectValue);
+  $selectValue.selectmenu().selectmenu("menuWidget").addClass("overflow");
+}
+
+// ENABLE TAGS { SELECT2  }
+CustomerSegmentation.prototype.enableTagInputs = function() {
+  var $input = this.$textValue.clone();
+  this.$newFilter.find(this.values).html($input);
+  //
+  // $input.select2({
+  //   minimumInputLength: -1,
+  //   tokenSeparators: [','],
+  //   multiple: true,
+  //   tags: true,
+  // });
+
 }
 
 CustomerSegmentation.prototype.animateFilterButton = function() {
@@ -164,23 +195,23 @@ CustomerSegmentation.prototype.removeFilterButtonAnimation = function() {
 
 $(function() {
   var options = {
-    $categories:       $('[data-name="category"]'),
-    $modal:            $('[data-name="filter_modal"]'),
-    $modalTitle:       $('[data-name="category_selected"]'),
-    $filterButton:     $('[data-name="filter_button"]'),
-    $filterButtonText: $('[data-name="filter_button_text"]'),
-    $filters:          $('[data-name="filter"]'),
-    $filterTemplate:   $('[data-name="filter_row"]'),
-    $availableFilters: $('[data-name="filter_operator_list"]'),
-    $betweenValue:     $('[data-value="between"]'),   // RENAME
-    $textValue:        $('[data-value="text"]'), // RENAME
-    $selectValue:      $('[data-value="select"]'), // RENAME
-    $filterArea:       $('[data-name="filters_area"]'),
+    $categories:        $('[data-name="category"]'),
+    $modal:             $('[data-name="filter_modal"]'),
+    $modalTitle:        $('[data-name="category_selected"]'),
+    $filterButton:      $('[data-name="filter_button"]'),
+    $filterButtonText:  $('[data-name="filter_button_text"]'),
+    $filters:           $('[data-name="filter"]'),
+    $filterTemplate:    $('[data-name="filter_row"]'),
+    $availableFilters:  $('[data-name="filter_operator_list"]'),
+    $betweenValue:      $('[data-value="between"]'),
+    $textValue:         $('[data-value="text"]'),
+    $selectValue:       $('[data-value="select"]'),
+    $filterArea:        $('[data-name="filters_area"]'),
     removeFilterButton: '[data-name="remove_filter"]',
-    metric:            '[data-name="metric"]',
-    operator:          '[data-name="operator"]',
-    values:            '[data-name="values"]',
-    selectedMetric:    '[data-name="metric_selected"]'
+    metric:             '[data-name="metric"]',
+    operator:           '[data-name="operator"]',
+    values:             '[data-name="values"]',
+    selectedMetric:     '[data-name="metric_selected"]'
   },
     customer_segmentation = new CustomerSegmentation(options);
 
