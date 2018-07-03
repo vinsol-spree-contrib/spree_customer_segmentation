@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Cart::DaysFromCartCreatedFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -15,8 +15,8 @@ module Spree
       }
 
       def initialize(collection, operator, values)
-        @operator = operator
-        @values = values
+        @operator         = operator
+        @values           = values
         @current_utc_time = Time.current.utc
         super(collection)
       end
@@ -28,7 +28,7 @@ module Spree
       def query
         user_collection.with_incomplete_order.
                     select("spree_users.*, DATE(MIN(spree_orders.created_at)) as cart_created_date").
-                    group('spree_orders.user_id')
+                    group('spree_orders.user_id').distinct
       end
 
       def days_from_cart_created_gteq
@@ -56,6 +56,8 @@ module Spree
       end
 
       def days_from_cart_created_between
+        return ::Spree::User.none if (values[0].blank? || values[1].blank?)
+
         first_date  = (@current_utc_time - values[0].to_i.days).to_date
         second_date = (@current_utc_time - values[1].to_i.days).to_date
 

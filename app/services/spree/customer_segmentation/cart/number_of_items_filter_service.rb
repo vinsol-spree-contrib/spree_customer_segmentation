@@ -1,5 +1,5 @@
 module Spree
-  module  CustomerSegmentation
+  module CustomerSegmentation
     class Cart::NumberOfItemsFilterService < BaseService
       attr_accessor :operator, :values
 
@@ -15,7 +15,7 @@ module Spree
 
       def initialize(collection, operator, values)
         @operator = operator
-        @values = values
+        @values   = values
         super(collection)
       end
 
@@ -24,10 +24,9 @@ module Spree
       end
 
       def query
-        user_collection.joins(orders: :line_items).
-                    where.not(spree_orders: { state: 'complete' }).
+        user_collection.with_unordered_line_items.
                     select('spree_users.*, SUM(spree_line_items.quantity) as number_of_items_in_cart').
-                    group('spree_orders.user_id')
+                    group('spree_orders.user_id').distinct
       end
 
       def number_of_items_in_cart_gteq
