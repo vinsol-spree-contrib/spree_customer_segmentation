@@ -226,7 +226,7 @@ CustomerSegmentation.prototype.reEnterInputValue = function(operator, value) {
     $input.first().val(value[0]);
     $input.last().val(value[1]);
   } else if(operator == "equals" || operator == "blank") {
-    $input.val(value);
+    $input.val(value).trigger('change');
   } else if (operator == "includes" || operator == "includes_all" || operator == "includes_all") {
     this.enableTagging($input);
     $input.val(value).trigger('change');
