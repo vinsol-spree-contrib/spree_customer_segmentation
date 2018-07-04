@@ -141,34 +141,6 @@
   position: relative;
   background: #fff !important;
 }
-.custom_select + .ui-selectmenu-button .ui-selectmenu-icon {
-  width: 8px;
-  height: 8px;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  background: none;
-  border: solid 4px transparent;
-  border-top-color: rgba(0, 0, 0, 0.3);
-}
-
-.custom_select.info + .ui-selectmenu-button {
-  background-color: #48B0F7 !important;
-  color: #fff;
-}
-.custom_select.info + .ui-selectmenu-button .ui-selectmenu-icon {
-  border-color: #fff transparent transparent transparent;
-}
-
-.custom_select + .ui-selectmenu-button .ui-selectmenu-text {
-  border-bottom: solid 1px rgba(0, 0, 0, 0.3);
-  margin-right: 5px;
-  padding-bottom: 2px;
-}
-
-.custom_select.info + .ui-selectmenu-button .ui-selectmenu-text {
-  border-bottom-color: rgba(255, 255, 255, 0.3);
-}
 
 .btn-shadow {
   outline: none !important;
@@ -263,3 +235,61 @@
 .btn-default.focus {
   background-color: #fff !important;
 }
+
+
+
+/*.custom_select .select2-choice {}*/
+.select2-container.custom_select {
+  min-width: 150px;
+  box-shadow: 2px 2px 2px 0 #ccc !important;
+  -webkit-box-shadow: 2px 2px 2px 0 #ccc !important;
+}
+
+.custom_select.select2-container .select2-choice .select2-arrow {
+  border-left: none !important;
+}
+.custom_select.select2-container .select2-choice {
+  display: flex;
+  display: -webkit-flex;
+  border-color: transparent;
+}
+.custom_select.select2-container .select2-choice .select2-chosen {
+  width: calc(100% - 12px - 18px);
+  position: relative;
+}
+.custom_select.select2-container .select2-choice .select2-chosen:after {
+  content: "";
+  display: block;
+  border-top: solid 1px #ddd;
+  position: absolute;
+  left: 0;
+  top: calc(50% + 10px);
+  width: 100%;
+}
+.custom_select.select2-container .select2-choice abbr {
+  right: 18px;
+}
+
+/*+++++++++++++++++*/
+.custom_select.select2-container.info .select2-choice   {
+  background-color: #48B0F7;
+  border-color: #48B0F7;
+  color: #fff;
+}
+.custom_select.select2-container.info .select2-choice .select2-arrow {
+  background-color: #48B0F7;
+}
+
+/*+++++++++++++++++*/
+.select2-container.select2-container-multi {
+  min-width: 200px;
+  max-width: 300px;
+}
+.select2-results {
+  margin-top: -4px !important;
+}
+.select2-container-multi .select2-choices .select2-search-field:first-child input,
+.select2-choices .select2-search-field:first-child .select2-input {
+  min-width: 250px;
+}
+
