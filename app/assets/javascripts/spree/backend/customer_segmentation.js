@@ -156,6 +156,7 @@ CustomerSegmentation.prototype.addNameToValueInput = function() {
 CustomerSegmentation.prototype.createLogicalOperators = function() {
   var $logicalValues = this.$logicalValue.clone();
   this.$currentFilter.find(this.values).html($logicalValues);
+  $logicalValues.select2();
 }
 
 CustomerSegmentation.prototype.enableTagInputs = function() {
