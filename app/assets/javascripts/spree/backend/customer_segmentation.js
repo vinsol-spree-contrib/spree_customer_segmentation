@@ -111,7 +111,8 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
   });
 
   $operators.append(documentFragment).select2({
-    containerCssClass: 'custom_select'
+    containerCssClass: 'custom_select',
+    minimumResultsForSearch: -1
   });
 }
 
@@ -158,7 +159,9 @@ CustomerSegmentation.prototype.addNameToValueInput = function() {
 CustomerSegmentation.prototype.createLogicalOperators = function() {
   var $logicalValues = this.$logicalValue.clone();
   this.$currentFilter.find(this.values).html($logicalValues);
-  $logicalValues.select2();
+  $logicalValues.select2({
+     minimumResultsForSearch: -1
+  });
 }
 
 CustomerSegmentation.prototype.enableTagInputs = function() {
