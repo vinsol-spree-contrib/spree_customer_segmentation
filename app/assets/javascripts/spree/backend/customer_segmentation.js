@@ -19,8 +19,10 @@ function CustomerSegmentation(options) {
 }
 
 CustomerSegmentation.prototype.initialize = function() {
+  this.currentlyAppliedFilters = []; // store all applied filters
   this.bindEvents();
   this.selectInitialCategory();
+  this.rebuildSelectedFilters(); // previous filters
 }
 
 CustomerSegmentation.prototype.bindEvents = function() {
@@ -58,36 +60,49 @@ CustomerSegmentation.prototype.updateMetricOptions = function($category) {
 CustomerSegmentation.prototype.addFilter = function() {
   var _this = this;
 
+// OPTIMIZE
   return function() {
     var $selectedFilter  = $(this);
-    _this.$newFilter     = _this.$filterTemplate.clone();
-    _this.$currentFilter = _this.$newFilter;
-    _this.$modal.modal('hide');
 
-    _this.addFilterMetric($selectedFilter);
-    _this.addFilterOperators($selectedFilter);
-    _this.addFilterValues($selectedFilter);
+    if (_this.ensureFilterNotAppliedAlready($selectedFilter.data('metric'))) {
+      _this.$currentFilter = _this.$filterTemplate.clone();
 
-    _this.$newFilter.insertBefore(_this.$filterButton);
+      _this.$modal.modal('hide');
+      _this.addFilterMetric($selectedFilter);
+      _this.addFilterOperators($selectedFilter);
+      _this.addFilterValues($selectedFilter);
 
-    _this.animateFilterButton();
+      _this.$currentFilter.insertBefore(_this.$filterButton);
+
+      _this.animateFilterButton();
+
+      _this.currentlyAppliedFilters.push($selectedFilter.data('metric'));
+    } else {
+      // _this.$modal.modal('hide');
+      alert('Filter already applied');
+    }
   }
 }
 
-CustomerSegmentation.prototype.initializeNewFilterVariables = function($selectedFilter) {
-  this.selectedOperator       = this.$newFilter.find(this.operator).val(),
+CustomerSegmentation.prototype.ensureFilterNotAppliedAlready = function(metric) {
+  var index = this.currentlyAppliedFilters.indexOf(metric);
+  return (index == -1);
+}
+
+CustomerSegmentation.prototype.initializecurrentFilterVariables = function($selectedFilter) {
+  this.selectedOperator       = this.$currentFilter.find(this.operator).val(),
   this.selectedMetricType     = $selectedFilter.data('metric');
   this.selectedMetricDataType = this.availableFilters[this.selectedMetricType]['metric_type'];
 }
 
 CustomerSegmentation.prototype.addFilterMetric = function($selectedFilter) {
-  // this.$newFilter.find(this.selectedMetric).val($selectedFilter.data('metric')); // add metric value to hidden input field
-  this.$newFilter.find(this.metric).text($selectedFilter.text());
+  // this.$currentFilter.find(this.selectedMetric).val($selectedFilter.data('metric')); // add metric value to hidden input field
+  this.$currentFilter.find(this.metric).text($selectedFilter.text());
 }
 
 CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
   var selectedFilterOperators = this.availableFilters[$selectedFilter.data('metric')]['operators'],
-      $operators              = this.$newFilter.find(this.operator),
+      $operators              = this.$currentFilter.find(this.operator),
       documentFragment        = document.createDocumentFragment(),
       $option;
 
@@ -102,7 +117,7 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
 }
 
 CustomerSegmentation.prototype.addFilterValues = function($selectedFilter) {
-  this.initializeNewFilterVariables($selectedFilter);
+  this.initializecurrentFilterVariables($selectedFilter);
 
   this.updateFilterValueInput();
 }
@@ -135,7 +150,6 @@ CustomerSegmentation.prototype.updateFilterValueInput = function() {
 }
 
 CustomerSegmentation.prototype.addNameToValueInput = function() {
-  // OPTIMIZE
   $values = this.$currentFilter.find('[data-name="input"]');
 
   $values.attr('name', $values.attr('name').replace('metric', this.selectedMetricType));
@@ -143,19 +157,15 @@ CustomerSegmentation.prototype.addNameToValueInput = function() {
 }
 
 CustomerSegmentation.prototype.createLogicalOperators = function() {
-  var $selectValue = this.$selectValue.clone(),
-      $option1 = $('<option>', { value: true, text: 'true' }),
-      $option2 = $('<option>', { value: false, text: 'false' });
-
-  $selectValue.append($option1, $option2);
-  this.$currentFilter.find(this.values).html($selectValue);
-  $selectValue.selectmenu().selectmenu("menuWidget").addClass("overflow");
+  var $logicalValues = $('[data-value="logical"]').clone();
+  this.$currentFilter.find(this.values).html($logicalValues);
+  $logicalValues.selectmenu().selectmenu("menuWidget").addClass("overflow");
 }
 
 // ENABLE TAGS { SELECT2  }
 CustomerSegmentation.prototype.enableTagInputs = function() {
   var $input = this.$textValue.clone();
-  this.$newFilter.find(this.values).html($input);
+  this.$currentFilter.find(this.values).html($input);
   //
   // $input.select2({
   //   minimumInputLength: -1,
@@ -163,7 +173,6 @@ CustomerSegmentation.prototype.enableTagInputs = function() {
   //   multiple: true,
   //   tags: true,
   // });
-
 }
 
 CustomerSegmentation.prototype.animateFilterButton = function() {
@@ -173,13 +182,20 @@ CustomerSegmentation.prototype.animateFilterButton = function() {
 
 CustomerSegmentation.prototype.removeFilter = function() {
   var _this = this;
-
+// OPTIMIZE
   return function() {
     var $this = $(this);
+    var metric = $this.find(this.metric).data('metric');
+
     $this.closest('[data-name="filter_row"]').remove();
+
 
     if(_this.filtersPresent()) {
       _this.removeFilterButtonAnimation();
+
+      var index = _this.currentlyAppliedFilters.indexOf(metric);
+      _this.currentlyAppliedFilters.splice(index, 1);
+
     }
   }
 }
@@ -191,6 +207,33 @@ CustomerSegmentation.prototype.filtersPresent = function() {
 CustomerSegmentation.prototype.removeFilterButtonAnimation = function() {
   this.$filterButton.addClass('only-row');
   this.$filterButtonText.removeClass('add_filter_text');
+}
+
+// Rebuild params logic
+// OPTIMIZE
+CustomerSegmentation.prototype.rebuildSelectedFilters = function() {
+  var appliedFilters = $('[data-name="applied_filters"]').data('value'),
+      _this = this;
+
+  $.each(appliedFilters, function() {
+    $('[data-metric="' + this['metric'] + '"]').click();
+
+    _this.$currentFilter.find(_this.operator).val(this['operator']);
+    _this.$currentFilter.find(_this.operator).selectmenu('refresh').trigger('selectmenuchange');
+
+    if(this['operator'] == "between") {
+      _this.$currentFilter.find('[data-name="input"]').first().val(this['value'][0]);
+      _this.$currentFilter.find('[data-name="input"]').last().val(this['value'][1]);
+    } else if(this['operator'] == "equals" || this['operator'] == "blank") {
+      _this.$currentFilter.find('[data-name="input"]').val(this['value']);
+      _this.$currentFilter.find('[data-name="input"]').selectmenu('refresh');
+    } else if (this['operator'] == "includes" || this['operator'] == "includes_all" || this['operator'] == "includes_all") {
+      _this.$currentFilter.find('[data-name="input"]').val(this['value']);
+    } else {
+      _this.$currentFilter.find('[data-name="input"]').val(this['value']);
+    }
+
+  })
 }
 
 $(function() {
