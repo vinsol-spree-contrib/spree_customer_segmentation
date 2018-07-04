@@ -5,35 +5,36 @@ function CustomerSegmentation(options) {
   this.$filterButton      = options.$filterButton;
   this.$filterButtonText  = options.$filterButtonText;
   this.$filters           = options.$filters;
-  this.$filterTemplate    = options.$filterTemplate;
-  this.metric             = options.metric;
-  this.operator           = options.operator;
-  this.values             = options.values;
   this.$filterArea        = options.$filterArea;
-  this.removeFilterButton = options.removeFilterButton;
-  this.availableFilters   = options.$availableFilters.data('value');
   this.$betweenValue      = options.$betweenValue;
   this.$textValue         = options.$textValue;
   this.$selectValue       = options.$selectValue;
+  this.$logicalValue      = options.$logicalValue;
+  this.$appliedFilters    = options.$appliedFilters;
+  this.$filterTemplate    = options.$filterTemplate;
+  this.removeFilterButton = options.removeFilterButton;
+  this.availableFilters   = options.$availableFilters.data('value');
+  this.metric             = options.metric;
+  this.operator           = options.operator;
+  this.values             = options.values;
   this.selectedMetric     = options.selectedMetric;
+  this.filterRow          = options.filterRow;
+  this.input              = options.input;
 }
 
 CustomerSegmentation.prototype.initialize = function() {
   this.currentlyAppliedFilters = []; // store all applied filters
   this.bindEvents();
-  this.selectInitialCategory();
+
+  this.$categories.first().trigger('mouseenter'); // Select the first category inside modal
   this.rebuildSelectedFilters(); // previous filters
 }
 
 CustomerSegmentation.prototype.bindEvents = function() {
-  this.$categories.on('mouseenter', this.handleCategorySelection());
-  this.$filters.on('click', this.addFilter());
-  this.$filterArea.on('click', this.removeFilterButton, this.removeFilter());
-  this.$filterArea.on('selectmenuchange', this.operator, this.handleOperatorChange()); // operator changed
-}
-
-CustomerSegmentation.prototype.selectInitialCategory = function() {
-  this.$categories.first().trigger('mouseenter'); // select initial option.
+  this.$categories.on('mouseenter', this.handleCategorySelection()); // When admin changes category inside modal
+  this.$filters.on('click', this.addFilter()); // When filter is selected
+  this.$filterArea.on('click', this.removeFilterButton, this.removeFilter()); // Delegate filter removal event
+  this.$filterArea.on('selectmenuchange', this.operator, this.handleOperatorChange()); // Delegate operator change event
 }
 
 CustomerSegmentation.prototype.handleCategorySelection = function() {
@@ -49,6 +50,7 @@ CustomerSegmentation.prototype.handleCategorySelection = function() {
   }
 }
 
+// Show metrics of selected category, hide all others
 CustomerSegmentation.prototype.updateMetricOptions = function($category) {
   var categorySelected = $category.data('category'),
       $selectedCategoryMetrics = $('[data-category="' + categorySelected + '"]');
@@ -60,44 +62,40 @@ CustomerSegmentation.prototype.updateMetricOptions = function($category) {
 CustomerSegmentation.prototype.addFilter = function() {
   var _this = this;
 
-// OPTIMIZE
   return function() {
-    var $selectedFilter  = $(this);
+    var $selectedFilter = $(this),
+        metric = $selectedFilter.data('metric');
 
-    if (_this.ensureFilterNotAppliedAlready($selectedFilter.data('metric'))) {
-      _this.$currentFilter = _this.$filterTemplate.clone();
+    _this.$modal.modal('hide');
 
-      _this.$modal.modal('hide');
-      _this.addFilterMetric($selectedFilter);
-      _this.addFilterOperators($selectedFilter);
-      _this.addFilterValues($selectedFilter);
-
-      _this.$currentFilter.insertBefore(_this.$filterButton);
-
+    // If filter is not applied already
+    if (_this.currentlyAppliedFilters.indexOf(metric) == -1) {
+      _this.buildFilter($selectedFilter);
       _this.animateFilterButton();
 
-      _this.currentlyAppliedFilters.push($selectedFilter.data('metric'));
+      _this.currentlyAppliedFilters.push(metric);
     } else {
-      // _this.$modal.modal('hide');
-      alert('Filter already applied');
+      alert('This filter is already applied.')
     }
   }
 }
 
-CustomerSegmentation.prototype.ensureFilterNotAppliedAlready = function(metric) {
-  var index = this.currentlyAppliedFilters.indexOf(metric);
-  return (index == -1);
+CustomerSegmentation.prototype.buildFilter = function($selectedFilter) {
+  this.$currentFilter = this.$filterTemplate.clone();
+  this.addFilterElements($selectedFilter);
+  this.$currentFilter.insertBefore(this.$filterButton);
 }
 
-CustomerSegmentation.prototype.initializecurrentFilterVariables = function($selectedFilter) {
+CustomerSegmentation.prototype.addFilterElements = function($selectedFilter) {
+  this.$currentFilter.find(this.metric).text($selectedFilter.text());
+  this.addFilterOperators($selectedFilter);
+  this.addFilterValues($selectedFilter);
+}
+
+CustomerSegmentation.prototype.initializeCurrentFilterVariables = function($selectedFilter) {
   this.selectedOperator       = this.$currentFilter.find(this.operator).val(),
   this.selectedMetricType     = $selectedFilter.data('metric');
   this.selectedMetricDataType = this.availableFilters[this.selectedMetricType]['metric_type'];
-}
-
-CustomerSegmentation.prototype.addFilterMetric = function($selectedFilter) {
-  // this.$currentFilter.find(this.selectedMetric).val($selectedFilter.data('metric')); // add metric value to hidden input field
-  this.$currentFilter.find(this.metric).text($selectedFilter.text());
 }
 
 CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
@@ -111,14 +109,11 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
     documentFragment.append($option[0]);
   });
 
-  $operators.append(documentFragment);
-
-  $operators.selectmenu().selectmenu("menuWidget").addClass("overflow");
+  $operators.append(documentFragment).selectmenu().selectmenu("menuWidget").addClass("overflow");
 }
 
 CustomerSegmentation.prototype.addFilterValues = function($selectedFilter) {
-  this.initializecurrentFilterVariables($selectedFilter);
-
+  this.initializeCurrentFilterVariables($selectedFilter);
   this.updateFilterValueInput();
 }
 
@@ -127,37 +122,38 @@ CustomerSegmentation.prototype.handleOperatorChange = function() {
 
   return function() {
     var $this = $(this);
-    _this.$currentFilter = $this.closest('[data-name="filter_row"]');
+    _this.$currentFilter = $this.closest(_this.filterRow);
     _this.selectedOperator = $this.val();
     _this.updateFilterValueInput();
   }
 }
 
 CustomerSegmentation.prototype.updateFilterValueInput = function() {
-  var operator = this.selectedOperator;
+  var operator = this.selectedOperator,
+      $input = this.$currentFilter.find(this.values);
 
   if(operator == "between") {
-    this.$currentFilter.find(this.values).html(this.$betweenValue.clone());
+    $input.html(this.$betweenValue.clone());
   } else if(operator == "equals" || operator == "blank" ) {
      this.createLogicalOperators();
   } else if(operator == "includes" || operator == "not_includes" || operator == "includes_all") {
     this.enableTagInputs();
   } else {
-    this.$currentFilter.find(this.values).html(this.$textValue.clone());
+    $input.html(this.$textValue.clone());
   }
 
   this.addNameToValueInput();
 }
 
 CustomerSegmentation.prototype.addNameToValueInput = function() {
-  $values = this.$currentFilter.find('[data-name="input"]');
+  $values = this.$currentFilter.find(this.input);
 
   $values.attr('name', $values.attr('name').replace('metric', this.selectedMetricType));
   $values.attr('name', $values.attr('name').replace('operator', this.selectedOperator));
 }
 
 CustomerSegmentation.prototype.createLogicalOperators = function() {
-  var $logicalValues = $('[data-value="logical"]').clone();
+  var $logicalValues = this.$logicalValue.clone();
   this.$currentFilter.find(this.values).html($logicalValues);
   $logicalValues.selectmenu().selectmenu("menuWidget").addClass("overflow");
 }
@@ -166,7 +162,7 @@ CustomerSegmentation.prototype.createLogicalOperators = function() {
 CustomerSegmentation.prototype.enableTagInputs = function() {
   var $input = this.$textValue.clone();
   this.$currentFilter.find(this.values).html($input);
-  //
+
   // $input.select2({
   //   minimumInputLength: -1,
   //   tokenSeparators: [','],
@@ -182,26 +178,22 @@ CustomerSegmentation.prototype.animateFilterButton = function() {
 
 CustomerSegmentation.prototype.removeFilter = function() {
   var _this = this;
-// OPTIMIZE
   return function() {
-    var $this = $(this);
-    var metric = $this.find(this.metric).data('metric');
+    var $this = $(this),
+        metric = $this.find(this.metric).data('metric');
 
-    $this.closest('[data-name="filter_row"]').remove();
+    $this.closest(_this.filterRow).remove();
+    _this.removeFilterFromCurrentlyAppliedFilters(metric);
 
-
-    if(_this.filtersPresent()) {
+    if(_this.$filterArea.find(_this.filterRow).length == 0) {
       _this.removeFilterButtonAnimation();
-
-      var index = _this.currentlyAppliedFilters.indexOf(metric);
-      _this.currentlyAppliedFilters.splice(index, 1);
-
     }
   }
 }
 
-CustomerSegmentation.prototype.filtersPresent = function() {
-  return this.$filterArea.find('[data-name="filter_row"]').length == 0
+CustomerSegmentation.prototype.removeFilterFromCurrentlyAppliedFilters = function(metric) {
+  var index = this.currentlyAppliedFilters.indexOf(metric);
+  this.currentlyAppliedFilters.splice(index, 1);
 }
 
 CustomerSegmentation.prototype.removeFilterButtonAnimation = function() {
@@ -210,30 +202,35 @@ CustomerSegmentation.prototype.removeFilterButtonAnimation = function() {
 }
 
 // Rebuild params logic
-// OPTIMIZE
 CustomerSegmentation.prototype.rebuildSelectedFilters = function() {
-  var appliedFilters = $('[data-name="applied_filters"]').data('value'),
+  var appliedFilters = this.$appliedFilters.data('value'),
       _this = this;
 
   $.each(appliedFilters, function() {
     $('[data-metric="' + this['metric'] + '"]').click();
-
-    _this.$currentFilter.find(_this.operator).val(this['operator']);
-    _this.$currentFilter.find(_this.operator).selectmenu('refresh').trigger('selectmenuchange');
-
-    if(this['operator'] == "between") {
-      _this.$currentFilter.find('[data-name="input"]').first().val(this['value'][0]);
-      _this.$currentFilter.find('[data-name="input"]').last().val(this['value'][1]);
-    } else if(this['operator'] == "equals" || this['operator'] == "blank") {
-      _this.$currentFilter.find('[data-name="input"]').val(this['value']);
-      _this.$currentFilter.find('[data-name="input"]').selectmenu('refresh');
-    } else if (this['operator'] == "includes" || this['operator'] == "includes_all" || this['operator'] == "includes_all") {
-      _this.$currentFilter.find('[data-name="input"]').val(this['value']);
-    } else {
-      _this.$currentFilter.find('[data-name="input"]').val(this['value']);
-    }
-
+    _this.reSelectOperator(this['operator']);
+    _this.reEnterInputValue(this['operator'], this['value']);
   })
+}
+
+CustomerSegmentation.prototype.reSelectOperator = function(operator) {
+  this.$currentFilter.find(this.operator).val(operator);
+  this.$currentFilter.find(this.operator).selectmenu('refresh').trigger('selectmenuchange');
+}
+
+CustomerSegmentation.prototype.reEnterInputValue = function(operator, value) {
+  var $input = this.$currentFilter.find(this.input);
+
+  if(operator == "between") {
+    $input.first().val(value[0]);
+    $input.last().val(value[1]);
+  } else if(operator == "equals" || operator == "blank") {
+    $input.val(value).selectmenu('refresh');
+  } else if (operator == "includes" || operator == "includes_all" || operator == "includes_all") {
+    $input.val(value);
+  } else {
+    $input.val(value);
+  }
 }
 
 $(function() {
@@ -249,12 +246,16 @@ $(function() {
     $betweenValue:      $('[data-value="between"]'),
     $textValue:         $('[data-value="text"]'),
     $selectValue:       $('[data-value="select"]'),
+    $logicalValue:      $('[data-value="logical"]'),
     $filterArea:        $('[data-name="filters_area"]'),
+    $appliedFilters:    $('[data-name="applied_filters"]'),
     removeFilterButton: '[data-name="remove_filter"]',
     metric:             '[data-name="metric"]',
     operator:           '[data-name="operator"]',
     values:             '[data-name="values"]',
-    selectedMetric:     '[data-name="metric_selected"]'
+    selectedMetric:     '[data-name="metric_selected"]',
+    filterRow:          '[data-name="filter_row"]',
+    input:              '[data-name="input"]'
   },
     customer_segmentation = new CustomerSegmentation(options);
 
