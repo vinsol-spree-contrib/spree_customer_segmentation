@@ -32,6 +32,8 @@
 <!-- pass all options as a hash -->
 <span data-name="filter_operator_list" data-value="<%= Spree::CustomerSegmentation::FILTERS_MAPPER.to_json %>"> </span>
 
+<span data-name="applied_filters" data-value="<%= @search_params.to_json %>"> </span>
+
 <!-- Filter structure hidden -->
 <div class="hidden">
   <%= render partial: 'filter_template' %>
