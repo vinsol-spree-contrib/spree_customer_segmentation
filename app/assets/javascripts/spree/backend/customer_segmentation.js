@@ -10,6 +10,7 @@ function CustomerSegmentation(options) {
   this.$textValue         = options.$textValue;
   this.$selectValue       = options.$selectValue;
   this.$logicalValue      = options.$logicalValue;
+  this.$hiddenValue       = options.$hiddenValue;
   this.$appliedFilters    = options.$appliedFilters;
   this.$filterTemplate    = options.$filterTemplate;
   this.removeFilterButton = options.removeFilterButton;
@@ -34,7 +35,7 @@ CustomerSegmentation.prototype.bindEvents = function() {
   this.$categories.on('mouseenter', this.handleCategorySelection()); // When admin changes category inside modal
   this.$filters.on('click', this.addFilter()); // When filter is selected
   this.$filterArea.on('click', this.removeFilterButton, this.removeFilter()); // Delegate filter removal event
-  this.$filterArea.on('selectmenuchange', this.operator, this.handleOperatorChange()); // Delegate operator change event
+  this.$filterArea.on('change', this.operator, this.handleOperatorChange()); // Delegate operator change event
 }
 
 CustomerSegmentation.prototype.handleCategorySelection = function() {
@@ -109,7 +110,7 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
     documentFragment.append($option[0]);
   });
 
-  $operators.append(documentFragment).selectmenu().selectmenu("menuWidget").addClass("overflow");
+  $operators.append(documentFragment);
 }
 
 CustomerSegmentation.prototype.addFilterValues = function($selectedFilter) {
@@ -155,20 +156,22 @@ CustomerSegmentation.prototype.addNameToValueInput = function() {
 CustomerSegmentation.prototype.createLogicalOperators = function() {
   var $logicalValues = this.$logicalValue.clone();
   this.$currentFilter.find(this.values).html($logicalValues);
-  $logicalValues.selectmenu().selectmenu("menuWidget").addClass("overflow");
 }
 
-// ENABLE TAGS { SELECT2  }
 CustomerSegmentation.prototype.enableTagInputs = function() {
-  var $input = this.$textValue.clone();
+  var $input = this.$hiddenValue.clone();
   this.$currentFilter.find(this.values).html($input);
+  this.enableTagging($input);
+}
 
-  // $input.select2({
-  //   minimumInputLength: -1,
-  //   tokenSeparators: [','],
-  //   multiple: true,
-  //   tags: true,
-  // });
+CustomerSegmentation.prototype.enableTagging = function($input) {
+  $input.select2({
+    tags: [],
+    formatNoMatches: function() {
+        return '';
+    },
+    placeholder: 'Please press enter for multiple inputs'
+  })
 }
 
 CustomerSegmentation.prototype.animateFilterButton = function() {
@@ -208,14 +211,9 @@ CustomerSegmentation.prototype.rebuildSelectedFilters = function() {
 
   $.each(appliedFilters, function() {
     $('[data-metric="' + this['metric'] + '"]').click();
-    _this.reSelectOperator(this['operator']);
+    _this.$currentFilter.find(_this.operator).val(this['operator']).trigger('change');
     _this.reEnterInputValue(this['operator'], this['value']);
   })
-}
-
-CustomerSegmentation.prototype.reSelectOperator = function(operator) {
-  this.$currentFilter.find(this.operator).val(operator);
-  this.$currentFilter.find(this.operator).selectmenu('refresh').trigger('selectmenuchange');
 }
 
 CustomerSegmentation.prototype.reEnterInputValue = function(operator, value) {
@@ -225,9 +223,10 @@ CustomerSegmentation.prototype.reEnterInputValue = function(operator, value) {
     $input.first().val(value[0]);
     $input.last().val(value[1]);
   } else if(operator == "equals" || operator == "blank") {
-    $input.val(value).selectmenu('refresh');
-  } else if (operator == "includes" || operator == "includes_all" || operator == "includes_all") {
     $input.val(value);
+  } else if (operator == "includes" || operator == "includes_all" || operator == "includes_all") {
+    this.enableTagging($input);
+    $input.val(value).trigger('change');
   } else {
     $input.val(value);
   }
@@ -247,6 +246,7 @@ $(function() {
     $textValue:         $('[data-value="text"]'),
     $selectValue:       $('[data-value="select"]'),
     $logicalValue:      $('[data-value="logical"]'),
+    $hiddenValue:       $('[data-value="hidden"]'),
     $filterArea:        $('[data-name="filters_area"]'),
     $appliedFilters:    $('[data-name="applied_filters"]'),
     removeFilterButton: '[data-name="remove_filter"]',
