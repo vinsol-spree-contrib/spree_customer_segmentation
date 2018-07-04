@@ -110,7 +110,7 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
     documentFragment.append($option[0]);
   });
 
-  $operators.append(documentFragment);
+  $operators.append(documentFragment).select2();
 }
 
 CustomerSegmentation.prototype.addFilterValues = function($selectedFilter) {
