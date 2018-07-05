@@ -9,13 +9,8 @@ module Spree
     RELATIONAL_OPERATORS =            { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=' }
     RELATIONAL_OPERATORS_WITH_BLANK = { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=', blank: 'blank' }
 
-<<<<<<< HEAD
     LOGICAL_OPERATORS = { equals: 'equals' }
     DATE_OPERATORS =    { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
-=======
-    LOGICAL_OPERATORS =               { equals: 'equals' }
-    DATE_OPERATORS =                  { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
->>>>>>> add multiple filter functionality
 
     ADDRESS_OPERATORS = { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
 
@@ -53,7 +48,10 @@ module Spree
       ship_address_city:    { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressCityFilterService },
       ship_address_state:   { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressStateFilterService },
       ship_address_zipcode: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressZipcodeFilterService },
-      ship_address:         { metric_type: 'alphanumeric', operators: MATCH_OPERATORS_WITH_BLANK, service: Address::ShipAddressFilterService }
+      ship_address:         { metric_type: 'alphanumeric', operators: MATCH_OPERATORS_WITH_BLANK, service: Address::ShipAddressFilterService },
+
+      # RENAME [OPTIMIZE]
+      products_added_to_cart: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsAddedToCartFilterService },
     }
 
     # Maps filters with their services
@@ -105,7 +103,7 @@ module Spree
 
       products: [
         ['Products Viewed', :to_be_added],
-        ['Products Added To Cart', :to_be_added],
+        ['Products Added To Cart', :products_added_to_cart],
         ['Products Ordered', :to_be_added],
         ['Products Recently Viewed', :to_be_added],
         ['Products Recently Added To Cart', :to_be_added],

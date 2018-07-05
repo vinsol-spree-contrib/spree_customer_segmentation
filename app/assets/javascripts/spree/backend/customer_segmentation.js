@@ -134,19 +134,43 @@ CustomerSegmentation.prototype.handleOperatorChange = function() {
 
 CustomerSegmentation.prototype.updateFilterValueInput = function() {
   var operator = this.selectedOperator,
-      $input = this.$currentFilter.find(this.values);
+      category = this.selectedCategory,
+      metric   = this.selectedMetric,
+      $input   = this.$currentFilter.find(this.values);
 
-  if(operator == "between") {
-    $input.html(this.$betweenValue.clone());
-  } else if(operator == "equals" || operator == "blank" ) {
-     this.createLogicalOperators();
-  } else if(operator == "includes" || operator == "not_includes" || operator == "includes_all") {
-    this.enableTagInputs();
+  if(category == "products") {
+    if(metric.indexOf('viewed') != -1) {
+      this.showVariants();
+    } else {
+      this.showProducts();
+    }
+
   } else {
-    $input.html(this.$textValue.clone());
+    if(operator == "between") {
+      $input.html(this.$betweenValue.clone());
+    } else if(operator == "equals" || operator == "blank" ) {
+       this.createLogicalOperators();
+    } else if(operator == "includes" || operator == "not_includes" || operator == "includes_all") {
+      this.enableTagInputs();
+    } else {
+      $input.html(this.$textValue.clone());
+    }
   }
 
   this.addNameToValueInput();
+}
+
+CustomerSegmentation.prototype.showProducts = function() {
+  var $input = this.$hiddenValue.clone();
+  this.$currentFilter.find(this.values).html($input);
+  // $input.productAutocomplete();
+  $input.autocompleteVariant();
+}
+
+CustomerSegmentation.prototype.showVariants = function() {
+  var $input = this.$hiddenValue.clone();
+  this.$currentFilter.find(this.values).html($input);
+  $input.autocompleteVariant();
 }
 
 CustomerSegmentation.prototype.addNameToValueInput = function() {
