@@ -2,9 +2,11 @@ module Spree
   module CustomerSegmentation
     class BaseService
       attr_accessor :user_collection
+      attr_reader :current_utc_time
 
       def initialize(user_collection)
         @user_collection = user_collection
+        @current_utc_time = Time.current.utc
       end
 
       def perform

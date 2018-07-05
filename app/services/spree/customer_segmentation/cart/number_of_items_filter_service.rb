@@ -15,7 +15,7 @@ module Spree
 
       def initialize(collection, operator, values)
         @operator = operator
-        @values   = values
+        @values = values
         super(collection)
       end
 
@@ -24,7 +24,7 @@ module Spree
       end
 
       def query
-        user_collection.with_unordered_line_items.
+        user_collection.with_items_in_cart.
                     select('spree_users.*, SUM(spree_line_items.quantity) as number_of_items_in_cart').
                     group('spree_orders.user_id').distinct
       end
@@ -46,7 +46,11 @@ module Spree
       end
 
       def number_of_items_in_cart_eq
-        query.having("number_of_items_in_cart = ?", values)
+        if values == "0"
+          user_collection.without_items_in_cart
+        else
+          query.having("number_of_items_in_cart = ?", values)
+        end
       end
 
       def number_of_items_in_cart_not_eq
@@ -54,8 +58,8 @@ module Spree
       end
 
       def number_of_items_in_cart_between
-        return ::Spree::User.none if (values[0].blank? || values[1].blank?)
-        
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
+
         query.having("number_of_items_in_cart >= ? AND number_of_items_in_cart <= ?", values[0], values[1])
       end
 

@@ -46,7 +46,7 @@ module Spree
       end
 
       def revenue_eq
-        if values.to_i == 0
+        if values == "0"
           user_collection.without_complete_orders
         else
           query.having("revenue = ?", values)
@@ -58,6 +58,8 @@ module Spree
       end
 
       def revenue_between
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
+
         query.having("revenue >= ? AND revenue <= ?", values[0], values[1])
       end
 

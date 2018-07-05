@@ -9,8 +9,10 @@ module Spree
       end
 
       def process
-        if operator && operator =~ /include/
-          value.split(',') # convert to array
+        if operator =~ /include/
+          value.split(',')
+        elsif operator == 'blank'
+          ActiveModel::Type::Boolean.new.cast(value)
         else
           value
         end
