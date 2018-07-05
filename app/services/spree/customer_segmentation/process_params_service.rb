@@ -11,7 +11,7 @@ module Spree
       def process
         if operator =~ /include/
           value.split(',')
-        elsif operator == 'blank'
+        elsif operator == 'blank' || operator == 'equals'
           ActiveModel::Type::Boolean.new.cast(value)
         else
           value
