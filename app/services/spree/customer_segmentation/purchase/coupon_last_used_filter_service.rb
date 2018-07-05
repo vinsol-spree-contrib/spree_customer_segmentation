@@ -40,7 +40,7 @@ module Spree
       end
 
       def coupon_last_used_between
-        return ::Spree::User.none if (values[0].blank? || values[1].blank?)
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
 
         query.having("coupon_last_used >= ? AND coupon_last_used <= ?", values[1], values[0])
       end
