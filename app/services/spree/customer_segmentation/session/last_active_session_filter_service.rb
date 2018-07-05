@@ -22,8 +22,8 @@ module Spree
       end
 
       def last_active_session_between
-        return ::Spree::User.none if (values[0].blank? || values[1].blank?)
-        
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
+
         user_collection.ransack(last_active_session_gteq: values[0], last_active_session_lteq: values[1]).result
       end
 
