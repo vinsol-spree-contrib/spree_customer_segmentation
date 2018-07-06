@@ -18,7 +18,6 @@ function CustomerSegmentation(options) {
   this.metric             = options.metric;
   this.operator           = options.operator;
   this.values             = options.values;
-  this.selectedMetric     = options.selectedMetric;
   this.filterRow          = options.filterRow;
   this.input              = options.input;
 }
@@ -88,15 +87,15 @@ CustomerSegmentation.prototype.buildFilter = function($selectedFilter) {
 }
 
 CustomerSegmentation.prototype.addFilterElements = function($selectedFilter) {
-  this.$currentFilter.find(this.metric).text($selectedFilter.text());
+  this.$currentFilter.find(this.metric).text($selectedFilter.text()).data('metric', $selectedFilter.data('metric'));
   this.addFilterOperators($selectedFilter);
   this.addFilterValues($selectedFilter);
 }
 
-CustomerSegmentation.prototype.initializeCurrentFilterVariables = function($selectedFilter) {
+CustomerSegmentation.prototype.initializeCurrentFilterVariables = function() {
   this.selectedOperator       = this.$currentFilter.find(this.operator).val(),
-  this.selectedMetricType     = $selectedFilter.data('metric');
-  this.selectedMetricDataType = this.availableFilters[this.selectedMetricType]['metric_type'];
+  this.selectedMetric         = this.$currentFilter.find(this.metric).data('metric');
+  this.selectedMetricDataType = this.availableFilters[this.selectedMetric]['metric_type'];
 }
 
 CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
@@ -117,7 +116,7 @@ CustomerSegmentation.prototype.addFilterOperators = function($selectedFilter) {
 }
 
 CustomerSegmentation.prototype.addFilterValues = function($selectedFilter) {
-  this.initializeCurrentFilterVariables($selectedFilter);
+  this.initializeCurrentFilterVariables();
   this.updateFilterValueInput();
 }
 
@@ -127,6 +126,7 @@ CustomerSegmentation.prototype.handleOperatorChange = function() {
   return function() {
     var $this = $(this);
     _this.$currentFilter = $this.closest(_this.filterRow);
+    _this.initializeCurrentFilterVariables();
     _this.selectedOperator = $this.val();
     _this.updateFilterValueInput();
   }
@@ -151,8 +151,7 @@ CustomerSegmentation.prototype.updateFilterValueInput = function() {
 
 CustomerSegmentation.prototype.addNameToValueInput = function() {
   $values = this.$currentFilter.find(this.input);
-
-  $values.attr('name', $values.attr('name').replace('metric', this.selectedMetricType));
+  $values.attr('name', $values.attr('name').replace('metric', this.selectedMetric));
   $values.attr('name', $values.attr('name').replace('operator', this.selectedOperator));
 }
 
@@ -189,7 +188,7 @@ CustomerSegmentation.prototype.removeFilter = function() {
   var _this = this;
   return function() {
     var $this = $(this),
-        metric = $this.find(this.metric).data('metric');
+        metric = $this.closest(_this.filterRow).find(_this.metric).data('metric');
 
     $this.closest(_this.filterRow).remove();
     _this.removeFilterFromCurrentlyAppliedFilters(metric);
@@ -229,7 +228,7 @@ CustomerSegmentation.prototype.reEnterInputValue = function(operator, value) {
     $input.first().val(value[0]);
     $input.last().val(value[1]);
   } else if(operator == "equals" || operator == "blank") {
-    $input.val(value).trigger('change');
+    $input.val(value.toString()).trigger('change');
   } else if (operator == "includes" || operator == "includes_all" || operator == "includes_all") {
     this.enableTagging($input);
     $input.val(value).trigger('change');
@@ -259,7 +258,6 @@ $(function() {
     metric:             '[data-name="metric"]',
     operator:           '[data-name="operator"]',
     values:             '[data-name="values"]',
-    selectedMetric:     '[data-name="metric_selected"]',
     filterRow:          '[data-name="filter_row"]',
     input:              '[data-name="input"]'
   },
