@@ -87,14 +87,23 @@ CustomerSegmentation.prototype.buildFilter = function($selectedFilter) {
 }
 
 CustomerSegmentation.prototype.addFilterElements = function($selectedFilter) {
-  this.$currentFilter.find(this.metric).text($selectedFilter.text()).data('metric', $selectedFilter.data('metric'));
+
+  this.addFilterMetric($selectedFilter);
   this.addFilterOperators($selectedFilter);
   this.addFilterValues($selectedFilter);
 }
 
+CustomerSegmentation.prototype.addFilterMetric = function($selectedFilter) {
+  var $metric = this.$currentFilter.find(this.metric).text($selectedFilter.text());
+  $metric.data('metric', $selectedFilter.data('metric'));
+  $metric.data('category', $selectedFilter.data('category'));
+}
+
 CustomerSegmentation.prototype.initializeCurrentFilterVariables = function() {
+  var $metric                 = this.$currentFilter.find(this.metric);
+  this.selectedCategory       = $metric.data('category');
   this.selectedOperator       = this.$currentFilter.find(this.operator).val(),
-  this.selectedMetric         = this.$currentFilter.find(this.metric).data('metric');
+  this.selectedMetric         = $metric.data('metric');
   this.selectedMetricDataType = this.availableFilters[this.selectedMetric]['metric_type'];
 }
 
@@ -163,8 +172,7 @@ CustomerSegmentation.prototype.updateFilterValueInput = function() {
 CustomerSegmentation.prototype.showProducts = function() {
   var $input = this.$hiddenValue.clone();
   this.$currentFilter.find(this.values).html($input);
-  // $input.productAutocomplete();
-  $input.autocompleteVariant();
+  $input.productAutocomplete();
 }
 
 CustomerSegmentation.prototype.showVariants = function() {
@@ -254,7 +262,6 @@ CustomerSegmentation.prototype.reEnterInputValue = function(operator, value) {
   } else if(operator == "equals" || operator == "blank") {
     $input.val(value.toString()).trigger('change');
   } else if (operator == "includes" || operator == "includes_all" || operator == "includes_all") {
-    this.enableTagging($input);
     $input.val(value).trigger('change');
   } else {
     $input.val(value);
