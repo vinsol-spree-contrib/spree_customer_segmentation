@@ -4,8 +4,8 @@ module Spree
       attr_accessor :operator, :values
 
       SEARCH_LOGIC = {
-        includes:     { method: 'ransack', logic: 'orders_ship_address_state_name_cont_any' },
-        not_includes: { method: 'ransack', logic: 'orders_ship_address_state_name_not_cont_all' },
+        includes:     { method: 'ransack', logic: 'orders_ship_address_state_name_eq_any' },
+        not_includes: { method: 'ransack', logic: 'orders_ship_address_state_name_not_eq_all' },
         includes_all: { method: 'custom', logic: 'state_includes_all' },
         blank:        { method: 'ransack', logic: 'orders_ship_address_state_name_blank' }
       }

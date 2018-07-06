@@ -25,27 +25,27 @@ module Spree
       end
 
       def days_from_registration_gteq
-        user_collection.where("DATE(created_at) <= ?", required_date)
+        user_collection.where("DATE(spree_users.created_at) <= ?", required_date)
       end
 
       def days_from_registration_gt
-        user_collection.where("DATE(created_at) < ?", required_date)
+        user_collection.where("DATE(spree_users.created_at) < ?", required_date)
       end
 
       def days_from_registration_lt
-        user_collection.where("DATE(created_at) > ?", required_date)
+        user_collection.where("DATE(spree_users.created_at) > ?", required_date)
       end
 
       def days_from_registration_lteq
-        user_collection.where("DATE(created_at) >= ?", required_date)
+        user_collection.where("DATE(spree_users.created_at) >= ?", required_date)
       end
 
       def days_from_registration_eq
-        user_collection.where("DATE(created_at) = ?", required_date)
+        user_collection.where("DATE(spree_users.created_at) = ?", required_date)
       end
 
       def days_from_registration_not_eq
-        user_collection.where("DATE(created_at) != ?", required_date)
+        user_collection.where("DATE(spree_users.created_at) != ?", required_date)
       end
 
       def days_from_registration_between
@@ -54,7 +54,7 @@ module Spree
         first_date = (current_utc_time - values[0].to_i.days).to_date
         second_date = (current_utc_time - values[1].to_i.days).to_date
 
-        user_collection.where("DATE(created_at) >= ? AND DATE(created_at) <= ?", second_date, first_date)
+        user_collection.where("DATE(spree_users.created_at) >= ? AND DATE(spree_users.created_at) <= ?", second_date, first_date)
       end
 
       def required_date

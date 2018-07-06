@@ -6,7 +6,7 @@ module Spree
       SEARCH_LOGIC = {
         contains:         { method: 'custom', logic: 'bill_address_contain' },
         does_not_contain: { method: 'custom', logic: 'bill_address_does_not_contain' },
-        blank:            { method: 'custom', logic: 'bill_address_blank' }
+        blank:            { method: 'ransack', logic: 'bill_address_id_null' }
       }
 
       def initialize(collection, operator, values)
@@ -34,11 +34,6 @@ module Spree
 
       def concatenated_address
         "CONCAT(spree_addresses.address1, ' ', spree_addresses.address2, ' ', spree_addresses.city, ' ', spree_states.name, ' ', spree_countries.name, ' ', spree_addresses.zipcode)"
-      end
-
-      def bill_address_blank
-        choice = ActiveModel::Type::Boolean.new.cast(values) # convert string to boolean, move to process params!!
-        choice ? user_collection.without_bill_address : user_collection.with_bill_address
       end
 
     end

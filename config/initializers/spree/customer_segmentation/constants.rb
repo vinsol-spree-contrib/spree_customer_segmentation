@@ -78,7 +78,7 @@ module Spree
 
       purchase: [
         ['Used A Coupon', :purchase_coupon_applied],
-        ['Coupon Not Used Since', :purchase_coupon_last_used]
+        ['Coupon Last Used', :purchase_coupon_last_used]
       ],
 
       sessions: [
