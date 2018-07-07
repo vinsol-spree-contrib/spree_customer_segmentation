@@ -21,11 +21,11 @@ module Spree
       end
 
       def added_to_cart_includes
-        user_collection.ransack(orders_line_items_variant_id_eq_any: values, orders_completed_at_null: true).result
+        user_collection.with_items_in_cart.where(spree_line_items: { variant_id: values }).distinct
       end
 
       def added_to_cart_not_includes
-        user_collection.ransack(orders_line_items_variant_id_not_eq_all: values, orders_completed_at_null: true).result
+        user_collection.with_items_in_cart.where.not(id: added_to_cart_includes.pluck(:id))
       end
 
       def added_to_cart_includes_all
@@ -38,7 +38,7 @@ module Spree
       end
 
       def added_to_cart_blank
-        user_collection.ransack(orders_line_items_variant_id_null: values, orders_completed_at_null: true).result
+        values ? user_collection.without_items_in_cart : user_collection.with_items_in_cart
       end
 
       def select_query
@@ -53,7 +53,7 @@ module Spree
       end
 
       def sorted_variants
-        values.map(:to_i).sort.join(',')
+        values.map(&:to_i).sort.join(',')
       end
 
     end

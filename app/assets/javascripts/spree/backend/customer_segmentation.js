@@ -148,10 +148,12 @@ CustomerSegmentation.prototype.updateFilterValueInput = function() {
       $input   = this.$currentFilter.find(this.values);
 
   if(category == "products") {
-    if(metric.indexOf('viewed') != -1) {
-      this.showVariants();
-    } else {
+    if(operator == "blank") {
+      this.createLogicalOperators();
+    } else if(metric.indexOf('viewed') != -1) {
       this.showProducts();
+    } else {
+      this.showVariants();
     }
 
   } else {
@@ -261,7 +263,7 @@ CustomerSegmentation.prototype.reEnterInputValue = function(operator, value) {
     $input.last().val(value[1]);
   } else if(operator == "equals" || operator == "blank") {
     $input.val(value.toString()).trigger('change');
-  } else if (operator == "includes" || operator == "includes_all" || operator == "includes_all") {
+  } else if (operator == "includes" || operator == "not_includes" || operator == "includes_all") {
     $input.val(value).trigger('change');
   } else {
     $input.val(value);

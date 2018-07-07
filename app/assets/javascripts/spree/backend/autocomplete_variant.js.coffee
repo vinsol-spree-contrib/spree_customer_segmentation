@@ -18,7 +18,6 @@ $.fn.autocompleteVariant = ->
     multiple: true
     initSelection: (element, callback) ->
       $.get Spree.routes.variants_api + "/" + element.val(), { token: Spree.api_key }, (data) ->
-      # $.get Spree.routes.variants_api, { id: element.val().split(','), token: Spree.api_key }, (data) ->
         callback data
     ajax:
       url: Spree.url(Spree.routes.variants_api)

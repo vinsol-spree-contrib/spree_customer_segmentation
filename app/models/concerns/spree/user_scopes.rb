@@ -15,6 +15,41 @@ module Spree
       scope :with_ship_address,       -> { where.not(ship_address_id: nil) }
       scope :without_ship_address,    -> { where(ship_address_id: nil) }
 
+      def self.with_recent_orders
+        joins(orders: :line_items).where("spree_line_items.created_at > ?", time_seven_days_ago ).where(spree_orders: { state: 'complete' }).distinct
+      end
+
+      def self.without_recent_orders
+        where.not(id: with_recent_product_orders.pluck(:id))
+      end
+
+      def self.with_recent_product_added_to_cart
+        joins(orders: :line_items).where("spree_line_items.created_at > ?", time_seven_days_ago ).where(spree_orders: { completed_at: nil }).distinct
+      end
+
+      def self.without_recent_product_added_to_cart
+        where.not(id: with_recent_product_added_to_cart.pluck(:id))
+      end
+
+      def self.with_new_product_orders
+        joins(orders: [line_items: :product]).where("spree_products.created_at > ?", time_seven_days_ago).where(spree_orders: { state: 'complete' }).distinct
+      end
+
+      def self.without_new_product_orders
+        where.not(id: with_new_product_orders.pluck(:id))
+      end
+
+      def self.with_new_product_added_to_cart
+        joins(orders: [line_items: :product]).where("spree_products.created_at > ?", time_seven_days_ago).where(spree_orders: { completed_at: nil }).distinct
+      end
+
+      def self.without_new_product_orders
+        where.not(id: with_new_product_added_to_cart.pluck(:id))
+      end
+
+      def self.time_seven_days_ago
+        @time_seven_days_ago ||= Time.current.utc - 7.days
+      end
     end
 
   end

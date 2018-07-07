@@ -6,7 +6,7 @@ module Spree
 
       def initialize(user_collection)
         @user_collection = user_collection
-        @current_utc_time = Time.current.utc
+        @current_utc_time ||= Time.current.utc
       end
 
       def perform

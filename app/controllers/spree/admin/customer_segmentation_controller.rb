@@ -32,7 +32,7 @@ module Spree
         arranged_params = @search_params.clone
 
         arranged_params.each do |filter|
-          if filter[:operator] == "blank" || filter[:operator] == "equals" || (filter[:operator] == "eq" && filter[:value] == "0")
+          if filter[:metric].include?('product') || filter[:operator] == "blank" || filter[:operator] == "equals" || (filter[:operator] == "eq" && filter[:value] == "0")
             arranged_params.insert(0, arranged_params.delete(filter))
           end
         end

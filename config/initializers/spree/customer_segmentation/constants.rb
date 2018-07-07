@@ -51,7 +51,10 @@ module Spree
       ship_address:         { metric_type: 'alphanumeric', operators: MATCH_OPERATORS_WITH_BLANK, service: Address::ShipAddressFilterService },
 
       # RENAME [OPTIMIZE]
-      products_added_to_cart: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsAddedToCartFilterService },
+      products_added_to_cart:          { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsAddedToCartFilterService },
+      products_ordered:                { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsOrderedFilterService },
+      products_recently_added_to_cart: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsRecentlyAddedToCartFilterService },
+      products_recently_ordered:       { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsRecentlyOrderedFilterService },
     }
 
     # Maps filters with their services
@@ -104,10 +107,10 @@ module Spree
       products: [
         ['Products Viewed', :to_be_added],
         ['Products Added To Cart', :products_added_to_cart],
-        ['Products Ordered', :to_be_added],
+        ['Products Ordered', :products_ordered],
         ['Products Recently Viewed', :to_be_added],
-        ['Products Recently Added To Cart', :to_be_added],
-        ['Products Recently Ordered', :to_be_added],
+        ['Products Recently Added To Cart', :products_recently_added_to_cart],
+        ['Products Recently Ordered', :products_recently_ordered],
         ['New Products Viewed', :to_be_added],
         ['New Products Added To Cart', :to_be_added],
         ['New Products Ordered', :to_be_added]
