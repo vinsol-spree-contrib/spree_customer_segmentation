@@ -65,19 +65,24 @@ CustomerSegmentation.prototype.validateData = function() {
         metric = $this.find(_this.metric).data('metric'),
         fieldDataType = _this.availableFilters[metric]['metric_type'],
         $input = $this.find(_this.input),
+        operator = $this.find(_this.operator).val(),
         value = $input.val();
 
-    if((value.trim().length == 0) || !(_this.checkDataFormat(value, fieldDataType))) {
+    if((value.trim().length == 0) || !(_this.checkDataFormat(value, fieldDataType, operator))) {
       isValidData = false;
       alert('Enter valid data');
       return false;
     }
-  })
+  });
 
   return isValidData;
 }
 
-CustomerSegmentation.prototype.checkDataFormat = function(value, fieldDataType) {
+CustomerSegmentation.prototype.checkDataFormat = function(value, fieldDataType, operator) {
+  if(operator == "blank") {
+    return true;
+  }
+
   if(fieldDataType == "numeric") {
     return this.numberRegex.test(value);
   } else if(fieldDataType == "date") {
