@@ -12,7 +12,7 @@ module Spree
     LOGICAL_OPERATORS = { equals: 'equals' }
     DATE_OPERATORS =    { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
 
-    ADDRESS_OPERATORS = { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
+    MULTIPLE_OPERATORS = { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
 
     # Map services with operators available, and type of metric
     FILTERS_MAPPER = {
@@ -40,23 +40,22 @@ module Spree
       number_of_session:   { metric_type: 'numeric', operators: RELATIONAL_OPERATORS, service: Session::NumberOfSessionFilterService },
       last_active_session: { metric_type: 'date', operators: DATE_OPERATORS, service: Session::LastActiveSessionFilterService },
 
-      bill_address_city:    { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::BillAddressCityFilterService },
-      bill_address_state:   { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::BillAddressStateFilterService },
-      bill_address_zipcode: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::BillAddressZipcodeFilterService },
+      bill_address_city:    { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Address::BillAddressCityFilterService },
+      bill_address_state:   { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Address::BillAddressStateFilterService },
+      bill_address_zipcode: { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Address::BillAddressZipcodeFilterService },
       bill_address:         { metric_type: 'alphanumeric', operators: MATCH_OPERATORS_WITH_BLANK, service: Address::BillAddressFilterService },
 
-      ship_address_city:    { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressCityFilterService },
-      ship_address_state:   { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressStateFilterService },
-      ship_address_zipcode: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Address::ShipAddressZipcodeFilterService },
+      ship_address_city:    { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Address::ShipAddressCityFilterService },
+      ship_address_state:   { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Address::ShipAddressStateFilterService },
+      ship_address_zipcode: { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Address::ShipAddressZipcodeFilterService },
       ship_address:         { metric_type: 'alphanumeric', operators: MATCH_OPERATORS_WITH_BLANK, service: Address::ShipAddressFilterService },
 
-      # RENAME [OPTIMIZE]
-      products_added_to_cart:          { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsAddedToCartFilterService },
-      products_ordered:                { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsOrderedFilterService },
-      products_recently_added_to_cart: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsRecentlyAddedToCartFilterService },
-      products_recently_ordered:       { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsRecentlyOrderedFilterService },
-      new_products_added_to_cart:      { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::NewProductsAddedToCartFilterService },
-      new_products_ordered:            { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::NewProductsOrderedFilterService }
+      products_added_to_cart:          { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsAddedToCartFilterService },
+      products_ordered:                { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsOrderedFilterService },
+      products_recently_added_to_cart: { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsRecentlyAddedToCartFilterService },
+      products_recently_ordered:       { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsRecentlyOrderedFilterService },
+      new_products_added_to_cart:      { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::NewProductsAddedToCartFilterService },
+      new_products_ordered:            { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::NewProductsOrderedFilterService }
     }
 
     # Maps filters with their services
