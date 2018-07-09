@@ -24,6 +24,10 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        { cart_modified_date: 'Cart Modification Date' }
+      end
+
       def query
         user_collection.with_items_in_cart.
                     select("spree_users.*, DATE(MAX(spree_orders.updated_at)) as cart_modified_date").

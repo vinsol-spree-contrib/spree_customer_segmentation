@@ -23,6 +23,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "eq" && values == "0"
+          { average_quantity: 'Average Quantity' }
+        end
+      end
+
       def query
         user_collection.with_ordered_items.
                    select('spree_users.*, (SUM(spree_line_items.quantity)/COUNT(spree_orders.user_id)) as average_quantity').

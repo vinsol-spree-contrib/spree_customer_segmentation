@@ -24,6 +24,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "blank"
+          { first_order_date: 'First Order Date' }
+        end
+      end
+
       def query
         user_collection.with_complete_orders.
                     select("spree_users.*, DATE(MIN(spree_orders.completed_at)) as first_order_date").

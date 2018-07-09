@@ -7,7 +7,10 @@ module Spree
         @arranged_params = CustomerSegmentation::ArrangeParamsService.new(search_params).arrange
       end
 
-      @results = CustomerSegmentation::SearchService.new(@arranged_params).generate_segment.page(params[:page])
+      search_serivce = CustomerSegmentation::SearchService.new(@arranged_params)
+
+      @results = search_serivce.generate_segment.page(params[:page])
+      @dynamic_columns = search_serivce.get_dynamic_columns
     end
 
     private

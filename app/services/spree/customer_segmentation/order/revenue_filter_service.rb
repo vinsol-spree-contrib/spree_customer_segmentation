@@ -23,6 +23,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "eq" && values == "0"
+          { revenue: 'Revenue' }
+        end
+      end
+
       def query
         user_collection.with_complete_orders.
                     select('spree_users.*, SUM(spree_orders.total) as revenue').

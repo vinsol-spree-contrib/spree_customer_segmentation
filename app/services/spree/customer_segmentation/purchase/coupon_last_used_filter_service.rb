@@ -21,6 +21,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "blank"
+          { coupon_last_used: 'Coupon Last Used' }
+        end
+      end
+
       def query
         user_collection.used_a_coupon.
                         select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as coupon_last_used").

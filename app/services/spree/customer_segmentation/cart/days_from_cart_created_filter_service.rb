@@ -24,6 +24,10 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        { cart_created_date: 'Cart Creation Date' }
+      end
+
       def query
         user_collection.with_items_in_cart.
                     select("spree_users.*, DATE(MIN(spree_orders.created_at)) as cart_created_date").

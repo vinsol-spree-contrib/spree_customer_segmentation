@@ -147,7 +147,10 @@
   border-radius: 0;
   border-color: transparent !important;
 }
-
+.btn-shadow.disabled {
+  opacity: 1 !important;
+  cursor: default !important;
+}
 
 .filter-modal .modal-content {
   border-radius: 0;

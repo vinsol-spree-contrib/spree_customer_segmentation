@@ -23,6 +23,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "eq" && values == "0"
+          { number_of_items_in_cart: 'Number Of Items In Cart' }
+        end
+      end
+
       def query
         user_collection.with_items_in_cart.
                     select('spree_users.*, SUM(spree_line_items.quantity) as number_of_items_in_cart').

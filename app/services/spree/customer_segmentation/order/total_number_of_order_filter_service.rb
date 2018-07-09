@@ -23,6 +23,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "eq" && values == "0"
+          { order_count: 'Total Number Of Orders' }
+        end
+      end
+
       def query
         user_collection.with_complete_orders.
                     select('spree_users.*, COUNT(spree_orders.user_id) as order_count').

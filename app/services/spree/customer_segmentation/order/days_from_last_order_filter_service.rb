@@ -24,6 +24,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "blank"
+          { last_order_date: 'Last Order Date' }
+        end
+      end
+
       def query
         user_collection.with_complete_orders.
                     select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as last_order_date").

@@ -11,4 +11,8 @@ Spree::User.class_eval do
   self.whitelisted_ransackable_associations += %w(orders)
   self.whitelisted_ransackable_attributes += %w(sign_in_count last_active_session)
 
+  def user_since
+    created_at.strftime('%Y-%m-%d')
+  end
+
 end

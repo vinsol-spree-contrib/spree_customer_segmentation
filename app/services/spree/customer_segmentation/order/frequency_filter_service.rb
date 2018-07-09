@@ -23,6 +23,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "eq" && values == "0"
+          { order_frequency: 'Order Frequency' }
+        end
+      end
+
       def query
         current_date = current_utc_time.to_date
 

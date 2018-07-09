@@ -23,6 +23,12 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        unless operator == "eq" && values == "0"
+          { total_quantity: 'Total Quantity' }
+        end
+      end
+
       def query
         user_collection.with_ordered_items.
                    select('spree_users.*, SUM(spree_line_items.quantity) as total_quantity').
