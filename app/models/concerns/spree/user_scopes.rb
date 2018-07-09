@@ -43,7 +43,7 @@ module Spree
         joins(orders: [line_items: :product]).where("spree_products.created_at > ?", time_seven_days_ago).where(spree_orders: { completed_at: nil }).distinct
       end
 
-      def self.without_new_product_orders
+      def self.without_new_product_added_to_cart
         where.not(id: with_new_product_added_to_cart.pluck(:id))
       end
 

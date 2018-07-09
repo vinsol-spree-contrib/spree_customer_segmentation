@@ -55,6 +55,8 @@ module Spree
       products_ordered:                { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsOrderedFilterService },
       products_recently_added_to_cart: { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsRecentlyAddedToCartFilterService },
       products_recently_ordered:       { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::ProductsRecentlyOrderedFilterService },
+      new_products_added_to_cart:      { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::NewProductsAddedToCartFilterService },
+      new_products_ordered:            { metric_type: 'alphanumeric', operators: ADDRESS_OPERATORS, service: Product::NewProductsOrderedFilterService }
     }
 
     # Maps filters with their services
@@ -105,15 +107,12 @@ module Spree
       ],
 
       products: [
-        ['Products Viewed', :to_be_added],
         ['Products Added To Cart', :products_added_to_cart],
         ['Products Ordered', :products_ordered],
-        ['Products Recently Viewed', :to_be_added],
         ['Products Recently Added To Cart', :products_recently_added_to_cart],
         ['Products Recently Ordered', :products_recently_ordered],
-        ['New Products Viewed', :to_be_added],
-        ['New Products Added To Cart', :to_be_added],
-        ['New Products Ordered', :to_be_added]
+        ['New Products Added To Cart', :new_products_added_to_cart],
+        ['New Products Ordered', :new_products_ordered]
       ]
     }
 

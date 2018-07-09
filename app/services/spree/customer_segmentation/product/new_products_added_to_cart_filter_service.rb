@@ -21,16 +21,17 @@ module Spree
       end
 
       def new_products_added_to_cart_includes
-        user_collection.with_items_in_cart.where(spree_line_items: { variant_id: values }).distinct
+        user_collection.with_new_product_added_to_cart.where(spree_line_items: { variant_id: values }).distinct
       end
 
       def new_products_added_to_cart_not_includes
-        user_collection.with_items_in_cart.where.not(id: new_products_added_to_cart_includes.pluck(:id))
+        user_collection.with_new_product_added_to_cart.where.not(id: new_products_added_to_cart_includes.pluck(:id))
       end
 
       def new_products_added_to_cart_includes_all
-        user_collection.joins(orders: :line_items).
+        user_collection.joins(orders: [line_items: :product]).
                         select(select_query).
+                        where("spree_products.created_at > ?", (current_utc_time - 7.days)).
                         where(spree_orders: { completed_at: nil }).
                         where(spree_line_items: { variant_id: values }).
                         group('spree_users.id').
@@ -38,7 +39,7 @@ module Spree
       end
 
       def new_products_added_to_cart_blank
-        values ? user_collection.without_items_in_cart : user_collection.with_items_in_cart
+        values ? user_collection.without_new_product_added_to_cart : user_collection.with_new_product_added_to_cart
       end
 
       def select_query

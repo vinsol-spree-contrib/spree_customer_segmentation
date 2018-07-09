@@ -25,7 +25,7 @@ module Spree
       end
 
       def recently_ordered_not_includes
-        user_collection.where.not(id: recently_ordered_includes.pluck(:id))
+        user_collection.with_recent_orders.where.not(id: recently_ordered_includes.pluck(:id))
       end
 
       def recently_ordered_includes_all
