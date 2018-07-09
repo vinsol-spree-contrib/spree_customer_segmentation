@@ -1,83 +1,41 @@
-<div>
-  FOR TEST PURPOSES
-  <br />
-  <%= link_to 'First Name', '#', data: { name: 'filter', metric: 'user_firstname', text: 'First Name' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Last Name', '#', data: { name: 'filter', metric: 'user_lastname', text: 'Last Name' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Email', '#', data: { name: 'filter', metric: 'user_email', text: 'Email' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Contact Number', '#', data: { name: 'filter', metric: 'user_contact_number', text: 'Contact Number' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Days From Registration', '#', data: { name: 'filter', metric: 'user_days_from_registration', text: 'Days From Registration' }, class: 'btn btn-sm btn-primary' %>
-
-  <%= link_to 'Revenue', '#', data: { name: 'filter', metric: 'order_revenue', text: 'Revenue' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Days From First Order', '#', data: { name: 'filter', metric: 'days_from_first_order', text: 'Days From First Order' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Days From Last Order', '#', data: { name: 'filter', metric: 'days_from_last_order', text: 'Days From Last Order' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Total Quantity', '#', data: { name: 'filter', metric: 'order_quantity_total', text: 'Order Total Quantity' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Total Number Of Orders', '#', data: { name: 'filter', metric: 'total_number_of_order', text: 'Total Number Of Orders' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Quantity Average', '#', data: { name: 'filter', metric: 'order_quantity_average', text: 'Order Total Average' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Order Frequency', '#', data: { name: 'filter', metric: 'order_frequency', text: 'Order Frequency' }, class: 'btn btn-sm btn-primary' %>
-
-  <%= link_to 'Number Of Items In Cart', '#', data: { name: 'filter', metric: 'cart_number_of_items', text: 'Number Of Items in Cart' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Days From Cart Created', '#', data: { name: 'filter', metric: 'days_from_cart_created', text: 'Days From Cart Created' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Days From Cart Modified', '#', data: { name: 'filter', metric: 'days_from_cart_modified', text: 'Days From Cart Modified' }, class: 'btn btn-sm btn-primary' %>
-
-  <%= link_to 'Used a coupon?', '#', data: { name: 'filter', metric: 'purchase_coupon_applied', text: 'Used a coupon?' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Coupon Last Used', '#', data: { name: 'filter', metric: 'purchase_coupon_last_used', text: 'Coupon Not Used Since?' }, class: 'btn btn-sm btn-primary' %>
-
-  <%= link_to 'Number Of Sessions', '#', data: { name: 'filter', metric: 'number_of_session', text: 'Number Of Sessions' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Last Active Session', '#', data: { name: 'filter', metric: 'last_active_session', text: 'Last Active Session' }, class: 'btn btn-sm btn-primary' %>
-
-  <%= link_to 'Bill Address', '#', data: { name: 'filter', metric: 'bill_address', text: 'Bill Address' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Bill Address City', '#', data: { name: 'filter', metric: 'bill_address_city', text: 'Bill Address City' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Bill Address State', '#', data: { name: 'filter', metric: 'bill_address_state', text: 'Bill Address State' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Bill Address Zipcode', '#', data: { name: 'filter', metric: 'bill_address_zipcode', text: 'Bill Address Zipcode' }, class: 'btn btn-sm btn-primary' %>
-
-  <%= link_to 'Ship Address', '#', data: { name: 'filter', metric: 'ship_address', text: 'Ship Address' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Ship Address City', '#', data: { name: 'filter', metric: 'ship_address_city', text: 'Ship Address City' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Ship Address State', '#', data: { name: 'filter', metric: 'ship_address_state', text: 'Ship Address State' }, class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Ship Address Zipcode', '#', data: { name: 'filter', metric: 'ship_address_zipcode', text: 'Ship Address Zipcode' }, class: 'btn btn-sm btn-primary' %>
-
-</div>
-<hr />
-<hr />
+<!-- Modal -->
+<%= render partial: 'modal' %>
 
 <%= form_tag admin_customer_segmentation_index_path, method: :get do %>
-  <div class="row" data-hook="filters">
+  <div class="filters_area" data-name="filters_area">
+    <!-- ADD ALL FILTERS HERE -->
+
+    <!-- For animated button:: remove only-row, add span class 'add_filter_text' -->
+    <div class="filter_row only-row" data-name="filter_button">
+      <div class="filter_column filter_column4">
+        <a href="#" class="btn btn-block btn-shadow btn-default add_filter_button" data-toggle="modal" data-target="#filter_modal"><i class="glyphicon glyphicon-plus p-r-0"></i><span data-name="filter_button_text"> &nbsp; Add filter </span></a>
+      </div>
+    </div>
   </div>
 
   <div>
-    <div>
-      <%= submit_tag :search %>
-    </div>
-  </div>
-
-  <hr />
-
-  <div data-hook="users_list"></div>
-
-  <% if @results.present? %>
-    <%= render partial: 'users', locals: { results: @results } %>
-  <% else %>
-    <div class="alert alert-info no-objects-found">
-      <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::User)) %>
-    </div>
-  <% end %>
-
-  <!-- pass all options as a hash -->
-  <span data-name="filter_operator_list" data-value="<%= Spree::CustomerSegmentation::FILTERS.to_json %>"> </span>
-
-  <div class="hidden">
-
-    <div data-name="filter-row">
-      <div class="col-md-3" data-hook="metric">
-        <span data-name="metric-value"></span>
-      </div>
-
-      <div class="col-md-3" data-hook="operator">
-      </div>
-
-      <div class="col-md-3" data-hook="value">
-      </div>
-    </div>
-
+    <%= submit_tag 'Search', class: 'btn btn-info btn-sm' %>
   </div>
 
 <% end %>
+
+<hr />
+
+<% if @results.present? %>
+  <%= render partial: 'users', locals: { results: @results } %>
+<% else %>
+  <div class="alert alert-info no-objects-found">
+    <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::User)) %>
+  </div>
+<% end %>
+
+<!-- pass all options as a hash -->
+<span data-name="filter_operator_list" data-value="<%= Spree::CustomerSegmentation::FILTERS_MAPPER.to_json %>"> </span>
+
+<span data-name="applied_filters" data-value="<%= @search_params.to_json %>"> </span>
+
+<!-- Filter structure hidden -->
+<div class="hidden">
+  <%= render partial: 'filter_template' %>
+  <%= render partial: 'value_options' %>
+</div>
