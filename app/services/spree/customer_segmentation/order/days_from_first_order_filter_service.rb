@@ -55,19 +55,20 @@ module Spree
       end
 
       def days_from_first_order_between
-        first_date  = (Time.current.utc - values[0].to_i.days).to_date
-        second_date = (Time.current.utc - values[1].to_i.days).to_date
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
+
+        first_date  = (current_utc_time - values[0].to_i.days).to_date
+        second_date = (current_utc_time - values[1].to_i.days).to_date
 
         query.having("first_order_date >= ? AND first_order_date <= ?", second_date, first_date)
       end
 
       def days_from_first_order_blank
-        choice = ActiveModel::Type::Boolean.new.cast(values) # convert string to boolean, move to process params!!
-        choice ? user_collection.without_complete_orders : user_collection.with_complete_orders
+        values ? user_collection.without_complete_orders : user_collection.with_complete_orders
       end
 
       def required_date
-        required_date = (Time.current.utc - values.to_i.days).to_date
+        required_date = (current_utc_time - values.to_i.days).to_date
       end
 
     end

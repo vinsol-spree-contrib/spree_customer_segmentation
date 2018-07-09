@@ -24,7 +24,7 @@ module Spree
       end
 
       def query
-        current_date = Time.current.utc.to_date
+        current_date = current_utc_time.to_date
 
         user_collection.with_complete_orders.
                     select("spree_users.*, (COUNT(spree_orders.user_id)*30)/(DATEDIFF('#{current_date}', spree_users.created_at) + 1) as order_frequency").
@@ -48,7 +48,7 @@ module Spree
       end
 
       def order_frequency_eq
-        if values.to_i == 0
+        if values == "0"
           user_collection.without_complete_orders
         else
           query.having("order_frequency = ?", values)
@@ -60,6 +60,8 @@ module Spree
       end
 
       def order_frequency_between
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
+
         query.having("order_frequency >= ? AND order_frequency <= ?", values[0], values[1])
       end
 

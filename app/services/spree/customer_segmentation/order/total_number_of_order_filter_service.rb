@@ -46,7 +46,7 @@ module Spree
       end
 
       def total_number_of_order_eq
-        if values.to_i == 0
+        if values == "0"
           user_collection.without_complete_orders
         else
           query.having("order_count = ?", values)
@@ -58,6 +58,8 @@ module Spree
       end
 
       def total_number_of_order_between
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
+
         query.having("order_count >= ? AND order_count <= ?", values[0], values[1])
       end
 

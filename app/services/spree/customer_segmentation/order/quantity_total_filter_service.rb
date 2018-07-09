@@ -24,8 +24,7 @@ module Spree
       end
 
       def query
-        user_collection.joins(orders: :line_items).
-                   merge(Spree::Order.complete).
+        user_collection.with_ordered_items.
                    select('spree_users.*, SUM(spree_line_items.quantity) as total_quantity').
                    group('spree_orders.user_id').distinct
       end
@@ -47,7 +46,7 @@ module Spree
       end
 
       def total_quantity_eq
-        if values.to_i == 0
+        if values == "0"
           user_collection.without_complete_orders
         else
           query.having("total_quantity = ?", values)
@@ -59,6 +58,8 @@ module Spree
       end
 
       def total_quantity_between
+        return ::Spree::User.none if (values[0].nil? || values[1].nil?)
+
         query.having("total_quantity >= ? AND total_quantity <= ?", values[0], values[1])
       end
 
