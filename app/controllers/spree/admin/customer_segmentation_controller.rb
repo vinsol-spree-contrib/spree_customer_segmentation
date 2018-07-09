@@ -32,12 +32,20 @@ module Spree
         arranged_params = @search_params.clone
 
         arranged_params.each do |filter|
-          if filter[:metric].include?('product') || filter[:operator] == "blank" || filter[:operator] == "equals" || (filter[:operator] == "eq" && filter[:value] == "0")
+          if needs_to_be_processed_first?(filter)
             arranged_params.insert(0, arranged_params.delete(filter))
           end
         end
 
         arranged_params
+      end
+
+      # The filters which returns only a scope, or uses NOT operator needs to be processed first
+      def needs_to_be_processed_first?(filter)
+        (filter[:metric].include?('product') && filter[:operator] == "not_includes") ||
+        filter[:operator] == "blank" ||
+        filter[:operator] == "equals" ||
+        (filter[:operator] == "eq" && filter[:value] == "0")
       end
 
   end
