@@ -6,18 +6,18 @@
       <th> First Name </th>
       <th> Last Name </th>
       <th> Email </th>
-      <th> Current Address </th>
+      <th> Billing Address </th>
       <th> Contact Number </th>
     </tr>
   </thead>
   <tbody>
   <% results.each do |result| %>
     <tr data-hook="admin_filtered_users_rows">
-      <td> <%= result.firstname %> </td>
-      <td> <%= result.lastname %> </td>
-      <td> <%= result.email %> </td>
-      <td> <%= result.full_address %> </td>
-      <td> <%= result.phone %> </td>
+      <td> <%= display_data(result.firstname) %> </td>
+      <td> <%= display_data(result.lastname) %> </td>
+      <td> <%= display_data(result.email) %> </td>
+      <td> <%= display_data(result.full_address) %> </td>
+      <td> <%= display_data(result.phone) %> </td>
     </tr>
   <% end %>
   </tbody>

@@ -1,7 +1,7 @@
 <!-- Modal -->
 <%= render partial: 'modal' %>
 
-<%= form_tag admin_customer_segmentation_index_path, method: :get do %>
+<%= form_tag admin_customer_segmentation_index_path, method: :get, data: { name: 'filter_form' } do %>
   <div class="filters_area" data-name="filters_area">
     <!-- ADD ALL FILTERS HERE -->
 
@@ -14,7 +14,9 @@
   </div>
 
   <div>
-    <%= submit_tag 'Search', class: 'btn btn-info btn-sm' %>
+    <%= button_tag type: 'submit', class: 'btn btn-info btn-md' do %>
+      <span class="icon icon-search"></span> Search
+    <% end %>
   </div>
 
 <% end %>

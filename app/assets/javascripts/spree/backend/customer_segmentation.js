@@ -13,6 +13,7 @@ function CustomerSegmentation(options) {
   this.$hiddenValue       = options.$hiddenValue;
   this.$appliedFilters    = options.$appliedFilters;
   this.$filterTemplate    = options.$filterTemplate;
+  this.$filterForm        = options.$filterForm;
   this.removeFilterButton = options.removeFilterButton;
   this.availableFilters   = options.$availableFilters.data('value');
   this.metric             = options.metric;
@@ -30,11 +31,60 @@ CustomerSegmentation.prototype.initialize = function() {
   this.rebuildSelectedFilters(); // previous filters
 }
 
+CustomerSegmentation.prototype.numberRegex = /^(\d)*(\.)?(\d)+$/;
+
+CustomerSegmentation.prototype.dateRegex = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/; // YYYY-MM-DD
+
 CustomerSegmentation.prototype.bindEvents = function() {
+  this.$filterForm.on('submit', this.ensureValidData());
   this.$categories.on('mouseenter', this.handleCategorySelection()); // When admin changes category inside modal
   this.$filters.on('click', this.addFilter()); // When filter is selected
   this.$filterArea.on('click', this.removeFilterButton, this.removeFilter()); // Delegate filter removal event
   this.$filterArea.on('change', this.operator, this.handleOperatorChange()); // Delegate operator change event
+}
+
+CustomerSegmentation.prototype.ensureValidData = function() {
+  var _this = this;
+
+  return function() {
+    var isValidData = _this.validateData();
+
+    if(!isValidData) {
+      event.preventDefault();
+    }
+  }
+}
+
+CustomerSegmentation.prototype.validateData = function() {
+  var $filters = this.$filterArea.find(this.filterRow);
+      _this = this,
+      isValidData = true;
+
+  $.each($filters, function() {
+    var $this = $(this),
+        metric = $this.find(_this.metric).data('metric'),
+        fieldDataType = _this.availableFilters[metric]['metric_type'],
+        $input = $this.find(_this.input),
+        value = $input.val();
+
+    if((value.trim().length == 0) || !(_this.checkDataFormat(value, fieldDataType))) {
+      isValidData = false;
+      alert('Enter valid data');
+      return false;
+    }
+  })
+
+  return isValidData;
+}
+
+CustomerSegmentation.prototype.checkDataFormat = function(value, fieldDataType) {
+  if(fieldDataType == "numeric") {
+    return this.numberRegex.test(value);
+  } else if(fieldDataType == "date") {
+    return this.dateRegex.test(value);
+  }
+
+  return true;
 }
 
 CustomerSegmentation.prototype.handleCategorySelection = function() {
@@ -87,7 +137,6 @@ CustomerSegmentation.prototype.buildFilter = function($selectedFilter) {
 }
 
 CustomerSegmentation.prototype.addFilterElements = function($selectedFilter) {
-
   this.addFilterMetric($selectedFilter);
   this.addFilterOperators($selectedFilter);
   this.addFilterValues($selectedFilter);
@@ -142,33 +191,54 @@ CustomerSegmentation.prototype.handleOperatorChange = function() {
 }
 
 CustomerSegmentation.prototype.updateFilterValueInput = function() {
+  this.setValuesInput();
+  this.addNameToValueInput();
+  this.addPlaceHolder();
+}
+
+CustomerSegmentation.prototype.setValuesInput = function() {
   var operator = this.selectedOperator,
       category = this.selectedCategory,
       metric   = this.selectedMetric,
       $input   = this.$currentFilter.find(this.values);
 
   if(category == "products") {
-    if(operator == "blank") {
-      this.createLogicalOperators();
-    } else if(metric.indexOf('viewed') != -1) {
-      this.showProducts();
-    } else {
-      this.showVariants();
-    }
-
+    this.updateProductFilterValueInputs(metric);
   } else {
-    if(operator == "between") {
-      $input.html(this.$betweenValue.clone());
-    } else if(operator == "equals" || operator == "blank" ) {
-       this.createLogicalOperators();
-    } else if(operator == "includes" || operator == "not_includes" || operator == "includes_all") {
-      this.enableTagInputs();
-    } else {
-      $input.html(this.$textValue.clone());
-    }
+    this.updateNonProductValueInputs(operator, $input);
+  }
+}
+
+CustomerSegmentation.prototype.updateProductFilterValueInputs = function(metric) {
+  if(metric.indexOf('viewed') != -1) {
+    this.showVariants();
+  } else {
+    this.showProducts();
+  }
+}
+
+CustomerSegmentation.prototype.updateNonProductValueInputs = function(operator, $input) {
+  if(operator == "between") {
+    $input.html(this.$betweenValue.clone());
+  } else if(operator == "equals" || operator == "blank" ) {
+     this.createLogicalOperators();
+  } else if(operator == "includes" || operator == "not_includes" || operator == "includes_all") {
+    this.enableTagInputs();
+  } else {
+    $input.html(this.$textValue.clone());
+  }
+}
+
+CustomerSegmentation.prototype.addPlaceHolder = function() {
+  var $values = this.$currentFilter.find(this.input);
+
+  if(this.selectedMetricDataType == "numeric") {
+    $values.attr('placeholder', 'Enter number (eg 5)');
+
+  } else if (this.selectedMetricDataType == "date") {
+    $values.attr('placeholder', 'YYYY-MM-DD');
   }
 
-  this.addNameToValueInput();
 }
 
 CustomerSegmentation.prototype.showProducts = function() {
@@ -184,7 +254,7 @@ CustomerSegmentation.prototype.showVariants = function() {
 }
 
 CustomerSegmentation.prototype.addNameToValueInput = function() {
-  $values = this.$currentFilter.find(this.input);
+  var $values = this.$currentFilter.find(this.input);
   $values.attr('name', $values.attr('name').replace('metric', this.selectedMetric));
   $values.attr('name', $values.attr('name').replace('operator', this.selectedOperator));
 }
@@ -209,8 +279,8 @@ CustomerSegmentation.prototype.enableTagging = function($input) {
     formatNoMatches: function() {
         return '';
     },
-    placeholder: 'Please press enter for multiple inputs'
-  })
+    placeholder: 'Press enter for multiple inputs'
+  });
 }
 
 CustomerSegmentation.prototype.animateFilterButton = function() {
@@ -287,6 +357,7 @@ $(function() {
     $hiddenValue:       $('[data-value="hidden"]'),
     $filterArea:        $('[data-name="filters_area"]'),
     $appliedFilters:    $('[data-name="applied_filters"]'),
+    $filterForm:        $('[data-name="filter_form"]'),
     removeFilterButton: '[data-name="remove_filter"]',
     metric:             '[data-name="metric"]',
     operator:           '[data-name="operator"]',
