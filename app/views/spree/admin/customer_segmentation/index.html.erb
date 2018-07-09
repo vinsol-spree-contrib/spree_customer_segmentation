@@ -10,14 +10,15 @@
       <div class="filter_column filter_column4">
         <a href="#" class="btn btn-block btn-shadow btn-default add_filter_button" data-toggle="modal" data-target="#filter_modal"><i class="glyphicon glyphicon-plus p-r-0"></i><span data-name="filter_button_text"> &nbsp; Add filter </span></a>
       </div>
+      <div>
+        <%= button_tag type: 'submit', class: 'btn btn-info btn-shadow' do %>
+          <span class="icon icon-search"></span> Search
+        <% end %>
+      </div>
     </div>
   </div>
 
-  <div>
-    <%= button_tag type: 'submit', class: 'btn btn-info btn-md' do %>
-      <span class="icon icon-search"></span> Search
-    <% end %>
-  </div>
+
 
 <% end %>
 

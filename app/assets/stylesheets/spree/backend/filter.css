@@ -107,11 +107,9 @@
 }
 
 .filter_column_hover_visible {
-  opacity: 0;
-}
-.filter_row:hover .filter_column_hover_visible{
   opacity: 1;
 }
+
 
 
 .add_filter_button .add_filter_text {
@@ -256,6 +254,7 @@
 .custom_select.select2-container .select2-choice .select2-chosen {
   width: calc(100% - 12px - 18px);
   position: relative;
+  text-align: center;
 }
 .custom_select.select2-container .select2-choice .select2-chosen:after {
   content: "";
