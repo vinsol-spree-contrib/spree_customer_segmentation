@@ -211,9 +211,9 @@ CustomerSegmentation.prototype.setValuesInput = function() {
 
 CustomerSegmentation.prototype.updateProductFilterValueInputs = function(metric) {
   if(metric.indexOf('viewed') != -1) {
-    this.showVariants();
-  } else {
     this.showProducts();
+  } else {
+    this.showVariants();
   }
 }
 
