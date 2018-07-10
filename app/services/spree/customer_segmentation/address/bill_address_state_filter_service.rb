@@ -19,6 +19,10 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        { bill_address_state: 'Bill Address State' }
+      end
+
     end
   end
 end

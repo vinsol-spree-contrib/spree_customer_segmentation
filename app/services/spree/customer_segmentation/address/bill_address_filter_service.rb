@@ -20,8 +20,7 @@ module Spree
       end
 
       def query
-        user_collection.joins(orders: [bill_address: [:state, :country]]).
-                        where(spree_orders: { state: 'complete' })
+        user_collection.joins(bill_address: [:state, :country])
       end
 
       def bill_address_contain
@@ -29,7 +28,7 @@ module Spree
       end
 
       def bill_address_does_not_contain
-        user_collection.where.not(id: bill_address_contain.pluck(:id))
+        query.where("#{concatenated_address} NOT LIKE ?", "%#{values}%").distinct
       end
 
       def concatenated_address

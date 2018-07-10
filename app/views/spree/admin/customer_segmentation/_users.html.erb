@@ -19,7 +19,7 @@
       <td> <%= display_data(result.firstname) %> </td>
       <td> <%= display_data(result.lastname) %> </td>
       <td> <%= link_to result.email, edit_admin_user_path(result.id), target: :_blank %> </td>
-      <td> <%= display_data(result.full_address) %> </td>
+      <td> <%= display_data(result.full_bill_address) %> </td>
       <td> <%= display_data(result.phone) %> </td>
       <% @dynamic_columns.each do |column| %>
         <td> <%= display_data(result.try(column.keys.first)) %> </td>

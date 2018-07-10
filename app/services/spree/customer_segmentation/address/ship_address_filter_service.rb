@@ -20,8 +20,7 @@ module Spree
       end
 
       def query
-        user_collection.joins(orders: [ship_address: [:state, :country]]).
-                        where(spree_orders: { state: 'complete' })
+        user_collection.joins(ship_address: [:state, :country])
       end
 
       def ship_address_contain
@@ -29,11 +28,15 @@ module Spree
       end
 
       def ship_address_does_not_contain
-        user_collection.where.not(id: ship_address_contain.pluck(:id))
+        query.where("#{concatenated_address} NOT LIKE ?", "%#{values}%" ).distinct
       end
 
       def concatenated_address
         "CONCAT(spree_addresses.address1, ' ', spree_addresses.address2, ' ', spree_addresses.city, ' ', spree_states.name, ' ', spree_countries.name, ' ', spree_addresses.zipcode)"
+      end
+
+      def dynamic_column
+        { full_ship_address: 'Shipping Address' }
       end
 
     end

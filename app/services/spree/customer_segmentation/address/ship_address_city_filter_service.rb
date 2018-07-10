@@ -19,6 +19,10 @@ module Spree
         perform
       end
 
+      def dynamic_column
+        { ship_address_city: 'Ship Address City' }
+      end
+
     end
   end
 end
