@@ -18,7 +18,7 @@ module Spree
       end
 
       def dynamic_column
-        { last_sign_in_at: 'Last Active Session' }
+        { last_active_session: 'Last Active Session' }
       end
 
       def filter_data
