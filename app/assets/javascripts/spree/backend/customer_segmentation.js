@@ -14,6 +14,7 @@ function CustomerSegmentation(options) {
   this.$appliedFilters    = options.$appliedFilters;
   this.$filterTemplate    = options.$filterTemplate;
   this.$filterForm        = options.$filterForm;
+  this.$searchButton      = options.$searchButton;
   this.removeFilterButton = options.removeFilterButton;
   this.availableFilters   = options.$availableFilters.data('value');
   this.metric             = options.metric;
@@ -25,6 +26,7 @@ function CustomerSegmentation(options) {
 
 CustomerSegmentation.prototype.initialize = function() {
   this.currentlyAppliedFilters = []; // store all applied filters
+  this.$searchButton.hide(); // hide initially
   this.bindEvents();
 
   this.$categories.first().trigger('mouseenter'); // Select the first category inside modal
@@ -126,6 +128,7 @@ CustomerSegmentation.prototype.addFilter = function() {
     // If filter is not applied already
     if (_this.currentlyAppliedFilters.indexOf(metric) == -1) {
       _this.buildFilter($selectedFilter);
+      _this.$searchButton.show();
       _this.animateFilterButton();
 
       _this.currentlyAppliedFilters.push(metric);
@@ -304,6 +307,7 @@ CustomerSegmentation.prototype.removeFilter = function() {
 
     if(_this.$filterArea.find(_this.filterRow).length == 0) {
       _this.removeFilterButtonAnimation();
+      _this.$searchButton.click().hide(); // refresh page
     }
   }
 }
@@ -363,6 +367,7 @@ $(function() {
     $filterArea:        $('[data-name="filters_area"]'),
     $appliedFilters:    $('[data-name="applied_filters"]'),
     $filterForm:        $('[data-name="filter_form"]'),
+    $searchButton:      $('[data-name="search_button"]'),
     removeFilterButton: '[data-name="remove_filter"]',
     metric:             '[data-name="metric"]',
     operator:           '[data-name="operator"]',

@@ -11,14 +11,12 @@
         <a href="#" class="btn btn-block btn-shadow btn-default add_filter_button" data-toggle="modal" data-target="#filter_modal"><i class="glyphicon glyphicon-plus p-r-0"></i><span data-name="filter_button_text"> &nbsp; Add filter </span></a>
       </div>
       <div>
-        <%= button_tag type: 'submit', class: 'btn btn-info btn-shadow' do %>
+        <%= button_tag type: 'submit', class: 'btn btn-info btn-shadow', data: { name: 'search_button' } do %>
           <span class="icon icon-search"></span> Search
         <% end %>
       </div>
     </div>
   </div>
-
-
 
 <% end %>
 
@@ -49,8 +47,5 @@
   <u>Note:</u>
   <p>
     1. Orders based filters work for only those users who have placed an order. [ equals to 0 is treated a special case. ]
-  </p>
-  <p>
-    2. We search through all the addresses, but only show the current address.
   </p>
 </div>

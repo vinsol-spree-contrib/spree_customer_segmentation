@@ -6,13 +6,14 @@ module Spree
     MATCH_OPERATORS =                 { contains: 'contains', does_not_contain: 'does not contain' }
     MATCH_OPERATORS_WITH_BLANK =      { contains: 'contains', does_not_contain: 'does not contain', blank: 'blank' }
 
-    RELATIONAL_OPERATORS =            { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=' }
-    RELATIONAL_OPERATORS_WITH_BLANK = { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: '!=', lt: '<', lt_eq: '<=', blank: 'blank' }
+    RELATIONAL_OPERATORS =            { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: 'not equals to', lt: '<', lt_eq: '<=' }
+    RELATIONAL_OPERATORS_WITH_BLANK = { gt_eq: '>=', gt: '>', between: 'between', eq: '=', not_eq: 'not equals to', lt: '<', lt_eq: '<=', blank: 'blank' }
 
     LOGICAL_OPERATORS = { equals: 'equals' }
     DATE_OPERATORS =    { before: 'before', after: 'after', eq: 'equals', between: 'between', blank: 'blank' }
 
-    MULTIPLE_OPERATORS = { includes: 'includes', not_includes: 'does not include', includes_all: 'includes all', blank: 'blank' }
+    MULTIPLE_OPERATORS = { includes: 'includes(OR)', not_includes: 'does not include', blank: 'blank' }
+    MULTIPLE_OPERATORS_WITH_INCLUDES_ALL = { includes: 'includes(OR)', not_includes: 'does not include', includes_all: 'includes all(AND)', blank: 'blank' }
 
     # Map services with operators available, and type of metric
     FILTERS_MAPPER = {
@@ -50,12 +51,12 @@ module Spree
       ship_address_zipcode: { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Address::ShipAddressZipcodeFilterService },
       ship_address:         { metric_type: 'alphanumeric', operators: MATCH_OPERATORS_WITH_BLANK, service: Address::ShipAddressFilterService },
 
-      products_added_to_cart:          { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsAddedToCartFilterService },
-      products_ordered:                { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsOrderedFilterService },
-      products_recently_added_to_cart: { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsRecentlyAddedToCartFilterService },
-      products_recently_ordered:       { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::ProductsRecentlyOrderedFilterService },
-      new_products_added_to_cart:      { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::NewProductsAddedToCartFilterService },
-      new_products_ordered:            { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS, service: Product::NewProductsOrderedFilterService }
+      products_added_to_cart:          { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS_WITH_INCLUDES_ALL, service: Product::ProductsAddedToCartFilterService },
+      products_ordered:                { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS_WITH_INCLUDES_ALL, service: Product::ProductsOrderedFilterService },
+      products_recently_added_to_cart: { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS_WITH_INCLUDES_ALL, service: Product::ProductsRecentlyAddedToCartFilterService },
+      products_recently_ordered:       { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS_WITH_INCLUDES_ALL, service: Product::ProductsRecentlyOrderedFilterService },
+      new_products_added_to_cart:      { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS_WITH_INCLUDES_ALL, service: Product::NewProductsAddedToCartFilterService },
+      new_products_ordered:            { metric_type: 'alphanumeric', operators: MULTIPLE_OPERATORS_WITH_INCLUDES_ALL, service: Product::NewProductsOrderedFilterService }
     }
 
     # Maps filters with their services
