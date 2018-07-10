@@ -7,3 +7,10 @@ en:
     segments: Segments
     tab_heading: User Segmentation
     view_segments: View All Segments
+    save: Save
+    segment_saved_successfully: Segment has been saved successfully
+    my_segments: My Segments
+    you_have_not_saved_any_segments_yet: You have not saved any segments yet
+    segment_name: Segment Name
+    created_on: Created On
+    view_segment: View Segment

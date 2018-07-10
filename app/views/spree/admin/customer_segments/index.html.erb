@@ -1,1 +1,27 @@
-<%= @customer_segments.count %>
+<div>
+  <h3><%= Spree.t(:my_segments) %></h3>
+  <% if @customer_segments.empty? %>
+    <div class="alert alert-info no-objects-found">
+      <%= Spree.t(:you_have_not_saved_any_segments_yet) %>
+    </div>
+  <% else %>
+    <table class="table table-striped" width="100%">
+      <thead>
+      <tr>
+        <th><%= Spree.t(:segment_name) %></th>
+        <th><%= Spree.t(:created_on) %></th>
+        <th class="text-right"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @customer_segments.each do |segment| %>
+        <tr class="<%= cycle('even', 'odd') %>">
+          <td><%= segment.name.capitalize %></td>
+          <td><%= segment.created_at.strftime('%Y-%m-%d') %></td>
+          <td><%= link_to Spree.t(:view_segment), segment.filters, class: 'btn btn-success', target: :_blank %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

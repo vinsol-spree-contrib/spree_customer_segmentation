@@ -1,0 +1,20 @@
+<div class="modal fade" id="save_segment_modal" tabindex="-1" role="dialog" aria-labelledby="saveSegmentModalLabel" data-name="filter_modal">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="saveSegmentModalLabel"> Save Segment </h4>
+      </div>
+
+      <div class="modal-body no-padding">
+        <div class="filter-modal-menu">
+          <%= form_tag admin_customer_segments_path, method: :post do %>
+            <%= text_field_tag :name, nil, placeholder: 'Enter Segment Name', required: true %>
+            <%= hidden_field_tag :filters, request.url, data: { name: 'segment_filters' } %>
+            <%= submit_tag 'Save', class: 'btn btn-info btn-sm' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

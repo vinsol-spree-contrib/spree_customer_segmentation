@@ -17,6 +17,18 @@ module Spree
       @dynamic_columns = search_serivce.get_dynamic_columns
     end
 
+    def create
+      @customer_segment = CustomerSegment.new(segment_params)
+
+      if @customer_segment.save
+        flash[:notice] = Spree.t(:segment_saved_successfully)
+      else
+        flash[:error] = @customer_segment.errors.full_messages.join("\n")
+      end
+
+      redirect_to @customer_segment.filters.presence || filter_admin_customer_segments_path
+    end
+
     private
 
       def search_params
@@ -33,6 +45,14 @@ module Spree
 
       def process_params(operator, value)
         CustomerSegmentation::ProcessParamsService.new(operator,value).process
+      end
+
+      def segment_params
+        {
+          name: params[:name],
+          filters: params[:filters],
+          user_id: spree_current_user.id
+        }
       end
 
   end

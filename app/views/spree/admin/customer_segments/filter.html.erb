@@ -1,7 +1,7 @@
 <!-- Modal -->
 <%= render partial: 'modal' %>
 
-<%= form_tag filter_admin_customer_segments_path, method: :get, data: { name: 'filter_form' } do %>
+<%= form_tag filter_admin_customer_segments_path, method: :get, data: { name: 'filter_form' }, name: 'filter_form' do %>
   <div class="filters_area" data-name="filters_area">
     <!-- ADD ALL FILTERS HERE -->
 
@@ -19,6 +19,14 @@
   </div>
 
 <% end %>
+
+<div>
+  <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' } do %>
+    <span class="btn btn-shadow btn-info glyphicon glyphicon-floppy-disk"> <%= Spree.t(:save) %> </span>
+  <% end %>
+</div>
+
+<%= render partial: 'save_segment_modal' %>
 
 <% if @results.present? %>
   <%= render partial: 'users', locals: { results: @results } %>
