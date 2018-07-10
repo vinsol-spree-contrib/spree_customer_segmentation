@@ -1,7 +1,11 @@
 module Spree
-  class Admin::CustomerSegmentationController < Admin::BaseController
+  class Admin::CustomerSegmentsController < Admin::BaseController
 
     def index
+      @customer_segments = spree_current_user.customer_segments
+    end
+
+    def filter
       if params[:q].present?
         @search_params = search_params
         @arranged_params = CustomerSegmentation::ArrangeParamsService.new(search_params).arrange

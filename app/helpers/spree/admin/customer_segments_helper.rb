@@ -1,6 +1,6 @@
 module Spree
   module Admin
-    module CustomerSegmentationHelper
+    module CustomerSegmentsHelper
 
       def display_data(data)
         data.presence || 'NA'
