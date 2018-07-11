@@ -15,6 +15,14 @@ module Spree
 
       @results = search_serivce.generate_segment.page(params[:page])
       @dynamic_columns = search_serivce.get_dynamic_columns
+
+      respond_to do |format|
+        format.html
+        format.csv do
+          ::Spree::CustomerSegmentation::CsvExporterService.new(@results.per(@results.total_count), @dynamic_columns, spree_current_user.email).export
+          redirect_to filter_admin_customer_segments_path
+        end
+      end
     end
 
     def create

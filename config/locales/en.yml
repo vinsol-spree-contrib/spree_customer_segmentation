@@ -14,3 +14,6 @@ en:
     segment_name: Segment Name
     created_on: Created On
     view_segment: View Segment
+    export: Export
+    customer_segmentation_mailer:
+      subject: Csv Of Users Filtered

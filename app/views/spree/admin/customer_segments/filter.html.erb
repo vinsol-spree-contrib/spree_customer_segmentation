@@ -24,6 +24,11 @@
   <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' } do %>
     <span class="btn btn-shadow btn-info glyphicon glyphicon-floppy-disk"> <%= Spree.t(:save) %> </span>
   <% end %>
+
+  <%= link_to "#{request.url}.csv" do %>
+    <span class="btn btn-shadow btn-info glyphicon glyphicon-export"> <%= Spree.t(:export) %> </span>
+  <% end %>
+
 </div>
 
 <%= render partial: 'save_segment_modal' %>
