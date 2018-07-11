@@ -31,7 +31,7 @@ module Spree
         def query
           user_collection.used_a_coupon.
                           group('spree_users.id').
-                          select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as coupon_last_used").
+                          select("spree_users.*, #{select_query} as coupon_last_used").
                           group('spree_orders.user_id').distinct
         end
 
@@ -39,7 +39,7 @@ module Spree
           required_date = convert_to_date(values)
 
           if required_date
-            query.having("DATE(MAX(spree_orders.completed_at)) < ?", required_date)
+            query.having("#{select_query} < ?", required_date)
           else
             ::Spree::User.none
           end
@@ -48,7 +48,7 @@ module Spree
         def coupon_last_used_after
           required_date = convert_to_date(values)
           if required_date
-            query.having("DATE(MAX(spree_orders.completed_at)) > ?", required_date)
+            query.having("#{select_query} > ?", required_date)
           else
             ::Spree::User.none
           end
@@ -57,7 +57,7 @@ module Spree
         def coupon_last_used_eq
           required_date = convert_to_date(values)
           if required_date
-            query.having("DATE(MAX(spree_orders.completed_at)) = ?", required_date)
+            query.having("#{select_query} = ?", required_date)
           else
             ::Spree::User.none
           end
@@ -69,7 +69,7 @@ module Spree
           required_date2 = convert_to_date(values[1])
 
           if required_date1 && required_date2
-            query.having("DATE(MAX(spree_orders.completed_at)) >= ? AND DATE(MAX(spree_orders.completed_at)) <= ?", required_date1, required_date2)
+            query.having("#{select_query} >= ? AND #{select_query} <= ?", required_date1, required_date2)
           else
             ::Spree::User.none
           end
@@ -86,6 +86,10 @@ module Spree
           rescue ArgumentError
             false
           end
+        end
+
+        def select_query
+          "DATE(MAX(spree_orders.completed_at))"
         end
 
       end

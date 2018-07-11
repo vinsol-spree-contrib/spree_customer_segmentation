@@ -33,42 +33,46 @@ module Spree
         def query
           user_collection.with_complete_orders.
                       group('spree_users.id').
-                      select('spree_users.*, COUNT(spree_orders.user_id) as order_count').
+                      select("spree_users.*, #{select_query} as order_count").
                       group('spree_orders.user_id').distinct
         end
 
         def total_number_of_order_gteq
-          query.having("COUNT(spree_orders.user_id) >= ?", values)
+          query.having("#{select_query} >= ?", values)
         end
 
         def total_number_of_order_gt
-          query.having("COUNT(spree_orders.user_id) > ?", values)
+          query.having("#{select_query} > ?", values)
         end
 
         def total_number_of_order_lt
-          query.having("COUNT(spree_orders.user_id) < ?", values)
+          query.having("#{select_query} < ?", values)
         end
 
         def total_number_of_order_lteq
-          query.having("COUNT(spree_orders.user_id) <= ?", values)
+          query.having("#{select_query} <= ?", values)
         end
 
         def total_number_of_order_eq
           if values == "0"
             user_collection.without_complete_orders
           else
-            query.having("COUNT(spree_orders.user_id) = ?", values)
+            query.having("#{select_query} = ?", values)
           end
         end
 
         def total_number_of_order_not_eq
-          query.having("COUNT(spree_orders.user_id) != ?", values)
+          query.having("#{select_query} != ?", values)
         end
 
         def total_number_of_order_between
           return ::Spree::User.none if (values[0].nil? || values[1].nil?)
 
-          query.having("COUNT(spree_orders.user_id) >= ? AND COUNT(spree_orders.user_id) <= ?", values[0], values[1])
+          query.having("#{select_query} >= ? AND #{select_query} <= ?", values[0], values[1])
+        end
+
+        def select_query
+          "COUNT(spree_orders.user_id)"
         end
 
       end

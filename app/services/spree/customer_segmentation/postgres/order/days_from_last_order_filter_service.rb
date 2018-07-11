@@ -34,32 +34,32 @@ module Spree
         def query
           user_collection.with_complete_orders.
                       group('spree_users.id').
-                      select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as last_order_date").
+                      select("spree_users.*, #{select_query} as last_order_date").
                       group('spree_orders.user_id').distinct
         end
 
         def days_from_last_order_gteq
-          query.having("DATE(MAX(spree_orders.completed_at)) <= ?", required_date)
+          query.having("#{select_query} <= ?", required_date)
         end
 
         def days_from_last_order_gt
-          query.having("DATE(MAX(spree_orders.completed_at)) < ?", required_date)
+          query.having("#{select_query} < ?", required_date)
         end
 
         def days_from_last_order_lt
-          query.having("DATE(MAX(spree_orders.completed_at)) > ?", required_date)
+          query.having("#{select_query} > ?", required_date)
         end
 
         def days_from_last_order_lteq
-          query.having("DATE(MAX(spree_orders.completed_at)) >= ?", required_date)
+          query.having("#{select_query} >= ?", required_date)
         end
 
         def days_from_last_order_eq
-          query.having("DATE(MAX(spree_orders.completed_at)) = ?", required_date)
+          query.having("#{select_query} = ?", required_date)
         end
 
         def days_from_last_order_not_eq
-          query.having("DATE(MAX(spree_orders.completed_at)) != ?", required_date)
+          query.having("#{select_query} != ?", required_date)
         end
 
         def days_from_last_order_between
@@ -68,7 +68,7 @@ module Spree
           first_date  = (current_utc_time - values[0].to_i.days).to_date
           second_date = (current_utc_time - values[1].to_i.days).to_date
 
-          query.having("DATE(MAX(spree_orders.completed_at)) >= ? AND DATE(MAX(spree_orders.completed_at)) <= ?", second_date, first_date)
+          query.having("#{select_query} >= ? AND #{select_query} <= ?", second_date, first_date)
         end
 
         def days_from_last_order_blank
@@ -77,6 +77,10 @@ module Spree
 
         def required_date
           (current_utc_time - values.to_i.days).to_date
+        end
+
+        def select_query
+          "DATE(MAX(spree_orders.completed_at))"
         end
       end
     end

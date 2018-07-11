@@ -33,42 +33,46 @@ module Spree
         def query
           user_collection.with_complete_orders.
                       group('spree_users.id').
-                      select('spree_users.*, SUM(spree_orders.total) as revenue').
+                      select("spree_users.*, #{select_query} as revenue").
                       group('spree_orders.user_id').distinct
         end
 
         def revenue_gteq
-          query.having("SUM(spree_orders.total) >= ?", values)
+          query.having("#{select_query} >= ?", values)
         end
 
         def revenue_gt
-          query.having("SUM(spree_orders.total) > ?", values)
+          query.having("#{select_query} > ?", values)
         end
 
         def revenue_lt
-          query.having("SUM(spree_orders.total) < ?", values)
+          query.having("#{select_query} < ?", values)
         end
 
         def revenue_lteq
-          query.having("SUM(spree_orders.total) <= ?", values)
+          query.having("#{select_query} <= ?", values)
         end
 
         def revenue_eq
           if values == "0"
             user_collection.without_complete_orders
           else
-            query.having("SUM(spree_orders.total) = ?", values)
+            query.having("#{select_query} = ?", values)
           end
         end
 
         def revenue_not_eq
-          query.having("SUM(spree_orders.total) != ?", values)
+          query.having("#{select_query} != ?", values)
         end
 
         def revenue_between
           return ::Spree::User.none if (values[0].nil? || values[1].nil?)
 
-          query.having("SUM(spree_orders.total) >= ? AND SUM(spree_orders.total) <= ?", values[0], values[1])
+          query.having("#{select_query} >= ? AND #{select_query} <= ?", values[0], values[1])
+        end
+
+        def select_query
+          "SUM(spree_orders.total)"
         end
 
       end

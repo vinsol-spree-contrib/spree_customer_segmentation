@@ -35,32 +35,32 @@ module Spree
         def query
           user_collection.with_complete_orders.
                       group('spree_users.id').
-                      select("spree_users.*, DATE(MIN(spree_orders.completed_at)) as first_order_date").
+                      select("spree_users.*, #{select_query} as first_order_date").
                       group('spree_orders.user_id').distinct
         end
 
         def days_from_first_order_gteq
-          query.having("DATE(MIN(spree_orders.completed_at)) <= ?", required_date)
+          query.having("#{select_query} <= ?", required_date)
         end
 
         def days_from_first_order_gt
-          query.having("DATE(MIN(spree_orders.completed_at)) < ?", required_date)
+          query.having("#{select_query} < ?", required_date)
         end
 
         def days_from_first_order_lt
-          query.having("DATE(MIN(spree_orders.completed_at)) > ?", required_date)
+          query.having("#{select_query} > ?", required_date)
         end
 
         def days_from_first_order_lteq
-          query.having("DATE(MIN(spree_orders.completed_at)) >= ?", required_date)
+          query.having("#{select_query} >= ?", required_date)
         end
 
         def days_from_first_order_eq
-          query.having("DATE(MIN(spree_orders.completed_at)) = ?", required_date)
+          query.having("#{select_query} = ?", required_date)
         end
 
         def days_from_first_order_not_eq
-          query.having("DATE(MIN(spree_orders.completed_at)) != ?", required_date)
+          query.having("#{select_query} != ?", required_date)
         end
 
         def days_from_first_order_between
@@ -69,7 +69,7 @@ module Spree
           first_date  = (current_utc_time - values[0].to_i.days).to_date
           second_date = (current_utc_time - values[1].to_i.days).to_date
 
-          query.having("DATE(MIN(spree_orders.completed_at)) >= ? AND DATE(MIN(spree_orders.completed_at)) <= ?", second_date, first_date)
+          query.having("#{select_query} >= ? AND #{select_query} <= ?", second_date, first_date)
         end
 
         def days_from_first_order_blank
@@ -78,6 +78,10 @@ module Spree
 
         def required_date
           required_date = (current_utc_time - values.to_i.days).to_date
+        end
+
+        def select_query
+          "DATE(MIN(spree_orders.completed_at))"
         end
 
       end

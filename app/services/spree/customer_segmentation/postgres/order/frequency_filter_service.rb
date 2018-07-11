@@ -33,46 +33,50 @@ module Spree
         def query
           user_collection.with_complete_orders.
                       group('spree_users.id').
-                      select("spree_users.*, (COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) as order_frequency").
+                      select("spree_users.*, #{select_query} as order_frequency").
                       group('spree_orders.user_id').distinct
         end
 
         def order_frequency_gteq
-          query.having("(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) >= ?", values)
+          query.having("#{select_query} >= ?", values)
         end
 
         def order_frequency_gt
-          query.having("(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) > ?", values)
+          query.having("#{select_query} > ?", values)
         end
 
         def order_frequency_lt
-          query.having("(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) < ?", values)
+          query.having("#{select_query} < ?", values)
         end
 
         def order_frequency_lteq
-          query.having("(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) <= ?", values)
+          query.having("#{select_query} <= ?", values)
         end
 
         def order_frequency_eq
           if values == "0"
             user_collection.without_complete_orders
           else
-            query.having("(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) = ?", values)
+            query.having("#{select_query} = ?", values)
           end
         end
 
         def order_frequency_not_eq
-          query.having("(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) != ?", values)
+          query.having("#{select_query} != ?", values)
         end
 
         def order_frequency_between
           return ::Spree::User.none if (values[0].nil? || values[1].nil?)
 
-          query.having("(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) >= ? AND (COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1) <= ?", values[0], values[1])
+          query.having("#{select_query} >= ? AND #{select_query} <= ?", values[0], values[1])
         end
 
         def current_date
           current_utc_time.to_date
+        end
+
+        def select_query
+          "(COUNT(spree_orders.user_id)*30)/(('#{current_date}' - spree_users.created_at::date) + 1)"
         end
 
       end
