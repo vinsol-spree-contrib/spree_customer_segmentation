@@ -31,7 +31,7 @@ module Spree
     end
 
     def last_active_session
-      last_sign_in_at.strftime('%Y-%m-%d')
+      current_sign_in_at.strftime('%Y-%m-%d')
     end
 
   end

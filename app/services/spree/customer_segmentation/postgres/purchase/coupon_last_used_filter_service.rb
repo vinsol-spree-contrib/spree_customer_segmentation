@@ -69,7 +69,7 @@ module Spree
           required_date2 = convert_to_date(values[1])
 
           if required_date1 && required_date2
-            query.having("DATE(MAX(spree_orders.completed_at)) >= ? AND DATE(MAX(spree_orders.completed_at)) <= ?", required_date2, required_date1)
+            query.having("DATE(MAX(spree_orders.completed_at)) >= ? AND DATE(MAX(spree_orders.completed_at)) <= ?", required_date1, required_date2)
           else
             ::Spree::User.none
           end

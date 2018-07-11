@@ -22,8 +22,8 @@ module Spree
       scope :without_new_product_orders,           -> { where.not(id: with_new_product_orders.pluck(:id)) }
       scope :with_new_product_added_to_cart,       -> { joins(orders: [line_items: :product]).where("spree_products.created_at > ?", time_seven_days_ago).where(spree_orders: { completed_at: nil }).distinct }
       scope :without_new_product_added_to_cart,    -> { where.not(id: with_new_product_added_to_cart.pluck(:id)) }
-      scope :with_last_active_session,             -> { where.not(last_sign_in_at: nil) }
-      scope :without_last_active_session,          -> { where(last_sign_in_at: nil) }
+      scope :with_last_active_session,             -> { where.not(current_sign_in_at: nil) }
+      scope :without_last_active_session,          -> { where(current_sign_in_at: nil) }
 
       def self.time_seven_days_ago
         @time_seven_days_ago ||= Time.current.utc - 7.days
