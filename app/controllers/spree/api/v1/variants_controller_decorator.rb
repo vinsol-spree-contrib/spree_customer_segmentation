@@ -7,12 +7,14 @@ Spree::Api::V1::VariantsController.class_eval do
     respond_with(@variant)
   end
 
-  def process_id_param
-    if params[:id].present? && params[:id].include?(',')
-      params[:id].presence.split(',')
-    else
-      params[:id]
+  private
+
+    def process_id_param
+      if params[:id].present? && params[:id].include?(',')
+        params[:id].presence.split(',')
+      else
+        params[:id]
+      end
     end
-  end
 
 end

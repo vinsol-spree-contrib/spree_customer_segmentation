@@ -16,13 +16,13 @@
   <tbody>
   <% results.each do |result| %>
     <tr data-hook="admin_filtered_users_rows">
-      <td> <%= display_data(result.firstname) %> </td>
-      <td> <%= display_data(result.lastname) %> </td>
+      <td> <%= result.user_presenter.firstname %> </td>
+      <td> <%= result.user_presenter.lastname %> </td>
       <td> <%= link_to result.email, edit_admin_user_path(result.id), target: :_blank %> </td>
-      <td> <%= display_data(result.full_bill_address) %> </td>
-      <td> <%= display_data(result.phone) %> </td>
+      <td> <%= result.user_presenter.full_bill_address %> </td>
+      <td> <%= result.user_presenter.phone %> </td>
       <% @dynamic_columns.each do |column| %>
-        <td> <%= display_data(result.try(column.keys.first)) %> </td>
+        <td> <%= result.user_presenter.send column.keys.first %> </td>
       <% end %>
     </tr>
   <% end %>

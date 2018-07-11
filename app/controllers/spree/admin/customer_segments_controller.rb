@@ -1,5 +1,5 @@
 module Spree
-  class Admin::CustomerSegmentsController < Admin::BaseController
+  class Admin::CustomerSegmentsController < Admin::ResourceController
 
     def index
       @customer_segments = spree_current_user.customer_segments

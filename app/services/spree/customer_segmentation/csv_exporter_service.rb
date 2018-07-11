@@ -26,7 +26,7 @@ module Spree
             row = []
 
             user_attributes.each do |method|
-              row << result.send(method)
+              row << result.user_presenter.send(method)
             end
 
             csv << row
