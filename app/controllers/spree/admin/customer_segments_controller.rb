@@ -8,10 +8,9 @@ module Spree
     def filter
       if params[:q].present?
         @search_params = search_params
-        @arranged_params = CustomerSegmentation::ArrangeParamsService.new(search_params).arrange
       end
 
-      search_serivce = CustomerSegmentation::SearchService.new(@arranged_params)
+      search_serivce = CustomerSegmentation::SearchService.new(@search_params)
 
       @results = search_serivce.generate_segment.page(params[:page])
       @dynamic_columns = search_serivce.get_dynamic_columns

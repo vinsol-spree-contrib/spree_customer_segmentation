@@ -7,27 +7,27 @@ module Spree
     end
 
     def bill_address_city
-      bill_address.city
+      bill_address.try(:city)
     end
 
     def bill_address_state
-      bill_address.state
+      bill_address.try(:state)
     end
 
     def bill_address_zipcode
-      bill_address.zipcode
+      bill_address.try(:zipcode)
     end
 
     def ship_address_city
-      ship_address.city
+      ship_address.try(:city)
     end
 
     def ship_address_state
-      ship_address.state
+      ship_address.try(:state)
     end
 
     def ship_address_zipcode
-      ship_address.zipcode
+      ship_address.try(:zipcode)
     end
 
     def last_active_session

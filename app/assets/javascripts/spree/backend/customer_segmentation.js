@@ -211,14 +211,16 @@ CustomerSegmentation.prototype.setValuesInput = function() {
       $input   = this.$currentFilter.find(this.values);
 
   if(category == "products") {
-    this.updateProductFilterValueInputs(metric);
+    this.updateProductFilterValueInputs(operator, metric);
   } else {
     this.updateNonProductValueInputs(operator, $input);
   }
 }
 
-CustomerSegmentation.prototype.updateProductFilterValueInputs = function(metric) {
-  if(metric.indexOf('viewed') != -1) {
+CustomerSegmentation.prototype.updateProductFilterValueInputs = function(operator, metric) {
+  if(operator == "blank") {
+    this.createLogicalOperators();
+  } else if(metric.indexOf('viewed') != -1) {
     this.showProducts();
   } else {
     this.showVariants();

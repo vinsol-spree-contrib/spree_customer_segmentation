@@ -21,7 +21,9 @@ module Spree
       end
 
       def perform
-        options.each do |option|
+        arranged_params = arrange_params
+
+        arranged_params.each do |option|
           service = get_service_name(option[:metric].to_sym)
           self.user_collection = service.new(user_collection, option[:operator], option[:value]).filter_data
         end
@@ -41,8 +43,32 @@ module Spree
         dynamic_columns
       end
 
+      def arrange_params
+        arranged_params = options.clone
+
+        arranged_params.each do |option|
+          service = get_service_name(option[:metric].to_sym)
+
+          if service.new([], option[:operator], option[:value]).can_be_ransacked? || needs_to_be_processed_first?(option)
+            arranged_params.insert(0, arranged_params.delete(option))
+          end
+        end
+
+        arranged_params
+      end
+
       def get_service_name(metric)
-        FILTERS_MAPPER[metric][:service]
+        database = (ActiveRecord::Base.connection.adapter_name.downcase.starts_with? 'mysql') ? 'Mysql' : 'Postgres'
+        service_name = "Spree::CustomerSegmentation::" + FILTERS_MAPPER[metric][:service].gsub('DB', database)
+
+        service_name.constantize
+      end
+
+      # The filters which are ransacked, returns only a scope, or uses NOT operator needs to be processed first
+      def needs_to_be_processed_first?(filter)
+        ['blank', 'equals'].include?(filter[:operator]) ||
+        (filter[:metric].include?('product') && filter[:operator] == "not_includes") ||
+        (filter[:operator] == "eq" && filter[:value] == "0")
       end
 
     end
