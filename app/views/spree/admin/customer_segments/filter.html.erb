@@ -12,7 +12,7 @@
       </div>
       <div>
         <%= button_tag type: 'submit', class: 'btn btn-info btn-shadow', data: { name: 'search_button' } do %>
-          <span class="icon icon-search"></span> Search
+          <span class="icon icon-search"></span> <%= Spree.t(:search) %>
         <% end %>
       </div>
     </div>
@@ -21,14 +21,12 @@
 <% end %>
 
 <div>
-  <% if params[:q].present? %>
-    <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' } do %>
-      <span class="btn btn-shadow btn-info glyphicon glyphicon-floppy-disk"> <%= Spree.t(:save) %> </span>
-    <% end %>
+  <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' } do %>
+    <span class="btn btn-shadow btn-info glyphicon glyphicon-floppy-disk"> <%= Spree.t(:save) %> </span>
+  <% end %>
 
-    <%= link_to csv_segment_filter_route(request.query_string) do %>
-      <span class="btn btn-shadow btn-info glyphicon glyphicon-export"> <%= Spree.t(:export) %> </span>
-    <% end %>
+  <%= link_to csv_segment_filter_route(request.query_string) do %>
+    <span class="btn btn-shadow btn-info glyphicon glyphicon-export"> <%= Spree.t(:export) %> </span>
   <% end %>
 </div>
 
@@ -46,6 +44,7 @@
 <span data-name="filter_operator_list" data-value="<%= Spree::CustomerSegmentation::FILTERS_MAPPER.to_json %>"> </span>
 
 <span data-name="applied_filters" data-value="<%= @search_params.to_json %>"> </span>
+<span data-name="action_name" data-value="<%= action_name %>"></span> </span>
 
 <!-- Filter structure hidden -->
 <div class="hidden">

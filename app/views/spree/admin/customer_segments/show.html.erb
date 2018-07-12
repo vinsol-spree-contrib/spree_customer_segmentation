@@ -1,7 +1,7 @@
 <!-- Modal -->
 <%= render partial: 'modal' %>
 
-<%= form_tag filter_admin_customer_segments_path, method: :get, data: { name: 'filter_form' }, name: 'filter_form' do %>
+<%= form_tag admin_customer_segment_path(@customer_segment.id), method: :patch, data: { name: 'filter_form' }, name: 'filter_form' do %>
   <div class="filters_area" data-name="filters_area">
     <!-- ADD ALL FILTERS HERE -->
 
@@ -12,7 +12,7 @@
       </div>
       <div>
         <%= button_tag type: 'submit', class: 'btn btn-info btn-shadow', data: { name: 'search_button' } do %>
-          <span class="icon icon-search"></span> Search
+          <span class="icon icon-search"></span> <%= Spree.t(:update_segment) %>
         <% end %>
       </div>
     </div>
@@ -40,6 +40,7 @@
 <span data-name="filter_operator_list" data-value="<%= Spree::CustomerSegmentation::FILTERS_MAPPER.to_json %>"> </span>
 
 <span data-name="applied_filters" data-value="<%= @search_params.to_json %>"> </span>
+<span data-name="action_name" data-value="<%= action_name %>"></span> </span>
 
 <!-- Filter structure hidden -->
 <div class="hidden">

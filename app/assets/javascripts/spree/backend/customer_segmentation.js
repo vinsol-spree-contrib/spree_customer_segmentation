@@ -17,6 +17,7 @@ function CustomerSegmentation(options) {
   this.$searchButton      = options.$searchButton;
   this.removeFilterButton = options.removeFilterButton;
   this.availableFilters   = options.$availableFilters.data('value');
+  this.actionName         = options.$actionName.data('value');
   this.metric             = options.metric;
   this.operator           = options.operator;
   this.values             = options.values;
@@ -309,7 +310,9 @@ CustomerSegmentation.prototype.removeFilter = function() {
 
     if(_this.$filterArea.find(_this.filterRow).length == 0) {
       _this.removeFilterButtonAnimation();
-      _this.$searchButton.click().hide(); // refresh page
+      if(_this.actionName != "show") {
+        _this.$searchButton.click().hide(); // refresh page
+      }
     }
   }
 }
@@ -370,6 +373,7 @@ $(function() {
     $appliedFilters:    $('[data-name="applied_filters"]'),
     $filterForm:        $('[data-name="filter_form"]'),
     $searchButton:      $('[data-name="search_button"]'),
+    $actionName:        $('[data-name="action_name"]'),
     removeFilterButton: '[data-name="remove_filter"]',
     metric:             '[data-name="metric"]',
     operator:           '[data-name="operator"]',
