@@ -15,7 +15,7 @@ module Spree
       scope :with_ship_address,                    -> { where.not(ship_address_id: nil) }
       scope :without_ship_address,                 -> { where(ship_address_id: nil) }
       scope :with_recent_orders,                   -> { joins(orders: :line_items).where("spree_line_items.created_at > ?", time_seven_days_ago ).where(spree_orders: { state: 'complete' }).distinct }
-      scope :without_recent_orders,                -> { where.not(id: with_recent_product_orders.pluck(:id)) }
+      scope :without_recent_orders,                -> { where.not(id: with_recent_orders.pluck(:id)) }
       scope :with_recent_product_added_to_cart,    -> { joins(orders: :line_items).where("spree_line_items.created_at > ?", time_seven_days_ago ).where(spree_orders: { completed_at: nil }).distinct }
       scope :without_recent_product_added_to_cart, -> { where.not(id: with_recent_product_added_to_cart.pluck(:id)) }
       scope :with_new_product_orders,              -> { joins(orders: [line_items: :product]).where("spree_products.created_at > ?", time_seven_days_ago).where(spree_orders: { state: 'complete' }).distinct }
