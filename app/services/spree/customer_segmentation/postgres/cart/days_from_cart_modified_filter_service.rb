@@ -26,7 +26,9 @@ module Spree
         end
 
         def dynamic_column
-          { cart_modified_date: 'Cart Modification Date' }
+          unless operator == "blank"
+            { cart_modified_date: 'Cart Modification Date' }
+          end
         end
 
         def query
