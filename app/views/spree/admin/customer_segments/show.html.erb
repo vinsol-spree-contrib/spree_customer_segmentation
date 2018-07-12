@@ -21,14 +21,8 @@
 <% end %>
 
 <div>
-  <% if params[:q].present? %>
-    <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' } do %>
-      <span class="btn btn-shadow btn-info glyphicon glyphicon-floppy-disk"> <%= Spree.t(:save) %> </span>
-    <% end %>
-
-    <%= link_to csv_segment_filter_route(request.query_string) do %>
-      <span class="btn btn-shadow btn-info glyphicon glyphicon-export"> <%= Spree.t(:export) %> </span>
-    <% end %>
+  <%= link_to csv_segment_route(@customer_segment.id) do %>
+    <span class="btn btn-shadow btn-info glyphicon glyphicon-export"> <%= Spree.t(:export) %> </span>
   <% end %>
 </div>
 

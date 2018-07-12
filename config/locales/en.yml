@@ -12,8 +12,10 @@ en:
     my_segments: My Segments
     you_have_not_saved_any_segments_yet: You have not saved any segments yet
     segment_name: Segment Name
-    created_on: Created On
+    created_by: Created By
+    delete: Delete
     view_segment: View Segment
     export: Export
+    csv_exported: Csv has been exported successfully
     customer_segmentation_mailer:
       subject: Csv Of Users Filtered
