@@ -39,7 +39,7 @@ module Spree
         end
 
         def products_ordered_blank
-          values ? user_collection.without_complete_orders : user_collection.without_complete_orders
+          values ? user_collection.without_complete_orders : user_collection.with_complete_orders
         end
 
         def select_query
