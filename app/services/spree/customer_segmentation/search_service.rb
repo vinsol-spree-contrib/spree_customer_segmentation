@@ -58,10 +58,7 @@ module Spree
       end
 
       def get_service_name(metric)
-        database = (ActiveRecord::Base.connection.adapter_name.downcase.starts_with? 'mysql') ? 'Mysql' : 'Postgres'
-        service_name = "Spree::CustomerSegmentation::" + FILTERS_MAPPER[metric][:service].gsub('DB', database)
-
-        service_name.constantize
+        FILTERS_MAPPER[metric][:service]
       end
 
       # The filters which are ransacked, returns only a scope, or uses NOT operator needs to be processed first

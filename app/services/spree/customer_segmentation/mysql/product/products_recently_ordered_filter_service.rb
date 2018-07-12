@@ -1,7 +1,7 @@
 module Spree
   module CustomerSegmentation
-    class Product::ProductsRecentlyOrderedFilterService < BaseService
-      module Mysql
+    module Mysql
+      class Product::ProductsRecentlyOrderedFilterService < BaseService
         attr_accessor :operator, :values
 
         SEARCH_LOGIC = {
