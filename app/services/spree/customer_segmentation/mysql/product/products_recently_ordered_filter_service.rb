@@ -33,7 +33,7 @@ module Spree
           user_collection.joins(orders: :line_items).
                           select(select_query).
                           where(spree_orders: { state: 'complete' }).
-                          where("spree_orders.created_at > ?", required_time).
+                          where("spree_orders.completed_at > ?", required_time).
                           where(spree_line_items: { variant_id: values }).
                           group('spree_users.id').
                           having("variants = ?", sorted_variants).distinct
