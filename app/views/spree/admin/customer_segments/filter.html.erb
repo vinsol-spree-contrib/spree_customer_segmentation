@@ -31,25 +31,4 @@
 </div>
 
 <%= render partial: 'save_segment_modal' %>
-
-<% if @results.present? %>
-  <%= render partial: 'users', locals: { results: @results } %>
-<% else %>
-  <div class="alert alert-info no-objects-found">
-    <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::User)) %>
-  </div>
-<% end %>
-
-<!-- pass all options as a hash -->
-<span data-name="filter_operator_list" data-value="<%= Spree::CustomerSegmentation::FILTERS_MAPPER.to_json %>"> </span>
-
-<span data-name="applied_filters" data-value="<%= @search_params.to_json %>"> </span>
-<span data-name="action_name" data-value="<%= action_name %>"></span> </span>
-
-<!-- Filter structure hidden -->
-<div class="hidden">
-  <%= render partial: 'filter_template' %>
-  <%= render partial: 'value_options' %>
-</div>
-
-<%= render partial: "spree/admin/variants/autocomplete", formats: [:js] %>
+<%= render partial: 'user_data' %>
