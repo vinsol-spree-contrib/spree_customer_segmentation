@@ -6,8 +6,8 @@
 <% end %>
 
 <div>
-  <%= link_to csv_segment_route(@customer_segment.id) do %>
-    <span class="btn btn-shadow btn-info glyphicon glyphicon-export"> <%= Spree.t(:export) %> </span>
+  <%= link_to csv_segment_route(@customer_segment.id), class: 'btn btn-shadow btn-info' do %>
+    <span class="glyphicon glyphicon-export"></span> <%= Spree.t(:export) %>
   <% end %>
 </div>
 

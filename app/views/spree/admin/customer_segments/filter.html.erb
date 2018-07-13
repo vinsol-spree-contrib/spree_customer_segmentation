@@ -6,12 +6,12 @@
 <% end %>
 
 <div>
-  <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' } do %>
-    <span class="btn btn-shadow btn-info glyphicon glyphicon-floppy-disk"> <%= Spree.t(:save) %> </span>
+  <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' }, class: 'btn btn-shadow btn-info' do %>
+    <span class="glyphicon glyphicon-floppy-disk"></span> <%= Spree.t(:save) %>
   <% end %>
 
-  <%= link_to csv_segment_filter_route(request.query_string) do %>
-    <span class="btn btn-shadow btn-info glyphicon glyphicon-export"> <%= Spree.t(:export) %> </span>
+  <%= link_to csv_segment_filter_route(request.query_string), class: 'btn btn-shadow btn-info' do %>
+    <span class="glyphicon glyphicon-export"></span> <%= Spree.t(:export) %>
   <% end %>
 </div>
 
