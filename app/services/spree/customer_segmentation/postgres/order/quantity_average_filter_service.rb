@@ -24,17 +24,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "eq" && values == "0"
-            { average_quantity: 'Average Quantity' }
-          end
-        end
-
         def query
           user_collection.with_ordered_items.
-                     group('spree_users.id').
-                     select("spree_users.*, #{select_query} as average_quantity").
-                     group('spree_orders.user_id').distinct
+                     select("spree_users.id, #{select_query} as average_quantity").
+                     group('spree_users.id').distinct
         end
 
         def average_quantity_gteq
@@ -72,7 +65,7 @@ module Spree
         end
 
         def select_query
-          "(SUM(spree_line_items.quantity)/COUNT(spree_orders.user_id))"
+          "(SUM(spree_line_items.quantity)/COUNT(DISTINCT(spree_orders.id)))"
         end
 
       end

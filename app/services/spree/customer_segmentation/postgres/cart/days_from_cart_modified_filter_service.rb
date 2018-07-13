@@ -25,17 +25,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "blank"
-            { cart_modified_date: 'Cart Modification Date' }
-          end
-        end
-
         def query
           user_collection.with_items_in_cart.
-                      group('spree_users.id').
-                      select("spree_users.*, #{select_query} as cart_modified_date").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, #{select_query} as cart_modified_date").
+                      group('spree_users.id').distinct
         end
 
         def days_from_cart_modified_gteq

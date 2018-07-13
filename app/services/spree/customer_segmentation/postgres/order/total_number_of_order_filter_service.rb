@@ -24,17 +24,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "eq" && values == "0"
-            { order_count: 'Total Number Of Orders' }
-          end
-        end
-
         def query
           user_collection.with_complete_orders.
-                      group('spree_users.id').
-                      select("spree_users.*, #{select_query} as order_count").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, #{select_query} as order_count").
+                      group('spree_users.id').distinct
         end
 
         def total_number_of_order_gteq

@@ -24,10 +24,6 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          { sign_in_count: 'Number Of Session' }
-        end
-
         def sign_in_count_between
           return ::Spree::User.none if (values[0].nil? || values[1].nil?)
 

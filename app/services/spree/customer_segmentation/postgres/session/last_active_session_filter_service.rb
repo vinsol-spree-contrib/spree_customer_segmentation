@@ -18,12 +18,6 @@ module Spree
           super(collection)
         end
 
-        def dynamic_column
-          unless operator == "blank" && values == true
-            { last_active_session: 'Last Active Session' }
-          end
-        end
-
         def filter_data
           perform
         end

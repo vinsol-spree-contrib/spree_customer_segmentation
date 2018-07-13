@@ -20,11 +20,7 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          { bill_address_zipcode: 'Bill Address Zipcode' }
-        end
       end
-
     end
   end
 end

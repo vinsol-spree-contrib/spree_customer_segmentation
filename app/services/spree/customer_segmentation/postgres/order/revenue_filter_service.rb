@@ -24,17 +24,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "eq" && values == "0"
-            { revenue: 'Revenue' }
-          end
-        end
-
         def query
           user_collection.with_complete_orders.
-                      group('spree_users.id').
-                      select("spree_users.*, #{select_query} as revenue").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, #{select_query} as revenue").
+                      group('spree_users.id').distinct
         end
 
         def revenue_gteq

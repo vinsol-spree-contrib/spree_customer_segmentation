@@ -24,8 +24,8 @@ module Spree
 
         def query
           user_collection.used_a_coupon.
-                          select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as coupon_last_used").
-                          group('spree_orders.user_id').distinct
+                          select("spree_users.id, DATE(MAX(spree_orders.completed_at)) as coupon_last_used").
+                          group('spree_users.id').distinct
         end
 
         def coupon_last_used_before

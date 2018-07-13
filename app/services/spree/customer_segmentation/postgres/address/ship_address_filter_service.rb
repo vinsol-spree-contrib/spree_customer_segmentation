@@ -36,10 +36,6 @@ module Spree
           "CONCAT(spree_addresses.address1, ' ', spree_addresses.address2, ' ', spree_addresses.city, ' ', spree_states.name, ' ', spree_countries.name, ' ', spree_addresses.zipcode)"
         end
 
-        def dynamic_column
-          { full_ship_address: 'Shipping Address' }
-        end
-
       end
     end
   end

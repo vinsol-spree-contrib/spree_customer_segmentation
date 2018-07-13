@@ -22,17 +22,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "blank"
-            { coupon_last_used: 'Coupon Last Used' }
-          end
-        end
-
         def query
           user_collection.used_a_coupon.
-                          group('spree_users.id').
-                          select("spree_users.*, #{select_query} as coupon_last_used").
-                          group('spree_orders.user_id').distinct
+                          select("spree_users.id, #{select_query} as coupon_last_used").
+                          group('spree_users.id').distinct
         end
 
         def coupon_last_used_before

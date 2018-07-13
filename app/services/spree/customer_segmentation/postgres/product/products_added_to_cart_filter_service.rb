@@ -43,7 +43,7 @@ module Spree
         end
 
         def select_query
-          "spree_users.*, string_agg(spree_line_items.variant_id::varchar, ',' ORDER BY spree_line_items.variant_id) as variants"
+          "spree_users.id, string_agg(spree_line_items.variant_id::varchar, ',' ORDER BY spree_line_items.variant_id) as variants"
         end
 
         def sorted_variants

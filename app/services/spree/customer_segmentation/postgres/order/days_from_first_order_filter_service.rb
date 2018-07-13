@@ -26,17 +26,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "blank"
-            { first_order_date: 'First Order Date' }
-          end
-        end
-
         def query
           user_collection.with_complete_orders.
-                      group('spree_users.id').
-                      select("spree_users.*, #{select_query} as first_order_date").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, #{select_query} as first_order_date").
+                      group('spree_users.id').distinct
         end
 
         def days_from_first_order_gteq
