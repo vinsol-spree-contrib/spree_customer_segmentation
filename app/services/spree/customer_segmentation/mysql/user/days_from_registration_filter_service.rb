@@ -25,10 +25,6 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          { user_since: 'Date Of Registration' }
-        end
-
         def days_from_registration_gteq
           user_collection.where("#{select_query} <= ?", required_date)
         end

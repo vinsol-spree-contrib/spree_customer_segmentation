@@ -43,7 +43,7 @@ module Spree
         end
 
         def select_query
-          "spree_users.*, GROUP_CONCAT(DISTINCT(spree_line_items.variant_id) ORDER BY spree_line_items.variant_id) as variants"
+          "spree_users.id, GROUP_CONCAT(DISTINCT(spree_line_items.variant_id) ORDER BY spree_line_items.variant_id) as variants"
         end
 
         def sorted_variants

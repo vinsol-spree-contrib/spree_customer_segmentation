@@ -108,13 +108,11 @@ module Spree
 
       def get_data
         search_service = CustomerSegmentation::SearchService.new(@search_params)
-
-        @results = search_service.generate_segment.page(params[:page])
-        @dynamic_columns = search_service.get_dynamic_columns
+        @results = search_service.generate_segment.page(params[:page]).includes(bill_address: [:state, :country])
       end
 
       def export_csv
-        ::Spree::CustomerSegmentation::CsvExporterService.new(all_results, @dynamic_columns, spree_current_user.email).export
+        ::Spree::CustomerSegmentation::CsvExporterService.new(all_results, spree_current_user.email).export
         flash.notice = Spree.t(:csv_exported)
       end
 

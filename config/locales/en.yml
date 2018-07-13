@@ -21,5 +21,10 @@ en:
     update_segment: Update Segment
     segment_not_found: Customer Segment does not exists
     csv_exported: Csv has been exported successfully
+    firstname: First Name
+    lastname: Last Name
+    email: Email
+    billing_address: Billing Address
+    contact_number: Contact Number
     customer_segmentation_mailer:
       subject: Csv Of Users Filtered

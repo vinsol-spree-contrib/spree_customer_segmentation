@@ -26,16 +26,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "blank"
-            { first_order_date: 'First Order Date' }
-          end
-        end
-
         def query
           user_collection.with_complete_orders.
-                      select("spree_users.*, DATE(MIN(spree_orders.completed_at)) as first_order_date").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, DATE(MIN(spree_orders.completed_at)) as first_order_date").
+                      group('spree_users.id').distinct
         end
 
         def days_from_first_order_gteq
@@ -78,7 +72,7 @@ module Spree
         def required_date
           required_date = (current_utc_time - values.to_i.days).to_date
         end
-        
+
       end
     end
   end

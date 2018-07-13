@@ -3,14 +3,11 @@
 <table class="table" id="listing_filtered_users" data-hook>
   <thead>
     <tr data-hook="admin_filterd_users_headers">
-      <th> First Name </th>
-      <th> Last Name </th>
-      <th> Email </th>
-      <th> Billing Address </th>
-      <th> Contact Number </th>
-      <% @dynamic_columns.each do |column| %>
-        <th> <%= column.values.first %> </th>
-      <% end %>
+      <th> <%= Spree.t(:firstname) %> </th>
+      <th> <%= Spree.t(:lastname) %> </th>
+      <th> <%= Spree.t(:email) %> </th>
+      <th> <%= Spree.t(:billing_address) %> </th>
+      <th> <%= Spree.t(:contact_number) %> </th>
     </tr>
   </thead>
   <tbody>
@@ -21,9 +18,6 @@
       <td> <%= link_to result.email, edit_admin_user_path(result.id), target: :_blank %> </td>
       <td> <%= result.user_presenter.full_bill_address %> </td>
       <td> <%= result.user_presenter.phone %> </td>
-      <% @dynamic_columns.each do |column| %>
-        <td> <%= result.user_presenter.send column.keys.first %> </td>
-      <% end %>
     </tr>
   <% end %>
   </tbody>

@@ -24,18 +24,12 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "eq" && values == "0"
-            { order_frequency: 'Order Frequency' }
-          end
-        end
-
         def query
           current_date = current_utc_time.to_date
 
           user_collection.with_complete_orders.
-                      select("spree_users.*, (COUNT(spree_orders.user_id)*30)/(DATEDIFF('#{current_date}', spree_users.created_at) + 1) as order_frequency").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, (COUNT(spree_orders.user_id)*30)/(DATEDIFF('#{current_date}', MIN(spree_users.created_at)) + 1) as order_frequency").
+                      group('spree_users.id').distinct
         end
 
         def order_frequency_gteq

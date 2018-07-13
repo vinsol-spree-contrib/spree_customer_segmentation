@@ -19,12 +19,8 @@ module Spree
         def filter_data
           perform
         end
-
-        def dynamic_column
-          { bill_address_city: 'Bill Address City' }
-        end
+        
       end
-
     end
   end
 end

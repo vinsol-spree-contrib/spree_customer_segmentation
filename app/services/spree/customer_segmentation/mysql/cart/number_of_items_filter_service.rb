@@ -24,16 +24,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "eq" && values == "0"
-            { number_of_items_in_cart: 'Number Of Items In Cart' }
-          end
-        end
-
         def query
           user_collection.with_items_in_cart.
-                      select('spree_users.*, SUM(spree_line_items.quantity) as number_of_items_in_cart').
-                      group('spree_orders.user_id').distinct
+                      select('spree_users.id, SUM(spree_line_items.quantity) as number_of_items_in_cart').
+                      group('spree_users.id').distinct
         end
 
         def number_of_items_in_cart_gteq
@@ -69,7 +63,7 @@ module Spree
 
           query.having("number_of_items_in_cart >= ? AND number_of_items_in_cart <= ?", values[0], values[1])
         end
-        
+
       end
     end
   end

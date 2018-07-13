@@ -1,0 +1,15 @@
+<div class="filters_area" data-name="filters_area">
+  <!-- ADD ALL FILTERS HERE -->
+
+  <!-- For animated button:: remove only-row, add span class 'add_filter_text' -->
+  <div class="filter_row only-row" data-name="filter_button">
+    <div class="filter_column filter_column4">
+      <a href="#" class="btn btn-block btn-shadow btn-default add_filter_button" data-toggle="modal" data-target="#filter_modal"><i class="glyphicon glyphicon-plus p-r-0"></i><span data-name="filter_button_text"> &nbsp; Add filter </span></a>
+    </div>
+    <div>
+      <%= button_tag type: 'submit', class: 'btn btn-info btn-shadow', data: { name: 'search_button' } do %>
+        <span class="icon icon-search"></span> <%= Spree.t(:search) %>
+      <% end %>
+    </div>
+  </div>
+</div>

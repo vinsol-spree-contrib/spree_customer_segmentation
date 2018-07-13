@@ -71,7 +71,13 @@ CustomerSegmentation.prototype.validateData = function() {
         operator = $this.find(_this.operator).val(),
         value = $input.val();
 
-    if((value.trim().length == 0) || !(_this.checkDataFormat(value, fieldDataType, operator))) {
+    if(operator == "between") {
+      value = [$input.first().val(), $input.last().val()];
+    }
+
+    if((_this.checkNonEmptyInput(value, operator)) && (_this.checkDataFormat(value, fieldDataType, operator))) {
+      isValidData = true;
+    } else {
       isValidData = false;
       alert('Enter valid data');
       return false;
@@ -81,18 +87,46 @@ CustomerSegmentation.prototype.validateData = function() {
   return isValidData;
 }
 
+CustomerSegmentation.prototype.checkNonEmptyInput = function(value, operator) {
+  if(operator == "between") {
+    return (value[0].trim().length != 0 && value[1].trim().length != 0);
+
+  } else {
+      return value.trim().length != 0;
+  }
+}
+
 CustomerSegmentation.prototype.checkDataFormat = function(value, fieldDataType, operator) {
   if(operator == "blank") {
     return true;
   }
 
   if(fieldDataType == "numeric") {
-    return this.numberRegex.test(value);
+    return this.checkNumberFormat(value, operator);
+
   } else if(fieldDataType == "date") {
-    return this.dateRegex.test(value);
+    return this.checkDateFormat(value, operator);
   }
 
   return true;
+}
+
+CustomerSegmentation.prototype.checkNumberFormat = function(value, operator) {
+  if(operator == "between") {
+    return (this.numberRegex.test(value[0]) && this.numberRegex.test(value[1]));
+
+  } else {
+    return this.numberRegex.test(value);
+  }
+}
+
+CustomerSegmentation.prototype.checkDateFormat = function(value, operator) {
+  if(operator == "between") {
+    return this.dateRegex.test(value[0]) && this.dateRegex.test(value[1]);
+
+  } else {
+    return this.dateRegex.test(value);
+  }
 }
 
 CustomerSegmentation.prototype.handleCategorySelection = function() {

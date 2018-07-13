@@ -25,16 +25,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "blank"
-            { last_order_date: 'Last Order Date' }
-          end
-        end
-
         def query
           user_collection.with_complete_orders.
-                      select("spree_users.*, DATE(MAX(spree_orders.completed_at)) as last_order_date").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, DATE(MAX(spree_orders.completed_at)) as last_order_date").
+                      group('spree_users.id').distinct
         end
 
         def days_from_last_order_gteq

@@ -21,10 +21,6 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          { ship_address_zipcode: 'Ship Address Zipcode' }
-        end
-
       end
     end
   end

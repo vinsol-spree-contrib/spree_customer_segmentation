@@ -25,16 +25,10 @@ module Spree
           perform
         end
 
-        def dynamic_column
-          unless operator == "blank"
-            { cart_created_date: 'Cart Creation Date' }
-          end
-        end
-
         def query
           user_collection.with_items_in_cart.
-                      select("spree_users.*, DATE(MIN(spree_orders.created_at)) as cart_created_date").
-                      group('spree_orders.user_id').distinct
+                      select("spree_users.id, DATE(MIN(spree_orders.created_at)) as cart_created_date").
+                      group('spree_users.id').distinct
         end
 
         def days_from_cart_created_gteq
