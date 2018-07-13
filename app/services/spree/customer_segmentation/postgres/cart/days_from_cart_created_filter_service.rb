@@ -27,7 +27,7 @@ module Spree
 
         def query
           user_collection.with_items_in_cart.
-                      select("spree_users.id, #{select_query}) as cart_created_date").
+                      select("spree_users.id, #{select_query} as cart_created_date").
                       group('spree_users.id').distinct
         end
 
