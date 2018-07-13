@@ -2,8 +2,6 @@ module Spree
   class Admin::CustomerSegmentsController < Admin::ResourceController
     include SegmentationRoutes
 
-    before_action :set_customer_segment, only: [:show, :update]
-
     def index
       @customer_segments = Spree::CustomerSegment.all
     end
@@ -95,15 +93,6 @@ module Spree
       def extract_filter_params
         parameter = JSON.parse(@customer_segment.filters)
         parameter["q"]
-      end
-
-      def set_customer_segment
-        @customer_segment = CustomerSegment.find_by(id: params[:id])
-
-        unless @customer_segment.present?
-          flash[:error] = Spree.t(:segment_not_found)
-          redirect_to admin_customer_segment_path
-        end
       end
 
       def get_data
