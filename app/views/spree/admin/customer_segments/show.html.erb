@@ -1,0 +1,15 @@
+<!-- Modal -->
+<%= render partial: 'modal' %>
+
+<%= form_tag admin_customer_segment_path(@customer_segment.id), method: :patch, data: { name: 'filter_form' }, name: 'filter_form' do %>
+  <%= render partial: 'form' %>
+<% end %>
+
+<div>
+  <%= link_to csv_segment_route(@customer_segment.id), class: 'btn btn-shadow btn-info' do %>
+    <span class="glyphicon glyphicon-export"></span> <%= Spree.t(:export) %>
+  <% end %>
+</div>
+
+<%= render partial: 'save_segment_modal' %>
+<%= render partial: 'user_data' %>

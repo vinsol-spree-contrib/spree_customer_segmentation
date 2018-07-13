@@ -1,0 +1,19 @@
+<!-- Modal -->
+<%= render partial: 'modal' %>
+
+<%= form_tag filter_admin_customer_segments_path, method: :get, data: { name: 'filter_form' }, name: 'filter_form' do %>
+  <%= render partial: 'form' %>
+<% end %>
+
+<div>
+  <%= link_to '#', data: { toggle: 'modal', target: '#save_segment_modal', name: 'save_segment' }, class: 'btn btn-shadow btn-info' do %>
+    <span class="glyphicon glyphicon-floppy-disk"></span> <%= Spree.t(:save) %>
+  <% end %>
+
+  <%= link_to csv_segment_filter_route(request.query_string), class: 'btn btn-shadow btn-info' do %>
+    <span class="glyphicon glyphicon-export"></span> <%= Spree.t(:export) %>
+  <% end %>
+</div>
+
+<%= render partial: 'save_segment_modal' %>
+<%= render partial: 'user_data' %>
