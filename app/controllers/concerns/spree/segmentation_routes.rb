@@ -3,22 +3,14 @@ module Spree
     extend ActiveSupport::Concern
 
     included do
-      helper_method :segment_route, :csv_segment_route, :segment_filter_route, :csv_segment_filter_route
-    end
-
-    def segment_route(id)
-      segment = CustomerSegment.find_by(id: id)
-
-      if segment.present?
-        "#{admin_customer_segment_path(id)}?#{segment.filters}"
-      end
+      helper_method :csv_segment_route, :segment_filter_route, :csv_segment_filter_route
     end
 
     def csv_segment_route(id)
       segment = CustomerSegment.find_by(id: id)
 
       if segment.present?
-        "#{admin_customer_segment_path(id)}.csv?#{segment.filters}"
+        "#{admin_customer_segment_path(id)}.csv"
       end
     end
 

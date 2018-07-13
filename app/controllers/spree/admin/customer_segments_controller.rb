@@ -31,7 +31,7 @@ module Spree
         redirect_to admin_customer_segments_path
       else
         flash[:error] = @customer_segment.errors.full_messages.join("\n")
-        redirect_to segment_filter_route(request.query_string)
+        redirect_to segment_filter_route(params[:filters])
       end
 
     end
@@ -50,7 +50,7 @@ module Spree
     end
 
     def update
-      @customer_segment.filters = params.permit!.to_query
+      @customer_segment.filters = params.except(:authenticity_token, :_method).to_json
 
       if @customer_segment.save
         flash[:notice] = Spree.t(:segment_updated_successfully)
@@ -83,7 +83,7 @@ module Spree
       def segment_params
         {
           name: params[:name],
-          filters: params[:filters],
+          filters: Rack::Utils.parse_nested_query(params[:filters]).to_json,
           user_id: spree_current_user.id
         }
       end
@@ -93,7 +93,7 @@ module Spree
       end
 
       def extract_filter_params
-        parameter = Rack::Utils.parse_nested_query(@customer_segment.filters)
+        parameter = JSON.parse(@customer_segment.filters)
         parameter["q"]
       end
 

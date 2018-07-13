@@ -26,5 +26,6 @@ en:
     email: Email
     billing_address: Billing Address
     contact_number: Contact Number
+    create_segments: Create Segments
     customer_segmentation_mailer:
       subject: Csv Of Users Filtered
