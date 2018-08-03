@@ -11,7 +11,7 @@ Try Spree Customer Segmentation for Spree master with direct deployment on Herok
 Knowing who your customers are, what your customers want, their spending habits, etc can provide invaluable information to any store.   
 With Vinsol's [spree_customer_segmentation](https://github.com/vinsol-spree-contrib/spree_customer_segmentation), you can have all that information within seconds.  
 
-**This extension currently supports Spree > 3.1, Rails > 5, Mysql and Postgresql Database.**
+**This extension currently supports Spree > 3.1, Rails >= 5, Mysql and Postgresql Database.**
 
 ## Usage
 
@@ -29,23 +29,23 @@ Each categories have their own metrics.
 
 ![filter-image](https://user-images.githubusercontent.com/8337530/43099223-1c48f106-8edf-11e8-860b-f440899c4a01.png)
 
-You can select any metric, choose the appropriate operator, and enter input values, against which you want to filter out the user data.
+You can select any metric, choose the appropriate operator, and enter input values against which you want to filter out the user data.
 
-![filter-selected](https://user-images.githubusercontent.com/8337530/43098845-ef18716c-8edd-11e8-827d-9950d6ffef7c.png)
+![filter-selected](https://user-images.githubusercontent.com/8337530/43622841-d222c8b6-96fb-11e8-97fe-7d2e6cdf80b9.png)
+
 
 **Add multiple values**  
-You can add multiple inputs by pressing enter after one completing one input.
+You can search on multiple input values at once.
 
 **Product Autocomplete functionality**  
-While applying product based filters, you need to enter few characters, and the use the product autocomplete
-functionality to select the desired product.
+In product based filters, you need to enter few characters of product name, and select the desired product from the dropdown.
 
-![product-autocomplete](https://user-images.githubusercontent.com/8337530/43098863-fcbb2206-8edd-11e8-87db-5ec3da32b1ed.png)
+![product-autocomplete](https://user-images.githubusercontent.com/8337530/43622842-d27041ae-96fb-11e8-9f36-368c1c6ea9e1.png)
 
 **Multiple Filters**  
-You can apply any number of filters, one after one, and get in depth analysis of your store data.
+You can apply any number of filters and get in depth analysis of your store data.
 
-![multiple-filters](https://user-images.githubusercontent.com/8337530/43098830-e2cfaede-8edd-11e8-9630-4a7eaee5f9dd.png)
+![multiple-filters](https://user-images.githubusercontent.com/8337530/43622587-88880ab4-96fa-11e8-8d89-4492b5975b6f.png)
 
 **Save the segments**
 
@@ -63,7 +63,7 @@ You can export the segments in CSV format. As soon as you click on the export bu
 * Filters
 
 | Filter  | Category  | Details  | Accepts Value |
-|---|---|---|---|---|---|
+|---|---|---|---|
 | Days From First Order | Order| Number of days from first order  | Positive integers |
 | Days From Last Order | Order| Number of days from last order | Positive integers |
 | Order Quantity Total | Order| Sum of quantity of all ordered items | Positive integers |
