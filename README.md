@@ -72,8 +72,8 @@ You can export the segments in CSV format. As soon as you click on the export bu
 | Order Frequency | Order| Number of orders per 30 days. Formula: (No of orders * 30)/(Days From Registration) | Positive numbers |
 | Revenue | Order| Sum of total of all orders placed | Positive numbers |
 | Number Of Order In Cart | Cart| Total number of items inside the cart | Positive integers |
-| Days From First Order | Order| Number of days from first order  | Positive integers |
-| Days From First Order | Order| Number of days from first order  | Positive integers |
+| Days From Cart Created | Cart | Number of days from cart created | Positive integers |
+| Days From Cart Modified | Cart | Number of days from cart modified | Positive integers |
 | Used A Coupon | Purchase | Users who have used a coupon or not  | Boolean |
 | Coupon Last Used | Purchase | Date when a user last applied a coupon | Date (YYYY-MM-DD) |
 | Number Of Sessions | Session | Number of time user has logged in | Positive integers |
