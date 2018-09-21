@@ -1,0 +1,31 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  spree:
+    customer_segmentation: Customer Segmentation
+    segments: Segments
+    tab_heading: User Segmentation
+    view_segments: View All Segments
+    save: Save
+    segment_saved_successfully: Segment has been saved successfully
+    segment_updated_successfully: Segment has been updated successfully
+    my_segments: My Segments
+    you_have_not_saved_any_segments_yet: You have not saved any segments yet
+    segment_name: Segment Name
+    created_by: Created By
+    delete: Delete
+    view_segment: View Segment
+    export: Export
+    search: Search
+    update_segment: Update Segment
+    segment_not_found: Customer Segment does not exists
+    csv_exported: Csv has been exported successfully
+    firstname: First Name
+    lastname: Last Name
+    email: Email
+    billing_address: Billing Address
+    contact_number: Contact Number
+    create_segment: Create Segment
+    customer_segmentation_mailer:
+      subject: Csv Of Users Filtered

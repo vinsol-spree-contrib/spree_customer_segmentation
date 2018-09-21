@@ -1,0 +1,24 @@
+<table class="table" id="listing_filtered_users" data-hook>
+  <thead>
+    <tr data-hook="admin_filterd_users_headers">
+      <th> <%= Spree.t(:firstname) %> </th>
+      <th> <%= Spree.t(:lastname) %> </th>
+      <th> <%= Spree.t(:email) %> </th>
+      <th> <%= Spree.t(:billing_address) %> </th>
+      <th> <%= Spree.t(:contact_number) %> </th>
+    </tr>
+  </thead>
+  <tbody>
+  <% results.each do |result| %>
+    <tr data-hook="admin_filtered_users_rows">
+      <td> <%= result.user_presenter.firstname %> </td>
+      <td> <%= result.user_presenter.lastname %> </td>
+      <td> <%= link_to result.email, edit_admin_user_path(result.id), target: :_blank %> </td>
+      <td> <%= result.user_presenter.full_bill_address %> </td>
+      <td> <%= result.user_presenter.phone %> </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate results %>
