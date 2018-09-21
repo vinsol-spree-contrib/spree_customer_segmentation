@@ -13,6 +13,12 @@ With Vinsol's [spree_customer_segmentation](https://github.com/vinsol-spree-cont
 
 **This extension currently supports Spree > 3.1, Rails >= 5, Mysql and Postgresql Database.**
 
+## See It In Action
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=ak1WM90XqU4
+" target="_blank"><img src="http://img.youtube.com/vi/ak1WM90XqU4/0.jpg"
+alt="Youtube Video Tutorial" /></a>
+
 ## Usage
 
 There are seven categories -
