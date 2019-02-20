@@ -18,3 +18,4 @@ spec/dummy
 .sass-cache
 public/spree
 gemfiles/*.gemfile.lock
+*.gem
