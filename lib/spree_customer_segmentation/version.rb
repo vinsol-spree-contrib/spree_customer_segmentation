@@ -11,8 +11,7 @@ module SpreeCustomerSegmentation
     MAJOR = 0
     MINOR = 0
     TINY  = 1
-    PRE   = 'alpha'.freeze
 
-    STRING = [MAJOR, MINOR, TINY, PRE].compact.join('.')
+    STRING = [MAJOR, MINOR, TINY].compact.join('.')
   end
 end
